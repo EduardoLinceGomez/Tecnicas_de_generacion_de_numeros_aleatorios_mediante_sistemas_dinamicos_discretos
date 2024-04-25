@@ -1,0 +1,2 @@
+# Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos
+Repositorio de la tesis de liceciatura: Técnicas de generación de números aleatorios mediante sistemas dinámicos discretos
