@@ -22,6 +22,11 @@ from coleccionista import (
     media_teorica_coleccionista,
     pmf_coleccionista,
 )
+from tesis_generacion.generadores.logistico import (
+    orbita_logistica as mapa_logistico,
+)
+from tesis_generacion.generadores.regla30 import paso_regla30 as regla_30
+from tesis_generacion.generadores.tienda import paso_tienda
 
 
 SEED = 2024
@@ -45,14 +50,6 @@ ETIQUETAS = {
 }
 
 
-def mapa_logistico(r: float, x: float, iteraciones: int) -> List[float]:
-    resultados = [x]
-    for _ in range(iteraciones):
-        x = r * x * (1.0 - x)
-        resultados.append(x)
-    return resultados
-
-
 def muestra_logistica() -> np.ndarray:
     trayectoria = np.asarray(mapa_logistico(4.0, 0.02024, NUM_ITERACIONES))
     return np.asarray(
@@ -62,11 +59,7 @@ def muestra_logistica() -> np.ndarray:
 
 
 def mapa_tienda(x: float) -> float:
-    if 0.0 <= x < 0.5:
-        return FACTOR_TIENDA * x
-    if 0.5 <= x < 1.0:
-        return FACTOR_TIENDA * (1.0 - x)
-    raise ValueError("el estado del mapeo tienda salió de [0,1)")
+    return paso_tienda(x, FACTOR_TIENDA)
 
 
 def muestra_tienda() -> np.ndarray:
@@ -77,12 +70,6 @@ def muestra_tienda() -> np.ndarray:
         x = mapa_tienda(x)
         resultados.append(x)
     return np.asarray(resultados, dtype=float)
-
-
-def regla_30(fila: np.ndarray) -> np.ndarray:
-    izquierda = np.roll(fila, 1)
-    derecha = np.roll(fila, -1)
-    return np.bitwise_xor(izquierda, np.bitwise_or(fila, derecha))
 
 
 def muestras_regla_30() -> Tuple[np.ndarray, np.ndarray]:
