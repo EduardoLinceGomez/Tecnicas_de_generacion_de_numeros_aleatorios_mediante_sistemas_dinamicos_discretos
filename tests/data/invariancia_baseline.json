@@ -1,0 +1,81 @@
+{
+  "commit_base": "0e84d287340b2de2003271e028a259476fedbc7a",
+  "entorno_referencia": {
+    "python": "3.14.5",
+    "numpy": "2.4.6",
+    "matplotlib": "3.10.9",
+    "pillow": "12.2.0",
+    "backend": "Agg"
+  },
+  "parametros": {
+    "seed": 2024,
+    "n": 1000,
+    "iteraciones": [0, 1, 2, 3, 4],
+    "logistico": {
+      "r": 4.0,
+      "inicial": [0.0, 0.5, 1.0],
+      "objetivo": "Beta(1/2,1/2)"
+    },
+    "tienda_ideal": {
+      "factor": 2.0,
+      "inicial": "Beta(2,2)",
+      "objetivo": "Uniforme(0,1)"
+    },
+    "tienda_diagnostico_factor": 1.999,
+    "malla_mae_cdf": [0.0, 1.0, 1001]
+  },
+  "referencias_sha256": {
+    "logistico_evolucion_cdf.png": "6dff31ebf2148d497816efba762b28762659561e6540a23aa21edd4c3d21a77b",
+    "tienda_ideal_evolucion_cdf.png": "30199f39bf8a265d319f380a6daee5aa4354addd6fe266e1b6f1e23e480d115f",
+    "discrepancia_cdf_iteraciones.png": "9448978eb579ed4f244eb4b4acd23edb12e558b07a97537535f3be678ec3b00f",
+    "tienda_1999_vs_2_cdf.png": "9d3e5c2b3827abcd073594f87b45fd4b2c1313f142516f8f5aade6166f2d7cc9",
+    "resumen_invariancia.csv": "a48905f3d8af3fdb810a8105a698b24066a2eb4e8dbe607a8ed63ba3df0aa783"
+  },
+  "experimentos": {
+    "logistico_r4": {
+      "fingerprint_inicial": {
+        "sha256": "1e0af89f00e6778ea7ebe62eed5fd8826a1045b57f48f7e25cb23a3aa629701e"
+      },
+      "fingerprint_final": {
+        "sha256": "756106fc452bfcc8a803826cf1872853ea3216276d3f1d94f51cf5433ba68026"
+      },
+      "metricas_por_iteracion": [
+        {"maxima_discrepancia_cdf": 0.2487520933972694, "mae_cdf": 0.16144599564678322},
+        {"maxima_discrepancia_cdf": 0.4755041867945389, "mae_cdf": 0.3515084915084915},
+        {"maxima_discrepancia_cdf": 0.16006327654452945, "mae_cdf": 0.12236063936063933},
+        {"maxima_discrepancia_cdf": 0.035859682560169415, "mae_cdf": 0.012267108351825031},
+        {"maxima_discrepancia_cdf": 0.03670979991508874, "mae_cdf": 0.01667289104090788}
+      ]
+    },
+    "tienda_ideal_2": {
+      "fingerprint_inicial": {
+        "sha256": "2765582e56a8c4380489f527246f1e882271b67969c08a371188011ee50c266e"
+      },
+      "fingerprint_final": {
+        "sha256": "c8a8234ee8dcbe417a65874589c91d23e0f9db9ee1bf51a3de04365fcda6934d"
+      },
+      "metricas_por_iteracion": [
+        {"maxima_discrepancia_cdf": 0.10175575983995906, "mae_cdf": 0.05731868131868131},
+        {"maxima_discrepancia_cdf": 0.19417810197645258, "mae_cdf": 0.11379020979020979},
+        {"maxima_discrepancia_cdf": 0.08455679131497185, "mae_cdf": 0.04987112887112888},
+        {"maxima_discrepancia_cdf": 0.03571240790581026, "mae_cdf": 0.008613386613386616},
+        {"maxima_discrepancia_cdf": 0.03925515952230352, "mae_cdf": 0.013674325674325666}
+      ]
+    },
+    "tienda_diagnostico_1_999": {
+      "fingerprint_inicial": {
+        "sha256": "2765582e56a8c4380489f527246f1e882271b67969c08a371188011ee50c266e"
+      },
+      "fingerprint_final": {
+        "sha256": "f550bf726fd268c217f5b4180777caf3d16c4aa625e75d79249693d41e33e202"
+      },
+      "metricas_por_iteracion": [
+        {"maxima_discrepancia_cdf": 0.10175575983995906, "mae_cdf": 0.05731868131868131},
+        {"maxima_discrepancia_cdf": 0.19396301292546436, "mae_cdf": 0.1134965034965035},
+        {"maxima_discrepancia_cdf": 0.084492198314154, "mae_cdf": 0.049968031968031984},
+        {"maxima_discrepancia_cdf": 0.03499610560891725, "mae_cdf": 0.008467532467532471},
+        {"maxima_discrepancia_cdf": 0.03827121511222553, "mae_cdf": 0.013512487512487506}
+      ]
+    }
+  }
+}

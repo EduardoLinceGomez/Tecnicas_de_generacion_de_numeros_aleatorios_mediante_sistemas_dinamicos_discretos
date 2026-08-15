@@ -33,6 +33,13 @@ from .transformadas import (
     copiar_referencias_transformadas,
     regenerar_transformadas,
 )
+from .invariancia import (
+    ARCHIVOS_REFERENCIA_INVARIANCIA,
+    ARCHIVOS_TESIS_INVARIANCIA,
+    copiar_referencias_invariancia,
+    guardar_evolucion_cdf,
+    regenerar_invariancia,
+)
 
 __all__ = (
     "ETIQUETAS",
@@ -62,4 +69,9 @@ __all__ = (
     "T_FGM",
     "copiar_referencias_transformadas",
     "regenerar_transformadas",
+    "ARCHIVOS_REFERENCIA_INVARIANCIA",
+    "ARCHIVOS_TESIS_INVARIANCIA",
+    "copiar_referencias_invariancia",
+    "guardar_evolucion_cdf",
+    "regenerar_invariancia",
 )

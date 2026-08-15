@@ -26,6 +26,12 @@ from .transformadas import (
     funcion_caracteristica_uniforme,
     metricas_error_transformada,
 )
+from .invariancia import (
+    cdf_beta_medio,
+    cdf_uniforme_01,
+    fingerprint_ensemble,
+    metricas_discrepancia_cdf,
+)
 
 __all__ = (
     "cdf_coleccionista",
@@ -48,4 +54,8 @@ __all__ = (
     "funcion_caracteristica_empirica",
     "funcion_caracteristica_uniforme",
     "metricas_error_transformada",
+    "cdf_beta_medio",
+    "cdf_uniforme_01",
+    "fingerprint_ensemble",
+    "metricas_discrepancia_cdf",
 )

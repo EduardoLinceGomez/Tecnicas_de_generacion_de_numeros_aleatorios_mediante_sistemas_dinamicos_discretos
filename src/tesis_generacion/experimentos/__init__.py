@@ -6,6 +6,17 @@ from .muestras import (
     muestra_tienda,
     muestras_regla_30,
 )
+from .invariancia import (
+    ITERACIONES_INVARIANCIA,
+    NUM_PARTICULAS_INVARIANCIA,
+    SEED_INVARIANCIA,
+    aplicar_logistico,
+    aplicar_tienda,
+    construir_experimentos_invariancia,
+    evolucion_ensemble,
+    muestra_inicial_logistica,
+    muestra_inicial_tienda,
+)
 from .parametros import (
     FACTOR_TIENDA,
     NUM_CELDAS,
@@ -20,6 +31,15 @@ __all__ = (
     "NUM_ITERACIONES",
     "NUM_VALORES",
     "SEED",
+    "ITERACIONES_INVARIANCIA",
+    "NUM_PARTICULAS_INVARIANCIA",
+    "SEED_INVARIANCIA",
+    "aplicar_logistico",
+    "aplicar_tienda",
+    "construir_experimentos_invariancia",
+    "evolucion_ensemble",
+    "muestra_inicial_logistica",
+    "muestra_inicial_tienda",
     "construir_muestras",
     "muestra_logistica",
     "muestra_tienda",
