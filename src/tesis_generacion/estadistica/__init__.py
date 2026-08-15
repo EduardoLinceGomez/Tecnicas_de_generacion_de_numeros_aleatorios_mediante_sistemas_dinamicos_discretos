@@ -32,6 +32,14 @@ from .invariancia import (
     fingerprint_ensemble,
     metricas_discrepancia_cdf,
 )
+from .dependencia_serial import (
+    autocorrelacion_empirica,
+    autocorrelaciones_empiricas,
+    pmf_geometrica,
+    resumen_autocorrelaciones,
+    resumen_brechas,
+    tiempos_espera_brechas,
+)
 
 __all__ = (
     "cdf_coleccionista",
@@ -58,4 +66,10 @@ __all__ = (
     "cdf_uniforme_01",
     "fingerprint_ensemble",
     "metricas_discrepancia_cdf",
+    "autocorrelacion_empirica",
+    "autocorrelaciones_empiricas",
+    "pmf_geometrica",
+    "resumen_autocorrelaciones",
+    "resumen_brechas",
+    "tiempos_espera_brechas",
 )

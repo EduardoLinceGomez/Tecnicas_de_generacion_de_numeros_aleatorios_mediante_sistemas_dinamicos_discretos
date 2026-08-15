@@ -24,6 +24,14 @@ from .parametros import (
     NUM_VALORES,
     SEED,
 )
+from .reordenamiento import (
+    INTERVALOS_BRECHAS,
+    LAGS_REORDENAMIENTO,
+    SEED_REORDENAMIENTO,
+    construir_experimentos_reordenamiento,
+    construir_permutaciones_reordenamiento,
+    fingerprint_permutacion,
+)
 
 __all__ = (
     "FACTOR_TIENDA",
@@ -44,4 +52,10 @@ __all__ = (
     "muestra_logistica",
     "muestra_tienda",
     "muestras_regla_30",
+    "INTERVALOS_BRECHAS",
+    "LAGS_REORDENAMIENTO",
+    "SEED_REORDENAMIENTO",
+    "construir_experimentos_reordenamiento",
+    "construir_permutaciones_reordenamiento",
+    "fingerprint_permutacion",
 )

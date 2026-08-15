@@ -40,6 +40,14 @@ from .invariancia import (
     guardar_evolucion_cdf,
     regenerar_invariancia,
 )
+from .reordenamiento import (
+    ARCHIVOS_REFERENCIA_REORDENAMIENTO,
+    ARCHIVOS_TESIS_REORDENAMIENTO,
+    copiar_referencias_reordenamiento,
+    guardar_acf_antes_despues,
+    guardar_brechas_antes_despues,
+    regenerar_reordenamiento,
+)
 
 __all__ = (
     "ETIQUETAS",
@@ -74,4 +82,10 @@ __all__ = (
     "copiar_referencias_invariancia",
     "guardar_evolucion_cdf",
     "regenerar_invariancia",
+    "ARCHIVOS_REFERENCIA_REORDENAMIENTO",
+    "ARCHIVOS_TESIS_REORDENAMIENTO",
+    "copiar_referencias_reordenamiento",
+    "guardar_acf_antes_despues",
+    "guardar_brechas_antes_despues",
+    "regenerar_reordenamiento",
 )

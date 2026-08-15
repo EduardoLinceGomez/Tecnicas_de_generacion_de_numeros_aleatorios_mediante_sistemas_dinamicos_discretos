@@ -1,0 +1,91 @@
+{
+  "commit_partida": "34afe7da639b2806495f90a06d69ffba7efa3ceb",
+  "entorno_referencia": {
+    "python": "3.14.5",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "matplotlib": "3.10.9",
+    "pillow": "12.2.0",
+    "backend": "Agg"
+  },
+  "parametros": {
+    "n": 1000,
+    "seed_reordenamiento": 2024,
+    "lags": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "intervalos_brechas": {
+      "logistico": [0.2, 0.5],
+      "tienda": [0.7, 0.9],
+      "r30_columnas": [0.1, 0.3],
+      "r30_filas": [0.7, 1.0]
+    }
+  },
+  "permutaciones": {
+    "fija": {
+      "r": 4.0,
+      "x0": 0.02024,
+      "seed": null,
+      "fingerprint_auxiliar": "d5f2a5e2d00248fd3d8d0cbc19d328c5b4372d817d9aeb9df95485065f12109d",
+      "fingerprint_permutacion": "cf8e468b55a3f0aae4b812f06f95e601aac008fe7f309ed78cd2fe418a089edb",
+      "primeros_10_indices": [681, 682, 683, 622, 684, 660, 416, 96, 623, 685],
+      "ultimos_10_indices": [573, 922, 908, 700, 447, 95, 415, 659, 621, 680]
+    },
+    "sembrada": {
+      "r": 4.0,
+      "x0": 0.5880145188953979,
+      "seed": 2024,
+      "fingerprint_auxiliar": "6fdf13e9095d5a653114fa0aeb570f733945b5567ea0cfa918c9bca44463e7d0",
+      "fingerprint_permutacion": "7b943a8a7e42078221d70da1718e07b74f30cd249c16f9734a8f8d3a27a85385",
+      "primeros_10_indices": [687, 327, 688, 881, 706, 165, 328, 764, 689, 509],
+      "ultimos_10_indices": [962, 530, 499, 508, 763, 164, 705, 880, 326, 686]
+    }
+  },
+  "muestras": {
+    "logistico": {
+      "permutacion": "sembrada",
+      "fingerprint_original": "7b088ec20314081394523a732c4270c531dbf4219c521e146abf87ef59e51491",
+      "fingerprint_reordenada": "2f6d80dbc58fdf7a37f7f9d73872b9f276666cbd152bd31a0f5cde59f0754f24",
+      "acf_original": [0.006085944579968112, 0.034689827348759465, 0.01656449371090781],
+      "acf_reordenada": [0.00023362178353356484, 0.07575467444082148, 0.028151085495757892],
+      "brechas_original": [277, 4, 3.595667870036101, 15, 0.15620938628158848, 0.0363038313062035],
+      "brechas_reordenada": [277, 3, 3.5992779783393503, 20, 0.033975548736462136, 0.014820657010191163]
+    },
+    "tienda": {
+      "permutacion": "fija",
+      "fingerprint_original": "0726a1fb5a0e886bb09ea70fbd2595631d95c9c3592648a905ebdf49dc2223a3",
+      "fingerprint_reordenada": "3eaedb0440d473bee70f0a3bd186298266a1bdcdbd25836a167f52d008b45fed",
+      "acf_original": [0.05693251369515976, 0.07350964025313693, 0.027049168226856057],
+      "acf_reordenada": [0.005273412034054315, 0.08370181378769162, 0.024409508639089344],
+      "brechas_original": [211, 0, 4.739336492890995, 29, 0.19526066350710908, 0.023567333634868397],
+      "brechas_reordenada": [211, 3, 4.725118483412322, 22, 0.029762455632366902, 0.013807061439189002]
+    },
+    "r30_columnas": {
+      "permutacion": "fija",
+      "fingerprint_original": "b81d0a7733d126c104bc778d8a6cc8efcfaab5098291dbc4e517f796744250bb",
+      "fingerprint_reordenada": "c57aa598712b27af5b8f496f7c1cedae88c5306dc62a814ef7975ba682d85510",
+      "acf_original": [0.2770450755577411, 0.2770450755577411, 0.03917237869899577],
+      "acf_reordenada": [0.07088154898888889, 0.07088154898888889, 0.03063352869899539],
+      "brechas_original": [189, 2, 5.28042328042328, 20, 0.07957671957671947, 0.023080020773517902],
+      "brechas_reordenada": [189, 8, 5.248677248677248, 30, 0.04355555555555546, 0.009709819886960186]
+    },
+    "r30_filas": {
+      "permutacion": "fija",
+      "fingerprint_original": "989b081363d4eb6d6b4a2b3fc9630a03b5c380b3b36075dcb24e19824b16b4c4",
+      "fingerprint_reordenada": "21c0a9fb24555e1845844e571178d648baa966a1c12d980257659ab3ce78800b",
+      "acf_original": [0.23131712003959318, 0.23131712003959318, 0.03204057855805825],
+      "acf_reordenada": [0.024692410245933646, 0.06785925590356996, 0.023409778485674597],
+      "brechas_original": [299, 1, 3.3411371237458196, 14, 0.23311036789297662, 0.04713686821828877],
+      "brechas_reordenada": [299, 2, 3.3377926421404682, 21, 0.051872909698996605, 0.01383606985049061]
+    }
+  },
+  "referencias_sha256": {
+    "acf_antes_despues_logistico.png": "33d0f37aafe3395d574bf47803732cefe9bcc0dda0e6922798d4d1df7358618b",
+    "acf_antes_despues_tienda.png": "f9a96cba54ce37d97731d328b26f1d53e101ecd9bdd20f98a71306ea579213c7",
+    "acf_antes_despues_r30_columnas.png": "522b0bba175fa8bdfbb7c425ba51986ec693d714e0ac719de0bd47c969d6c131",
+    "acf_antes_despues_r30_filas.png": "cc95af31c39d9149e088062938fd5a514bc583ac07b6f38b59a7432fe966b69e",
+    "brechas_antes_despues_logistico.png": "f38e66f93a85ba642fa4c592b545a848a336fa91f47a6cdf5d03092a78b0b195",
+    "brechas_antes_despues_tienda.png": "07038b383c597e02889facae492778c77353dd63c278efa0f5bb737fc3a98cf8",
+    "brechas_antes_despues_r30_columnas.png": "21913d7c157c235f5193905144d6eea41e50f54f1423ae5f91a45e048548c144",
+    "brechas_antes_despues_r30_filas.png": "cd89af4b16b8436fd6c0cff092f8e6a814b4c089ebf2815107bf11e3f9536932",
+    "permutacion_indices.png": "f7a171435d1ae12bb6361b2b32b8b6405884d82400d66bbac5cc286760f6c57f"
+  }
+}
