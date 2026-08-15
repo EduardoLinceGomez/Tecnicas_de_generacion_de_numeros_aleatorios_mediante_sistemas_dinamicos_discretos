@@ -5,8 +5,7 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
-import statistics
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, Sequence, Tuple
 
 import matplotlib
 
@@ -14,11 +13,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from coleccionista import (
-    PRECISION_DECIMAL,
+from tesis_generacion.estadistica.coleccionista import (
     cdf_coleccionista,
-    longitudes_coleccionista,
-    media_teorica_coleccionista,
+    metricas_coleccionista,
     pmf_coleccionista,
 )
 from tesis_generacion.generadores.logistico import (
@@ -30,7 +27,13 @@ from tesis_generacion.transformaciones.codificacion_binaria import (
     codificar_palabra_binaria,
     factor_normalizacion_binaria,
 )
+from tesis_generacion.transformaciones.codificacion_decimal import (
+    PRECISION_DECIMAL,
+)
 from tesis_generacion.transformaciones.uniformizacion import uniformizar_beta
+
+
+metricas_muestra = metricas_coleccionista
 
 
 SEED = 2024
@@ -116,39 +119,6 @@ def validar_muestra(nombre: str, valores: np.ndarray) -> None:
         raise ValueError(f"{nombre}: contiene NaN o infinito")
     if not np.all((0.0 <= valores) & (valores < 1.0)):
         raise ValueError(f"{nombre}: contiene valores fuera de [0,1)")
-
-
-def metricas_muestra(valores: np.ndarray) -> Tuple[List[int], Dict[str, float]]:
-    longitudes, cola = longitudes_coleccionista(valores, PRECISION_DECIMAL)
-    if not longitudes:
-        raise ValueError("no se obtuvo ningún bloque completo")
-
-    frecuencias = Counter(longitudes)
-    maximo = max(longitudes)
-    acumulada = 0
-    errores = []
-    for m in range(10, maximo + 1):
-        acumulada += frecuencias.get(m, 0)
-        cdf_empirica = acumulada / len(longitudes)
-        errores.append(abs(cdf_empirica - cdf_coleccionista(m)))
-
-    media = statistics.fmean(longitudes)
-    media_teorica = media_teorica_coleccionista()
-    metricas = {
-        "numero_u": len(valores),
-        "total_digitos": len(valores) * PRECISION_DECIMAL,
-        "bloques_completos": len(longitudes),
-        "cola_censurada": cola,
-        "minimo": min(longitudes),
-        "maximo": maximo,
-        "media": media,
-        "mediana": statistics.median(longitudes),
-        "media_teorica": media_teorica,
-        "diferencia_media": media - media_teorica,
-        "distancia_maxima_cdf": max(errores),
-        "mae_cdf": statistics.fmean(errores),
-    }
-    return longitudes, metricas
 
 
 def rango_grafica(longitudes: Sequence[int]) -> np.ndarray:
