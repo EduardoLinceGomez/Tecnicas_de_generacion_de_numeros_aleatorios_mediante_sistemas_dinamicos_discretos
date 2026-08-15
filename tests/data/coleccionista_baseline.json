@@ -1,0 +1,90 @@
+{
+  "commit_origen": "d837e4fc1e3c773b129a7036a36c91a975d185d7",
+  "precision_decimal": 12,
+  "seed": 2024,
+  "media_teorica": 29.289682539682538,
+  "formato_fingerprint": {
+    "algoritmo": "SHA-256",
+    "dtype": "<f8",
+    "endianness": "little",
+    "orden_bytes": "C"
+  },
+  "muestras": {
+    "logistico": {
+      "n_valores": 1000,
+      "n_digitos": 12000,
+      "bloques": 435,
+      "cola": 13,
+      "minimo": 10,
+      "maximo": 67,
+      "media": 27.55632183908046,
+      "mediana": 26,
+      "distancia_maxima_cdf": 0.06239741904102747,
+      "mae_cdf": 0.0285822127624915,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "sha256": "7b088ec20314081394523a732c4270c531dbf4219c521e146abf87ef59e51491"
+      }
+    },
+    "tienda": {
+      "n_valores": 1000,
+      "n_digitos": 12000,
+      "bloques": 415,
+      "cola": 0,
+      "minimo": 12,
+      "maximo": 86,
+      "media": 28.91566265060241,
+      "mediana": 27,
+      "distancia_maxima_cdf": 0.030273814306883917,
+      "mae_cdf": 0.007884894696680737,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "sha256": "0726a1fb5a0e886bb09ea70fbd2595631d95c9c3592648a905ebdf49dc2223a3"
+      }
+    },
+    "r30_columnas": {
+      "n_valores": 1000,
+      "n_digitos": 12000,
+      "bloques": 423,
+      "cola": 16,
+      "minimo": 12,
+      "maximo": 91,
+      "media": 28.33096926713948,
+      "mediana": 27,
+      "distancia_maxima_cdf": 0.05969646946652962,
+      "mae_cdf": 0.012624459072199258,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "sha256": "b81d0a7733d126c104bc778d8a6cc8efcfaab5098291dbc4e517f796744250bb"
+      }
+    },
+    "r30_filas": {
+      "n_valores": 1000,
+      "n_digitos": 12000,
+      "bloques": 413,
+      "cola": 35,
+      "minimo": 11,
+      "maximo": 91,
+      "media": 28.97094430992736,
+      "mediana": 26,
+      "distancia_maxima_cdf": 0.04695242695186852,
+      "mae_cdf": 0.005696878167701897,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "sha256": "989b081363d4eb6d6b4a2b3fc9630a03b5c380b3b36075dcb24e19824b16b4c4"
+      }
+    }
+  }
+}
