@@ -5,7 +5,7 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
-from typing import Dict, Sequence, Tuple
+from typing import Dict, Sequence
 
 import matplotlib
 
@@ -18,29 +18,21 @@ from tesis_generacion.estadistica.coleccionista import (
     metricas_coleccionista,
     pmf_coleccionista,
 )
-from tesis_generacion.generadores.logistico import (
-    orbita_logistica as mapa_logistico,
+from tesis_generacion.experimentos import (
+    FACTOR_TIENDA,
+    NUM_CELDAS,
+    NUM_ITERACIONES,
+    NUM_VALORES,
+    SEED,
+    construir_muestras,
+    muestra_logistica,
+    muestra_tienda,
+    muestras_regla_30,
 )
-from tesis_generacion.generadores.regla30 import paso_regla30 as regla_30
-from tesis_generacion.generadores.tienda import paso_tienda
-from tesis_generacion.transformaciones.codificacion_binaria import (
-    codificar_palabra_binaria,
-    factor_normalizacion_binaria,
-)
-from tesis_generacion.transformaciones.codificacion_decimal import (
-    PRECISION_DECIMAL,
-)
-from tesis_generacion.transformaciones.uniformizacion import uniformizar_beta
 
 
 metricas_muestra = metricas_coleccionista
 
-
-SEED = 2024
-NUM_VALORES = 1000
-NUM_ITERACIONES = 1000
-NUM_CELDAS = 1000
-FACTOR_TIENDA = 1.999
 
 NOMBRES_FIGURAS = {
     "logistico": ("log_dist_CCT.png", "Log_dens_CCT.png"),
@@ -55,61 +47,6 @@ ETIQUETAS = {
     "r30_columnas": "Regla 30 por columnas",
     "r30_filas": "Regla 30 por filas",
 }
-
-
-def muestra_logistica() -> np.ndarray:
-    trayectoria = np.asarray(mapa_logistico(4.0, 0.02024, NUM_ITERACIONES))
-    return uniformizar_beta(trayectoria[:NUM_VALORES], 0.5, 0.5)
-
-
-def mapa_tienda(x: float) -> float:
-    return paso_tienda(x, FACTOR_TIENDA)
-
-
-def muestra_tienda() -> np.ndarray:
-    rng = np.random.RandomState(SEED)
-    x = float(rng.uniform(0.0, 1.0))
-    resultados = []
-    for _ in range(NUM_ITERACIONES):
-        x = mapa_tienda(x)
-        resultados.append(x)
-    return np.asarray(resultados, dtype=float)
-
-
-def muestras_regla_30() -> Tuple[np.ndarray, np.ndarray]:
-    rng = np.random.RandomState(SEED)
-    matriz = np.empty((NUM_ITERACIONES, NUM_CELDAS), dtype=np.uint8)
-    matriz[0] = rng.binomial(size=NUM_CELDAS, n=1, p=0.5)
-    for indice in range(1, NUM_ITERACIONES):
-        matriz[indice] = regla_30(matriz[indice - 1])
-
-    precision_columnas = factor_normalizacion_binaria(NUM_ITERACIONES)
-    precision_filas = factor_normalizacion_binaria(NUM_CELDAS)
-    columnas = np.asarray(
-        [
-            codificar_palabra_binaria(matriz[:, j], precision_columnas)
-            for j in range(NUM_CELDAS)
-        ],
-        dtype=float,
-    )
-    filas = np.asarray(
-        [
-            codificar_palabra_binaria(matriz[j], precision_filas)
-            for j in range(NUM_ITERACIONES)
-        ],
-        dtype=float,
-    )
-    return columnas, filas
-
-
-def construir_muestras() -> Dict[str, np.ndarray]:
-    columnas, filas = muestras_regla_30()
-    return {
-        "logistico": muestra_logistica(),
-        "tienda": muestra_tienda(),
-        "r30_columnas": columnas,
-        "r30_filas": filas,
-    }
 
 
 def validar_muestra(nombre: str, valores: np.ndarray) -> None:
