@@ -1,0 +1,204 @@
+{
+  "commit_base": "7e1ed4d91178f0721fe9ef7ede7654de9c46a559",
+  "entorno_referencia": {
+    "python": "3.14.5",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1",
+    "pillow": "12.3.0",
+    "backend": "Agg"
+  },
+  "dominios_numericos": {
+    "fgm": {
+      "inicio": 0.0,
+      "fin": 15.0,
+      "numero_puntos": 40
+    },
+    "funcion_caracteristica": {
+      "inicio": 0.0,
+      "fin": 20.0,
+      "numero_puntos": 60
+    }
+  },
+  "puntos_control": {
+    "fgm": {
+      "indices": [0, 13, 26, 39],
+      "t": [0.0, 5.0, 10.0, 15.0],
+      "teorica": [
+        1.0,
+        29.48263182051532,
+        2202.546579480672,
+        217934.42483147405
+      ],
+      "muestras": {
+        "logistico": [
+          1.0,
+          29.559373381629797,
+          2152.104727064142,
+          208740.82896549645
+        ],
+        "tienda": [
+          1.0,
+          29.92758596130364,
+          2203.746055767566,
+          212748.80855264317
+        ],
+        "r30_columnas": [
+          1.0,
+          29.750808089377163,
+          2221.386194207396,
+          219990.23045644842
+        ],
+        "r30_filas": [
+          1.0,
+          28.683262407563426,
+          2060.5622782844016,
+          197208.43104445285
+        ]
+      }
+    },
+    "funcion_caracteristica": {
+      "indices": [0, 15, 30, 45, 59],
+      "t": [
+        0.0,
+        5.084745762711864,
+        10.169491525423728,
+        15.254237288135592,
+        20.0
+      ],
+      "teorica": [
+        {"real": 1.0, "imag": 0.0},
+        {"real": -0.18318959329245213, "imag": 0.1251170287421897},
+        {"real": -0.06664652070308723, "imag": 0.17063606995247807},
+        {"real": 0.028734150813424977, "imag": 0.12447821198946799},
+        {"real": 0.045647262536381385, "imag": 0.0295958969093304}
+      ],
+      "muestras": {
+        "logistico": [
+          {"real": 1.0, "imag": 0.0},
+          {"real": -0.21724009504732542, "imag": 0.11409608561930233},
+          {"real": -0.0427013477463526, "imag": 0.18323782136493383},
+          {"real": -0.021247200553106773, "imag": 0.10276109531263086},
+          {"real": 0.08022281502698542, "imag": 0.02036038827452754}
+        ],
+        "tienda": [
+          {"real": 1.0, "imag": 0.0},
+          {"real": -0.20474162717228564, "imag": 0.1266180491685337},
+          {"real": -0.10444672793384814, "imag": 0.16680801126999303},
+          {"real": 0.02864115320688797, "imag": 0.1270102571896588},
+          {"real": 0.02717373171433426, "imag": -0.003720464149838561}
+        ],
+        "r30_columnas": [
+          {"real": 1.0, "imag": 0.0},
+          {"real": -0.1945816299731397, "imag": 0.1220112736221159},
+          {"real": -0.06792885589179269, "imag": 0.1754397498204295},
+          {"real": 0.02120014145363765, "imag": 0.12151463108622142},
+          {"real": 0.03326001273916205, "imag": 0.04734993095012832}
+        ],
+        "r30_filas": [
+          {"real": 1.0, "imag": 0.0},
+          {"real": -0.18522335577716906, "imag": 0.13102025335431788},
+          {"real": -0.06733663686984476, "imag": 0.2119641893907491},
+          {"real": 0.02310652385877405, "imag": 0.09615256717263808},
+          {"real": 0.016876647812530038, "imag": 0.06692476851014198}
+        ]
+      }
+    }
+  },
+  "referencias_sha256": {
+    "logistico_crudo_vs_uniformizado_fgm.png": "2d778db41729af903cea0e97875e6b54d876fd409009cfd976b0eb2a06a6a0c9",
+    "logistico_crudo_vs_uniformizado_fc.png": "9c7b9b93c54f6d56a92ab9762cc23d93d6f57c525bd482ac386d870901873262",
+    "resumen_transformadas.csv": "8fa895634075a1753f0dba8e171f28a77a8ef327e5a7fb87df018a3dc3ac5b43"
+  },
+  "muestras": {
+    "logistico": {
+      "n": 1000,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "7b088ec20314081394523a732c4270c531dbf4219c521e146abf87ef59e51491"
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 9193.595865977608,
+        "mae": 706.8129862262238
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.05472611251451482,
+        "mae": 0.035232447508459996
+      }
+    },
+    "tienda": {
+      "n": 1000,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "0726a1fb5a0e886bb09ea70fbd2595631d95c9c3592648a905ebdf49dc2223a3"
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 5185.616278830887,
+        "mae": 349.9346457698403
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.0413660751369957,
+        "mae": 0.024404651760382534
+      }
+    },
+    "r30_columnas": {
+      "n": 1000,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "b81d0a7733d126c104bc778d8a6cc8efcfaab5098291dbc4e517f796744250bb"
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 2055.8056249743677,
+        "mae": 167.30277548546476
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.021648318231690004,
+        "mae": 0.00825407849310507
+      }
+    },
+    "r30_filas": {
+      "n": 1000,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "989b081363d4eb6d6b4a2b3fc9630a03b5c380b3b36075dcb24e19824b16b4c4"
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 20725.9937870212,
+        "mae": 1634.0674624091926
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.05121584881343912,
+        "mae": 0.02395105159070447
+      }
+    }
+  },
+  "logistico_historico_crudo": {
+    "n": 1001,
+    "fingerprint": {
+      "dtype": "<f8",
+      "endianness": "little",
+      "n_bytes": 8008,
+      "n_elementos": 1001,
+      "sha256": "6732296d0ccb6cd10cfeb1dee3ef87615122da2639e310e785f8657b0203dc76"
+    },
+    "fgm": {
+      "maxima_diferencia_absoluta": 257750.70901367694,
+      "mae": 20320.72200364086
+    },
+    "funcion_caracteristica": {
+      "maxima_diferencia_absoluta": 0.2927879599941683,
+      "mae": 0.14096439782638434
+    }
+  }
+}

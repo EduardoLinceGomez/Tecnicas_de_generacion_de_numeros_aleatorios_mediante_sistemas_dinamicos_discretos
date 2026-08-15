@@ -19,6 +19,13 @@ from .momentos import (
     resumen_uniforme_teorica,
     varianza_empirica,
 )
+from .transformadas import (
+    fgm_empirica,
+    fgm_uniforme,
+    funcion_caracteristica_empirica,
+    funcion_caracteristica_uniforme,
+    metricas_error_transformada,
+)
 
 __all__ = (
     "cdf_coleccionista",
@@ -36,4 +43,9 @@ __all__ = (
     "resumen_momentos",
     "resumen_uniforme_teorica",
     "varianza_empirica",
+    "fgm_empirica",
+    "fgm_uniforme",
+    "funcion_caracteristica_empirica",
+    "funcion_caracteristica_uniforme",
+    "metricas_error_transformada",
 )

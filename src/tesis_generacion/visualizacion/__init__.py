@@ -25,6 +25,14 @@ from .momentos import (
     generar_muestras_histogramas,
     regenerar_momentos,
 )
+from .transformadas import (
+    ARCHIVOS_REFERENCIA_TRANSFORMADAS,
+    ARCHIVOS_TESIS_TRANSFORMADAS,
+    T_FC,
+    T_FGM,
+    copiar_referencias_transformadas,
+    regenerar_transformadas,
+)
 
 __all__ = (
     "ETIQUETAS",
@@ -48,4 +56,10 @@ __all__ = (
     "copiar_referencias",
     "generar_muestras_histogramas",
     "regenerar_momentos",
+    "ARCHIVOS_REFERENCIA_TRANSFORMADAS",
+    "ARCHIVOS_TESIS_TRANSFORMADAS",
+    "T_FC",
+    "T_FGM",
+    "copiar_referencias_transformadas",
+    "regenerar_transformadas",
 )
