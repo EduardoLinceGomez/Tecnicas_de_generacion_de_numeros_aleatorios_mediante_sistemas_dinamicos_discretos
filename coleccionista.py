@@ -5,9 +5,11 @@ import math
 import numbers
 from typing import Iterable, List, Tuple
 
-
-PRECISION_DECIMAL = 12
-TIPOS_DECIMALES = frozenset("0123456789")
+from tesis_generacion.transformaciones.codificacion_decimal import (
+    PRECISION_DECIMAL,
+    TIPOS_DECIMALES,
+    extraer_digitos,
+)
 
 
 def _validar_entero(nombre: str, valor: int, minimo: int) -> int:
@@ -17,29 +19,6 @@ def _validar_entero(nombre: str, valor: int, minimo: int) -> int:
     if valor < minimo:
         raise ValueError(f"{nombre} debe ser mayor o igual que {minimo}")
     return valor
-
-
-def extraer_digitos(u: float, precision: int = PRECISION_DECIMAL) -> str:
-    """Trunca u y devuelve exactamente precision dígitos decimales.
-
-    La conversión mediante la razón binaria exacta del float evita que la
-    multiplicación en punto flotante redondee accidentalmente hacia una
-    potencia de diez. Los ceros iniciales se conservan.
-    """
-
-    precision = _validar_entero("precision", precision, 1)
-    valor = float(u)
-    if not math.isfinite(valor):
-        raise ValueError("u debe ser un número finito")
-    if not 0.0 <= valor < 1.0:
-        raise ValueError("u debe satisfacer 0 <= u < 1")
-
-    numerador, denominador = valor.as_integer_ratio()
-    q = (numerador * 10**precision) // denominador
-    digitos = f"{q:0{precision}d}"
-    if len(digitos) != precision or not set(digitos) <= TIPOS_DECIMALES:
-        raise RuntimeError("la extracción no produjo el alfabeto decimal esperado")
-    return digitos
 
 
 def longitudes_coleccionista(

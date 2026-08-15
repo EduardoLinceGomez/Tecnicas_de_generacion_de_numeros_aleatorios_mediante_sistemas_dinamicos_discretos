@@ -13,7 +13,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import beta
 
 from coleccionista import (
     PRECISION_DECIMAL,
@@ -27,6 +26,11 @@ from tesis_generacion.generadores.logistico import (
 )
 from tesis_generacion.generadores.regla30 import paso_regla30 as regla_30
 from tesis_generacion.generadores.tienda import paso_tienda
+from tesis_generacion.transformaciones.codificacion_binaria import (
+    codificar_palabra_binaria,
+    factor_normalizacion_binaria,
+)
+from tesis_generacion.transformaciones.uniformizacion import uniformizar_beta
 
 
 SEED = 2024
@@ -52,10 +56,7 @@ ETIQUETAS = {
 
 def muestra_logistica() -> np.ndarray:
     trayectoria = np.asarray(mapa_logistico(4.0, 0.02024, NUM_ITERACIONES))
-    return np.asarray(
-        [beta.cdf(x, 0.5, 0.5) for x in trayectoria[:NUM_VALORES]],
-        dtype=float,
-    )
+    return uniformizar_beta(trayectoria[:NUM_VALORES], 0.5, 0.5)
 
 
 def mapa_tienda(x: float) -> float:
@@ -79,19 +80,18 @@ def muestras_regla_30() -> Tuple[np.ndarray, np.ndarray]:
     for indice in range(1, NUM_ITERACIONES):
         matriz[indice] = regla_30(matriz[indice - 1])
 
-    precision_columnas = 1 / int("1" * NUM_ITERACIONES, 2)
-    precision_filas = 1 / int("1" * NUM_CELDAS, 2)
+    precision_columnas = factor_normalizacion_binaria(NUM_ITERACIONES)
+    precision_filas = factor_normalizacion_binaria(NUM_CELDAS)
     columnas = np.asarray(
         [
-            int("".join(map(str, matriz[:, j].tolist())), 2)
-            * precision_columnas
+            codificar_palabra_binaria(matriz[:, j], precision_columnas)
             for j in range(NUM_CELDAS)
         ],
         dtype=float,
     )
     filas = np.asarray(
         [
-            int("".join(map(str, matriz[j].tolist())), 2) * precision_filas
+            codificar_palabra_binaria(matriz[j], precision_filas)
             for j in range(NUM_ITERACIONES)
         ],
         dtype=float,
