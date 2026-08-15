@@ -1,0 +1,208 @@
+{
+  "commit_base": "385ff07ad47d19206a64cbaaee33532cf5040621",
+  "entorno_referencia": {
+    "python": "3.14.5",
+    "numpy": "2.5.2",
+    "scipy": "1.18.0",
+    "matplotlib": "3.11.1",
+    "pillow": "12.3.0",
+    "backend": "Agg"
+  },
+  "referencias_sha256": {
+    "hist_normal_escala_comun.png": "3b2fd40ee7bc076a790906707077a4fad138fb68b47d93c01cdaf44c7075ead3",
+    "hist_cauchy_escala_comun.png": "f54002e277f816cfe7a9ed453daa83c2a7853bea72a56503c1559b90aaadb8a3",
+    "logistico_crudo_vs_uniformizado_hist.png": "2dd21a70cbd6c1174908ad465a1373e3fef332434eda598b31ec29c6884d1495",
+    "logistico_crudo_vs_uniformizado_momentos.png": "322e6aa7e43c981600bd42357bbb014315b421e9ba4b0fd77541fd77416b386a",
+    "resumen_momentos.csv": "e2b1c417edd47ad8d9edd7ac531de6ee097b6d2c6dbca0aff6eb16635373e49f"
+  },
+  "convenciones": {
+    "asimetria": "Fisher-Pearson plug-in: mu_3 / mu_2^(3/2)",
+    "curtosis": "Pearson plug-in: mu_4 / mu_2^2",
+    "exceso_curtosis": "curtosis_pearson - 3",
+    "momento_central": "(1/n) sum_i (x_i - media)^k",
+    "momento_ordinario": "(1/n) sum_i x_i^k",
+    "varianza": "segundo momento central con divisor n"
+  },
+  "histogramas": {
+    "parametros": {
+      "ancho_bin": 0.5,
+      "n_cauchy": 10000,
+      "n_normal": 10000,
+      "numero_bins": 80,
+      "numero_bordes": 81,
+      "orden_rng": [
+        "normal",
+        "cauchy"
+      ],
+      "seed": 2024,
+      "ventana": [
+        -20.0,
+        20.0
+      ]
+    },
+    "normal": {
+      "n": 10000,
+      "en_ventana": 10000,
+      "fuera_ventana": 0,
+      "fraccion_fuera_ventana": 0.0,
+      "masa_visible": 1.0,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 80000,
+        "n_elementos": 10000,
+        "sha256": "a6f43c4636c091fea1c36380772d305b60bd76f4672dd329efa30d8a01bfefd5"
+      }
+    },
+    "cauchy": {
+      "n": 10000,
+      "en_ventana": 9689,
+      "fuera_ventana": 311,
+      "fraccion_fuera_ventana": 0.0311,
+      "masa_visible": 0.9689,
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 80000,
+        "n_elementos": 10000,
+        "sha256": "6b4b556ce731774d7a725fe0675c700c5f4baf69cb23441166e867d3dbc55f4b"
+      }
+    }
+  },
+  "ordenes_figuras": {
+    "logistico": 40,
+    "r30": 20,
+    "tienda": 20
+  },
+  "uniforme_teorica": {
+    "n": null,
+    "media": 0.5,
+    "varianza": 0.08333333333333333,
+    "asimetria_fisher_pearson": 0.0,
+    "curtosis_pearson": 1.8,
+    "exceso_curtosis": -1.2,
+    "momentos_ordinarios": [
+      0.5,
+      0.3333333333333333,
+      0.25,
+      0.2
+    ]
+  },
+  "muestras": {
+    "logistico": {
+      "resumen": {
+        "n": 1000,
+        "media": 0.5086549692351402,
+        "varianza": 0.08023421117589218,
+        "asimetria_fisher_pearson": -0.0512513948141783,
+        "curtosis_pearson": 1.8262268919225897,
+        "exceso_curtosis": -1.1737731080774103,
+        "momentos_ordinarios": [
+          0.5086549692351402,
+          0.33896408890349367,
+          0.25287404552264764,
+          0.2008815725386783
+        ]
+      },
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "7b088ec20314081394523a732c4270c531dbf4219c521e146abf87ef59e51491"
+      }
+    },
+    "tienda": {
+      "resumen": {
+        "n": 1000,
+        "media": 0.5090938143559053,
+        "varianza": 0.08031358696723413,
+        "asimetria_fisher_pearson": -0.004490760741559162,
+        "curtosis_pearson": 1.7979336494082323,
+        "exceso_curtosis": -1.2020663505917677,
+        "momentos_ordinarios": [
+          0.5090938143559053,
+          0.33949009878267894,
+          0.2545043976244491,
+          0.20345385499703636
+        ]
+      },
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "0726a1fb5a0e886bb09ea70fbd2595631d95c9c3592648a905ebdf49dc2223a3"
+      }
+    },
+    "r30_columnas": {
+      "resumen": {
+        "n": 1000,
+        "media": 0.5046081208625287,
+        "varianza": 0.08210524721660027,
+        "asimetria_fisher_pearson": -0.009793479187689268,
+        "curtosis_pearson": 1.800576516196313,
+        "exceso_curtosis": -1.199423483803687,
+        "momentos_ordinarios": [
+          0.5046081208625287,
+          0.3367346028570126,
+          0.25255055841642904,
+          0.20194766276804443
+        ]
+      },
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "b81d0a7733d126c104bc778d8a6cc8efcfaab5098291dbc4e517f796744250bb"
+      }
+    },
+    "r30_filas": {
+      "resumen": {
+        "n": 1000,
+        "media": 0.49765353240300475,
+        "varianza": 0.08172287345661994,
+        "asimetria_fisher_pearson": 0.006174615573421928,
+        "curtosis_pearson": 1.763447848031017,
+        "exceso_curtosis": -1.236552151968983,
+        "momentos_ordinarios": [
+          0.49765353240300475,
+          0.3293819117698084,
+          0.24540167837984045,
+          0.19483601340356346
+        ]
+      },
+      "fingerprint": {
+        "dtype": "<f8",
+        "endianness": "little",
+        "n_bytes": 8000,
+        "n_elementos": 1000,
+        "sha256": "989b081363d4eb6d6b4a2b3fc9630a03b5c380b3b36075dcb24e19824b16b4c4"
+      }
+    }
+  },
+  "logistico_historico_crudo": {
+    "resumen": {
+      "n": 1001,
+      "media": 0.5112123208154893,
+      "varianza": 0.12187142182259174,
+      "asimetria_fisher_pearson": -0.06547988992854135,
+      "curtosis_pearson": 1.5165068710715497,
+      "exceso_curtosis": -1.4834931289284503,
+      "momentos_ordinarios": [
+        0.5112123208154893,
+        0.3832094587761505,
+        0.3177198721328883,
+        0.2762228511498747
+      ]
+    },
+    "fingerprint": {
+      "dtype": "<f8",
+      "endianness": "little",
+      "n_bytes": 8008,
+      "n_elementos": 1001,
+      "sha256": "6732296d0ccb6cd10cfeb1dee3ef87615122da2639e310e785f8657b0203dc76"
+    }
+  }
+}

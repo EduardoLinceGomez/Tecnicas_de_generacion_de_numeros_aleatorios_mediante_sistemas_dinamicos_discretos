@@ -10,6 +10,21 @@ from .coleccionista import (
     regenerar_muestra,
     validar_muestra,
 )
+from .momentos import (
+    ARCHIVOS_REFERENCIA,
+    ARCHIVOS_TESIS,
+    N_HISTOGRAMAS,
+    NUM_BINS_HISTOGRAMAS,
+    ORDEN_MAXIMO_LOGISTICO,
+    ORDEN_MAXIMO_OTROS,
+    SEED_HISTOGRAMAS,
+    VENTANA_HISTOGRAMAS,
+    bordes_histogramas,
+    calcular_histograma,
+    copiar_referencias,
+    generar_muestras_histogramas,
+    regenerar_momentos,
+)
 
 __all__ = (
     "ETIQUETAS",
@@ -20,4 +35,17 @@ __all__ = (
     "regenerar",
     "regenerar_muestra",
     "validar_muestra",
+    "ARCHIVOS_REFERENCIA",
+    "ARCHIVOS_TESIS",
+    "N_HISTOGRAMAS",
+    "NUM_BINS_HISTOGRAMAS",
+    "ORDEN_MAXIMO_LOGISTICO",
+    "ORDEN_MAXIMO_OTROS",
+    "SEED_HISTOGRAMAS",
+    "VENTANA_HISTOGRAMAS",
+    "bordes_histogramas",
+    "calcular_histograma",
+    "copiar_referencias",
+    "generar_muestras_histogramas",
+    "regenerar_momentos",
 )
