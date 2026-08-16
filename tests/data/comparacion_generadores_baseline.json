@@ -1,0 +1,238 @@
+{
+  "commit_base": "ca6973486c96e3359d4bd973bac9bc962bc2309c",
+  "entorno_referencia": {
+    "python": "3.14.5",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "matplotlib": "3.10.9",
+    "pillow": "12.2.0",
+    "backend": "Agg"
+  },
+  "benchmark": {
+    "nombre": "Park--Miller MINSTD (1988)",
+    "referencia": {
+      "autores": "S. K. Park y K. W. Miller",
+      "anio": 1988,
+      "doi": "10.1145/63039.63042"
+    },
+    "formula": "X_(n+1)=(a*X_n+c) mod m; U_n=X_n/m",
+    "multiplicador": 16807,
+    "incremento": 0,
+    "modulo": 2147483647,
+    "semilla": 2024,
+    "incluye_semilla": false,
+    "numero_valores": 1000,
+    "primeros_10_estados": [
+      34017368,
+      499253874,
+      741251489,
+      661139376,
+      689102854,
+      372358907,
+      468802591,
+      47646094,
+      1923985174,
+      1757546539
+    ],
+    "primeros_10_valores": [
+      0.015840571381077438,
+      0.23248320176847428,
+      0.34517212274725184,
+      0.3078670130613572,
+      0.32088852223050246,
+      0.17339312805486523,
+      0.21830321811991893,
+      0.022186941477557152,
+      0.8959254133030425,
+      0.8184213842351089
+    ]
+  },
+  "parametros": {
+    "n": 1000,
+    "malla_cdf": {
+      "inicio": 0.0,
+      "fin": 1.0,
+      "numero_puntos": 1001
+    },
+    "momentos": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "malla_fgm": {
+      "inicio": 0.0,
+      "fin": 15.0,
+      "numero_puntos": 40
+    },
+    "malla_funcion_caracteristica": {
+      "inicio": 0.0,
+      "fin": 20.0,
+      "numero_puntos": 60
+    },
+    "lags_acf": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "usa_muestras_reordenadas": false
+  },
+  "muestras": {
+    "logistico": {
+      "n": 1000,
+      "fingerprint": {
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "dtype": "<f8",
+        "endianness": "little",
+        "sha256": "7b088ec20314081394523a732c4270c531dbf4219c521e146abf87ef59e51491"
+      },
+      "cdf": {
+        "maxima_discrepancia_cdf": 0.03380560750297035,
+        "mae_cdf": 0.01122677322677323
+      },
+      "momentos": {
+        "orden_maximo": 20,
+        "maximo_error_absoluto": 0.008654969235140197,
+        "mae": 0.0028935101636285055
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 9193.595865977608,
+        "mae": 706.8129862262238
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.05472611251451482,
+        "mae": 0.035232447508459996
+      },
+      "acf": {
+        "abs_rho_1": 0.006085944579968112,
+        "max_abs_acf": 0.034689827348759465,
+        "mae_abs_acf": 0.01656449371090781
+      }
+    },
+    "tienda": {
+      "n": 1000,
+      "fingerprint": {
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "dtype": "<f8",
+        "endianness": "little",
+        "sha256": "0726a1fb5a0e886bb09ea70fbd2595631d95c9c3592648a905ebdf49dc2223a3"
+      },
+      "cdf": {
+        "maxima_discrepancia_cdf": 0.02423771715221326,
+        "mae_cdf": 0.009955044955044961
+      },
+      "momentos": {
+        "orden_maximo": 20,
+        "maximo_error_absoluto": 0.009093814355905283,
+        "mae": 0.002421741249234913
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 5185.616278830887,
+        "mae": 349.9346457698403
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.0413660751369957,
+        "mae": 0.024404651760382534
+      },
+      "acf": {
+        "abs_rho_1": 0.05693251369515976,
+        "max_abs_acf": 0.07350964025313693,
+        "mae_abs_acf": 0.027049168226856057
+      }
+    },
+    "r30_columnas": {
+      "n": 1000,
+      "fingerprint": {
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "dtype": "<f8",
+        "endianness": "little",
+        "sha256": "b81d0a7733d126c104bc778d8a6cc8efcfaab5098291dbc4e517f796744250bb"
+      },
+      "cdf": {
+        "maxima_discrepancia_cdf": 0.01565313631811388,
+        "mae_cdf": 0.005195804195804202
+      },
+      "momentos": {
+        "orden_maximo": 20,
+        "maximo_error_absoluto": 0.0046081208625287085,
+        "mae": 0.0012386988886416022
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 2055.8056249743677,
+        "mae": 167.30277548546476
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.021648318231690004,
+        "mae": 0.00825407849310507
+      },
+      "acf": {
+        "abs_rho_1": 0.2770450755577411,
+        "max_abs_acf": 0.2770450755577411,
+        "mae_abs_acf": 0.03917237869899577
+      }
+    },
+    "r30_filas": {
+      "n": 1000,
+      "fingerprint": {
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "dtype": "<f8",
+        "endianness": "little",
+        "sha256": "989b081363d4eb6d6b4a2b3fc9630a03b5c380b3b36075dcb24e19824b16b4c4"
+      },
+      "cdf": {
+        "maxima_discrepancia_cdf": 0.021123796120112504,
+        "mae_cdf": 0.006975024975024969
+      },
+      "momentos": {
+        "orden_maximo": 20,
+        "maximo_error_absoluto": 0.006683637843370727,
+        "mae": 0.00586930122712349
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 20725.9937870212,
+        "mae": 1634.0674624091926
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.05121584881343912,
+        "mae": 0.02395105159070447
+      },
+      "acf": {
+        "abs_rho_1": 0.23131712003959318,
+        "max_abs_acf": 0.23131712003959318,
+        "mae_abs_acf": 0.03204057855805825
+      }
+    },
+    "congruencial_minstd": {
+      "n": 1000,
+      "fingerprint": {
+        "n_elementos": 1000,
+        "n_bytes": 8000,
+        "dtype": "<f8",
+        "endianness": "little",
+        "sha256": "2ad4f3c5dee1991799ce98f134efa9a6ac7e8ab1ed57208ab8110c5e46f29131"
+      },
+      "cdf": {
+        "maxima_discrepancia_cdf": 0.04167581689761757,
+        "mae_cdf": 0.012673326673326673
+      },
+      "momentos": {
+        "orden_maximo": 20,
+        "maximo_error_absoluto": 0.00916818776641426,
+        "mae": 0.005386586220816432
+      },
+      "fgm": {
+        "maxima_diferencia_absoluta": 20448.898222623102,
+        "mae": 1568.6283121232484
+      },
+      "funcion_caracteristica": {
+        "maxima_diferencia_absoluta": 0.06909275017550076,
+        "mae": 0.033056220659012064
+      },
+      "acf": {
+        "abs_rho_1": 0.045194835017643105,
+        "max_abs_acf": 0.09030048892401955,
+        "mae_abs_acf": 0.02700144995426701
+      }
+    }
+  },
+  "referencias_sha256": {
+    "cdf_comparacion.png": "602cb435b23b38b215eb15a5e2d7c2d5332b88f2d135f9bc34cbbda619a539d9",
+    "errores_momentos_comparacion.png": "9605567bf18a332e73ed7607d4491718b5dcf663aa3d7fc848f37f85b8e986f3",
+    "acf_comparacion.png": "0224a84289f79e786f636fb5e0d4f1e82bb3c3cdb3bb02c21d7bf135fe7c9da1"
+  }
+}

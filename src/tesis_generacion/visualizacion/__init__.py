@@ -1,5 +1,13 @@
 """Visualización reproducible de los experimentos de la tesis."""
 
+from .comparacion_generadores import (
+    ARCHIVOS_REFERENCIA_COMPARACION,
+    copiar_referencias_comparacion,
+    guardar_acf_comparacion,
+    guardar_cdf_comparacion,
+    guardar_errores_momentos_comparacion,
+    regenerar_comparacion_generadores,
+)
 from .coleccionista import (
     ETIQUETAS,
     NOMBRES_FIGURAS,
@@ -50,6 +58,12 @@ from .reordenamiento import (
 )
 
 __all__ = (
+    "ARCHIVOS_REFERENCIA_COMPARACION",
+    "copiar_referencias_comparacion",
+    "guardar_acf_comparacion",
+    "guardar_cdf_comparacion",
+    "guardar_errores_momentos_comparacion",
+    "regenerar_comparacion_generadores",
     "ETIQUETAS",
     "NOMBRES_FIGURAS",
     "guardar_cdf",

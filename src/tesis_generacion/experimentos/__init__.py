@@ -1,5 +1,15 @@
 """Experimento reproducible que construye las muestras de la tesis."""
 
+from .comparacion_generadores import (
+    LAGS_COMPARACION,
+    MALLA_CDF,
+    MALLA_FC,
+    MALLA_FGM,
+    ORDEN_MAXIMO_MOMENTOS_COMPARACION,
+    SEED_MINSTD,
+    construir_comparacion_generadores,
+    construir_muestras_comparacion,
+)
 from .muestras import (
     construir_muestras,
     muestra_logistica,
@@ -34,6 +44,14 @@ from .reordenamiento import (
 )
 
 __all__ = (
+    "LAGS_COMPARACION",
+    "MALLA_CDF",
+    "MALLA_FC",
+    "MALLA_FGM",
+    "ORDEN_MAXIMO_MOMENTOS_COMPARACION",
+    "SEED_MINSTD",
+    "construir_comparacion_generadores",
+    "construir_muestras_comparacion",
     "FACTOR_TIENDA",
     "NUM_CELDAS",
     "NUM_ITERACIONES",

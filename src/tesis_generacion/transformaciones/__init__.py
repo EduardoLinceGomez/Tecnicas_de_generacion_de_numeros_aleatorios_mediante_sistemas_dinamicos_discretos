@@ -1,6 +1,8 @@
 """Transformaciones puras usadas por los experimentos de la tesis."""
 
 from .codificacion_binaria import (
+    codificar_matriz_por_columnas,
+    codificar_matriz_por_filas,
     codificar_palabra_binaria,
     factor_normalizacion_binaria,
 )
@@ -14,6 +16,8 @@ from .reordenamiento import (
 
 __all__ = (
     "PRECISION_DECIMAL",
+    "codificar_matriz_por_columnas",
+    "codificar_matriz_por_filas",
     "codificar_palabra_binaria",
     "extraer_digitos",
     "factor_normalizacion_binaria",
