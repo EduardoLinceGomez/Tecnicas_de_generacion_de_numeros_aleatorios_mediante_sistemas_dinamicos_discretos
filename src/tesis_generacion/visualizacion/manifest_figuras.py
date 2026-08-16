@@ -27,8 +27,6 @@ PROCEDENCIAS_VALIDAS = {
     "repo_reproducible",
     "propia_documentada",
     "externa_citada",
-    "externa_pendiente",
-    "historica_no_reproducible",
 }
 
 
@@ -78,6 +76,10 @@ def verificar_manifest(ruta: Path) -> Dict[str, object]:
             fila["generador"].strip() and fila["comando"].strip()
         ):
             errores.append(f"generador/comando vacío: {fila['id']}")
+        if procedencia == "propia_documentada" and "Elaboración propia" not in fila[
+            "notas"
+        ]:
+            errores.append(f"autoría propia no documentada: {fila['id']}")
         if procedencia == "externa_citada" and not fila["referencia"].strip():
             errores.append(f"referencia externa vacía: {fila['id']}")
     return {

@@ -35,7 +35,9 @@ def main() -> None:
 
     resumen = regenerar_figuras_tesis(argumentos.output_dir)
     if argumentos.reference_dir is not None:
-        mapeo = {nombre: nombre for nombre in resumen["archivos"]}
+        mapeo = {
+            nombre: nombre for nombre in resumen["archivos_canonicos_activos"]
+        }
         copiar_archivos_generados(
             argumentos.output_dir, argumentos.reference_dir, mapeo
         )

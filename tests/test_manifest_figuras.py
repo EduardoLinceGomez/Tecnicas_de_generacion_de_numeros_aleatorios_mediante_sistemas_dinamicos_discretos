@@ -12,7 +12,7 @@ from tesis_generacion.visualizacion.manifest_figuras import (
 
 def test_manifest_canonico_es_valido() -> None:
     resultado = verificar_manifest(Path("figuras_tesis/manifest_figuras.csv"))
-    assert resultado["entradas"] == 65
+    assert resultado["entradas"] == 64
     assert resultado["errores"] == []
 
 
@@ -36,6 +36,17 @@ def test_repo_reproducible_declara_generador_y_comando() -> None:
     reproducibles = [f for f in filas if f["procedencia"] == "repo_reproducible"]
     assert reproducibles
     assert all(f["generador"] and f["comando"] for f in reproducibles)
+
+
+def test_figuras_propias_documentan_autoria_sin_fingir_generador() -> None:
+    with Path("figuras_tesis/manifest_figuras.csv").open(
+        newline="", encoding="utf-8"
+    ) as archivo:
+        filas = list(csv.DictReader(archivo))
+    propias = [f for f in filas if f["procedencia"] == "propia_documentada"]
+    assert len(propias) == 12
+    assert all("Elaboración propia" in f["notas"] for f in propias)
+    assert all(not f["generador"] and not f["comando"] for f in propias)
 
 
 def test_extractor_rechaza_multimedia(tmp_path: Path) -> None:

@@ -70,6 +70,32 @@ ARCHIVOS_GENERADOS = (
     "decorativas/capitulo_conclusiones.png",
 )
 
+# Estas salidas continúan disponibles como alternativas reproducibles, pero no
+# deben sobrescribir las versiones históricas propias elegidas para la tesis.
+# PCC y PG se regeneran por separado desde sus fuentes TikZ versionadas.
+ARCHIVOS_CANONICOS_ACTIVOS = tuple(
+    nombre
+    for nombre in ARCHIVOS_GENERADOS
+    if nombre
+    not in {
+        "conceptuales/sistema_dinamico.pdf",
+        "conceptuales/punto_fijo_repulsor.pdf",
+        "conceptuales/punto_fijo_atractor.pdf",
+        "conceptuales/orbita_periodo_cuatro.pdf",
+        "conceptuales/regla184_trafico.pdf",
+        "conceptuales/coleccionista_bloques.png",
+        "conceptuales/prueba_brechas.png",
+        "conceptuales/tienda_mapeo.pdf",
+        "conceptuales/tienda_preimagenes.pdf",
+        "cientificas/logistico_bifurcacion.png",
+        "cientificas/tienda_bifurcacion.png",
+        "decorativas/capitulo_introduccion.png",
+        "decorativas/capitulo_marco_teorico.png",
+        "decorativas/capitulo_resultados.png",
+        "decorativas/capitulo_conclusiones.png",
+    }
+)
+
 
 def _guardar(figura: plt.Figure, ruta: Path, *, transparente: bool = False) -> None:
     ruta.parent.mkdir(parents=True, exist_ok=True)
@@ -673,6 +699,7 @@ def regenerar_figuras_tesis(output_dir: Path) -> Dict[str, object]:
     }
     return {
         "archivos": list(ARCHIVOS_GENERADOS),
+        "archivos_canonicos_activos": list(ARCHIVOS_CANONICOS_ACTIVOS),
         "sha256": hashes,
         "parametros": {
             "r30_pedagogico": {
