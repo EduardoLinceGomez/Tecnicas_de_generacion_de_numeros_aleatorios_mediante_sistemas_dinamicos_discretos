@@ -56,6 +56,15 @@ from .reordenamiento import (
     guardar_brechas_antes_despues,
     regenerar_reordenamiento,
 )
+from .figuras_tesis import (
+    ARCHIVOS_GENERADOS,
+    copiar_archivos_generados,
+    evolucion_regla_elemental,
+    matriz_regla30_pedagogica,
+    regenerar_figuras_tesis,
+    salida_regla_elemental,
+    tabla_regla30,
+)
 
 __all__ = (
     "ARCHIVOS_REFERENCIA_COMPARACION",
@@ -102,4 +111,11 @@ __all__ = (
     "guardar_acf_antes_despues",
     "guardar_brechas_antes_despues",
     "regenerar_reordenamiento",
+    "ARCHIVOS_GENERADOS",
+    "copiar_archivos_generados",
+    "evolucion_regla_elemental",
+    "matriz_regla30_pedagogica",
+    "regenerar_figuras_tesis",
+    "salida_regla_elemental",
+    "tabla_regla30",
 )
