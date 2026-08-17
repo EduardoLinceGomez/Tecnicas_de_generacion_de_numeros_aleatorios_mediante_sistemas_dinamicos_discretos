@@ -1,0 +1,46 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% Versión estática derivada de la secuencia histórica SDD.tex.
+% Los cuatro paneles corresponden a n=0,1,3,4; se omite el fotograma final
+% con una flecha hacia un estado todavía no etiquetado.
+\newcommand{\panel}[3]{%
+  \begin{scope}[xshift=#2,yshift=#3]
+    \useasboundingbox (-0.5,-1.8) rectangle (7.8,1.55);
+    \node[font=\small] at (3.35,1.25) {$n=#1$};
+    \draw[thick] (-0.2,0) -- (7,0);
+    \node at (-0.2,0.35) {$E$};
+    \fill (0,0) circle (2pt);
+    \node[below] at (0,0) {$x$};
+    \ifnum#1>0
+      \fill (2,0) circle (2pt);
+      \node[below] at (2,0) {$\phi(x)$};
+      \draw[->,thick] (0,0.1) to[bend left=30] (2,0.1);
+    \fi
+    \ifnum#1>1
+      \fill (6.5,0) circle (2pt);
+      \node[below right] at (6.5,0) {$\phi^2(x)$};
+      \draw[->,thick] (2,0.15) to[bend left=60] (6.5,0.15);
+    \fi
+    \ifnum#1>2
+      \fill (4,0) circle (2pt);
+      \node[below left] at (4,0) {$\phi^3(x)$};
+      \draw[->,thick] (6.5,-0.5) to[bend left=60] (4,-0.5);
+    \fi
+    \ifnum#1>3
+      \fill (5.5,0) circle (2pt);
+      \node[below] at (5.5,0) {$\phi^4(x)$};
+      \draw[->,thick] (4,0.1) to[bend left=30] (5.5,0.1);
+    \fi
+  \end{scope}%
+}
+
+\begin{document}
+\begin{tikzpicture}[x=0.85cm,y=0.65cm]
+  \panel{0}{0cm}{3.05cm}
+  \panel{1}{7.05cm}{3.05cm}
+  \panel{3}{0cm}{0cm}
+  \panel{4}{7.05cm}{0cm}
+\end{tikzpicture}
+\end{document}

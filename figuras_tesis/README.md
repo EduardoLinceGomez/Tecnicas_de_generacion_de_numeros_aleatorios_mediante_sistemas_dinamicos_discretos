@@ -16,6 +16,7 @@ copia la salida canónica a `archivo_tesis` y ambos hashes deben coincidir.
 |---|---|---|
 | Conceptuales, diagramas, bifurcaciones e histogramas básicos | `python3 scripts/regenerar_figuras_conceptuales.py --output-dir outputs/figuras_tesis --reference-dir figuras_tesis` | Entorno actual; solo copia al directorio canónico las salidas todavía activas |
 | PCC y PG | `python3 scripts/regenerar_figuras_tikz.py --output-dir outputs/figuras_tikz --reference-dir figuras_tesis` | TeX Live y Poppler; rasterización a 200 dpi |
+| Primera revisión manual MCF | `python3 scripts/regenerar_figuras_revision_mcf.py --output-dir outputs/revision_mcf --reference-dir figuras_tesis` | TeX Live; tres PDF estáticos sin multimedia |
 | Momentos e histogramas Normal/Cauchy | `python3 scripts/regenerar_momentos.py --output-dir outputs/momentos` | Entorno baseline gráfico |
 | FGM y función característica | `python3 scripts/regenerar_transformadas.py --output-dir outputs/transformadas` | Entorno baseline gráfico |
 | Invariancia | `python3 scripts/regenerar_invariancia.py --output-dir outputs/invariancia` | Entorno documentado por el bloque 11 |

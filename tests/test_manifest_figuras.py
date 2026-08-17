@@ -12,7 +12,7 @@ from tesis_generacion.visualizacion.manifest_figuras import (
 
 def test_manifest_canonico_es_valido() -> None:
     resultado = verificar_manifest(Path("figuras_tesis/manifest_figuras.csv"))
-    assert resultado["entradas"] == 64
+    assert resultado["entradas"] == 65
     assert resultado["errores"] == []
 
 
@@ -44,7 +44,7 @@ def test_figuras_propias_documentan_autoria_sin_fingir_generador() -> None:
     ) as archivo:
         filas = list(csv.DictReader(archivo))
     propias = [f for f in filas if f["procedencia"] == "propia_documentada"]
-    assert len(propias) == 12
+    assert len(propias) == 10
     assert all("Elaboración propia" in f["notas"] for f in propias)
     assert all(not f["generador"] and not f["comando"] for f in propias)
 
