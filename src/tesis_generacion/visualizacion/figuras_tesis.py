@@ -310,6 +310,8 @@ def _figura_malla(ruta: Path) -> None:
     eje.set_xticks(np.arange(-0.5, matriz.shape[1], 1), minor=True)
     eje.set_yticks(np.arange(-0.5, matriz.shape[0], 1), minor=True)
     eje.grid(which="minor", color="#7b8794", linewidth=0.55)
+    for borde in eje.spines.values():
+        borde.set_visible(False)
     eje.tick_params(which="both", left=False, bottom=False, labelleft=False, labelbottom=False)
     eje.add_patch(
         patches.Rectangle(
