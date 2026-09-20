@@ -163,7 +163,7 @@ def guardar_histograma_distribucion(
     eje.grid(alpha=0.25)
     eje.legend(
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.60),
+        bbox_to_anchor=(0.5, -0.48),
         fontsize=20,
     )
     _guardar_figura(figura, ruta)
