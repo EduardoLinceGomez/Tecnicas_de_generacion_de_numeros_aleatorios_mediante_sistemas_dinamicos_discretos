@@ -124,13 +124,13 @@ def guardar_histograma_distribucion(
     anchos = np.diff(bordes)
     x_pdf = np.linspace(*VENTANA_HISTOGRAMAS, 2001)
     if nombre == "normal":
-        titulo = f"Normal estándar (n = {len(valores)})"
+        titulo = "Normal estándar"
         etiqueta_muestra = "Muestra Normal(0,1)"
         etiqueta_pdf = "Densidad Normal(0,1)"
         color = "skyblue"
         pdf = norm.pdf(x_pdf, loc=0.0, scale=1.0)
     elif nombre == "cauchy":
-        titulo = f"Cauchy estándar (n = {len(valores)})"
+        titulo = "Cauchy estándar"
         etiqueta_muestra = "Muestra Cauchy(0,1)"
         etiqueta_pdf = "Densidad Cauchy(0,1)"
         color = "lightgreen"
@@ -138,7 +138,8 @@ def guardar_histograma_distribucion(
     else:
         raise ValueError(f"distribución desconocida: {nombre}")
 
-    figura, eje = plt.subplots(figsize=(7.2, 4.5), constrained_layout=True)
+    figura, eje = plt.subplots(figsize=(7.2, 7.4))
+    figura.subplots_adjust(bottom=0.42)
     eje.bar(
         bordes[:-1],
         alturas,
@@ -160,7 +161,11 @@ def guardar_histograma_distribucion(
     eje.set_ylabel("Densidad empírica", fontsize=26)
     eje.tick_params(axis="both", labelsize=22)
     eje.grid(alpha=0.25)
-    eje.legend(fontsize=20)
+    eje.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.60),
+        fontsize=20,
+    )
     _guardar_figura(figura, ruta)
     return resumen
 
