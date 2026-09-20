@@ -152,14 +152,15 @@ def guardar_histograma_distribucion(
     )
     eje.plot(x_pdf, pdf, color="tab:red", linewidth=2, label=etiqueta_pdf)
     eje.set(
-        title=titulo,
-        xlabel="Valor",
-        ylabel="Densidad empírica",
         xlim=VENTANA_HISTOGRAMAS,
         ylim=(0.0, 0.42),
     )
+    eje.set_title(titulo, fontsize=28)
+    eje.set_xlabel("Valor", fontsize=26)
+    eje.set_ylabel("Densidad empírica", fontsize=26)
+    eje.tick_params(axis="both", labelsize=22)
     eje.grid(alpha=0.25)
-    eje.legend()
+    eje.legend(fontsize=20)
     _guardar_figura(figura, ruta)
     return resumen
 
