@@ -307,9 +307,11 @@ def _figura_malla(ruta: Path) -> None:
     )
     figura, eje = plt.subplots(figsize=(7.3, 4.3))
     eje.imshow(matriz, cmap="Greys", vmin=0, vmax=1, interpolation="nearest")
-    eje.set_xticks(np.arange(0.5, matriz.shape[1] - 0.5, 1), minor=True)
-    eje.set_yticks(np.arange(0.5, matriz.shape[0] - 0.5, 1), minor=True)
-    eje.grid(which="minor", color="#7b8794", linewidth=0.55)
+    filas, columnas = matriz.shape
+    for x in np.arange(0.5, columnas - 0.5, 1):
+        eje.vlines(x, ymin=-0.5, ymax=filas - 0.5, color="#7b8794", linewidth=0.55)
+    for y in np.arange(0.5, filas - 0.5, 1):
+        eje.hlines(y, xmin=-0.5, xmax=columnas - 0.5, color="#7b8794", linewidth=0.55)
     for borde in eje.spines.values():
         borde.set_visible(False)
     eje.tick_params(which="both", left=False, bottom=False, labelleft=False, labelbottom=False)
