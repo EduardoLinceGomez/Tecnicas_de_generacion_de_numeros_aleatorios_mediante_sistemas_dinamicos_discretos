@@ -1,9 +1,13 @@
 # Comparación homogénea de generadores
 
-Estas referencias documentan el commit científico `Documenta R30 y añade
-comparación con generador congruencial`. El benchmark es Park--Miller MINSTD
-(1988), con (a=16807), (c=0), (m=2^{31}-1), semilla 2024 y 1000 valores
-posteriores a la semilla.
+Este bloque compara las cinco muestras originales: logístico uniformizado,
+tienda, R30 por columnas, R30 por filas y Park--Miller MINSTD. MINSTD usa
+`a=16807`, `c=0`, `m=2^31-1`, semilla 2024 y 1000 valores posteriores a la
+semilla; no se reordena.
+
+La prueba de brechas aplica a todos los generadores los intervalos abiertos
+`i1=(0.1,0.3)`, `i2=(0.4,0.6)` e `i3=(0.7,0.9)`. Cada intervalo tiene
+longitud y probabilidad teórica `p=0.2`, con la convención `W=G+1`.
 
 Regeneración explícita:
 
@@ -13,7 +17,14 @@ python3 scripts/regenerar_comparacion_generadores.py \
   --reference-dir graficas_auxiliares/comparacion_generadores
 ```
 
-La comparación usa las cinco muestras originales, los primeros 20 momentos,
-las mallas FGM/FC de los bloques previos y la ACF en rezagos 1 a 20. No produce
-una puntuación agregada. `outputs/` es temporal; los PNG y el CSV de esta
-carpeta son referencias versionadas.
+`resumen_comparacion.csv` conserva las métricas existentes de CDF, momentos,
+FGM, función característica, ACF y fingerprints.
+`resumen_brechas_comparacion.csv` contiene 15 filas en formato largo, una por
+generador e intervalo. Las figuras `brechas_comparacion_i1.png`,
+`brechas_comparacion_i2.png` y `brechas_comparacion_i3.png` contienen cinco
+paneles cada una y usan una sola referencia geométrica común.
+
+Los PNG y CSV de esta carpeta son referencias versionadas; `outputs/` es
+temporal. A diferencia del bloque de reordenamiento, aquí sólo se estudian
+muestras originales. No se calcula promedio de intervalos, puntuación de
+calidad ni clasificación automática.
