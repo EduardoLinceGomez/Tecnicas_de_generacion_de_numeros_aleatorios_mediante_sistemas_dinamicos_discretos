@@ -18,17 +18,16 @@ from tesis_generacion.transformaciones.reordenamiento import (
 )
 
 from .muestras import construir_muestras
-from .parametros import NUM_VALORES
+from .parametros import (
+    INTERVALOS_BRECHAS_COMUNES,
+    LONGITUD_INTERVALO_BRECHAS,
+    NUM_VALORES,
+    PROBABILIDAD_BRECHAS,
+)
 
 
 SEED_REORDENAMIENTO = 2024
 LAGS_REORDENAMIENTO = tuple(range(1, 21))
-INTERVALOS_BRECHAS = {
-    "logistico": (0.2, 0.5),
-    "tienda": (0.7, 0.9),
-    "r30_columnas": (0.1, 0.3),
-    "r30_filas": (0.7, 1.0),
-}
 
 
 def fingerprint_permutacion(indices: np.ndarray) -> Dict[str, object]:
@@ -121,14 +120,35 @@ def construir_experimentos_reordenamiento() -> Dict[str, object]:
         especificacion = permutaciones[clave]
         indices = especificacion["indices"]
         reordenada = aplicar_permutacion(original, indices)
-        alpha, beta = INTERVALOS_BRECHAS[nombre]
+        brechas = {}
+        for intervalo_id, (alpha, beta) in INTERVALOS_BRECHAS_COMUNES.items():
+            resumen_original = resumen_brechas(original, alpha, beta)
+            resumen_reordenada = resumen_brechas(reordenada, alpha, beta)
+            if not (
+                np.isclose(resumen_original["p"], PROBABILIDAD_BRECHAS)
+                and np.isclose(resumen_reordenada["p"], PROBABILIDAD_BRECHAS)
+            ):
+                raise AssertionError("la probabilidad de brechas debe ser 0.2")
+            resumen_original["p"] = PROBABILIDAD_BRECHAS
+            resumen_reordenada["p"] = PROBABILIDAD_BRECHAS
+            if (
+                resumen_original["brechas_completas"]
+                != resumen_reordenada["brechas_completas"]
+            ):
+                raise AssertionError(
+                    "la permutación alteró el número de tiempos completos"
+                )
+            brechas[intervalo_id] = {
+                "intervalo": [alpha, beta],
+                "original": resumen_original,
+                "reordenada": resumen_reordenada,
+            }
         resultados[nombre] = {
             "original": original,
             "reordenada": reordenada,
             "indices": indices,
             "permutacion": clave,
             "metodo": especificacion["metodo"],
-            "intervalo_brechas": (alpha, beta),
             "fingerprint_original": fingerprint_ensemble(original),
             "fingerprint_reordenada": fingerprint_ensemble(reordenada),
             "fingerprint_permutacion": fingerprint_permutacion(indices),
@@ -138,8 +158,7 @@ def construir_experimentos_reordenamiento() -> Dict[str, object]:
             "acf_reordenada": resumen_autocorrelaciones(
                 reordenada, LAGS_REORDENAMIENTO
             ),
-            "brechas_original": resumen_brechas(original, alpha, beta),
-            "brechas_reordenada": resumen_brechas(reordenada, alpha, beta),
+            "brechas": brechas,
             "conservacion_marginal": _verificar_conservacion(
                 original, reordenada
             ),
@@ -167,10 +186,14 @@ def construir_experimentos_reordenamiento() -> Dict[str, object]:
             "n": NUM_VALORES,
             "seed_reordenamiento": SEED_REORDENAMIENTO,
             "lags": list(LAGS_REORDENAMIENTO),
-            "intervalos_brechas": {
-                nombre: list(intervalo)
-                for nombre, intervalo in INTERVALOS_BRECHAS.items()
+            "intervalos_brechas_comunes": {
+                intervalo_id: list(intervalo)
+                for intervalo_id, intervalo in INTERVALOS_BRECHAS_COMUNES.items()
             },
+            "longitud_intervalo_brechas": LONGITUD_INTERVALO_BRECHAS,
+            "p_brechas": PROBABILIDAD_BRECHAS,
+            "intervalos_abiertos": True,
+            "convencion_brechas": "W=G+1",
         },
         "permutaciones": permutaciones,
         "resumen_permutaciones": resumen_permutaciones,

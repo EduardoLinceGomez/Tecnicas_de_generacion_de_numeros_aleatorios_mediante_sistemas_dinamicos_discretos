@@ -17,12 +17,18 @@ from tesis_generacion.estadistica import (
     cdf_uniforme_01,
     momentos_ordinarios,
     momentos_teoricos_uniforme,
+    pmf_geometrica,
+    tiempos_espera_brechas,
 )
 from tesis_generacion.experimentos.comparacion_generadores import (
     LAGS_COMPARACION,
     ORDEN_MAXIMO_MOMENTOS_COMPARACION,
     construir_comparacion_generadores,
     construir_muestras_comparacion,
+)
+from tesis_generacion.experimentos.parametros import (
+    INTERVALOS_BRECHAS_COMUNES,
+    PROBABILIDAD_BRECHAS,
 )
 
 
@@ -38,7 +44,11 @@ ARCHIVOS_REFERENCIA_COMPARACION = (
     "cdf_comparacion.png",
     "errores_momentos_comparacion.png",
     "acf_comparacion.png",
+    "brechas_comparacion_i1.png",
+    "brechas_comparacion_i2.png",
+    "brechas_comparacion_i3.png",
     "resumen_comparacion.csv",
+    "resumen_brechas_comparacion.csv",
 )
 
 
@@ -161,6 +171,61 @@ def guardar_acf_comparacion(
     _guardar_figura(figura, ruta)
 
 
+def _pmf_empirica(tiempos: np.ndarray, maximo: int) -> np.ndarray:
+    conteos = np.bincount(tiempos, minlength=maximo + 1)[1 : maximo + 1]
+    return conteos / tiempos.size
+
+
+def guardar_brechas_comparacion(
+    ruta: Path,
+    muestras: Mapping[str, np.ndarray],
+    intervalo_id: str,
+    alpha: float,
+    beta: float,
+) -> None:
+    """Compara cinco PMF con una referencia geométrica común."""
+
+    tiempos = {
+        nombre: tiempos_espera_brechas(valores, alpha, beta)[0]
+        for nombre, valores in muestras.items()
+    }
+    maximo = max(int(np.max(valores)) for valores in tiempos.values())
+    soporte = np.arange(1, maximo + 1, dtype=np.int64)
+    teorica = pmf_geometrica(soporte, PROBABILIDAD_BRECHAS)
+    figura, ejes = _preparar_ejes(
+        "Prueba de brechas común: "
+        + rf"{intervalo_id.upper()} $=({alpha:g},{beta:g})$, "
+        + rf"$p={PROBABILIDAD_BRECHAS:.1f}$"
+    )
+    for eje, (nombre, valores) in zip(ejes, tiempos.items()):
+        eje.plot(
+            soporte,
+            _pmf_empirica(valores, maximo),
+            marker="o",
+            markersize=3.2,
+            linewidth=1.2,
+            label="Empírica",
+        )
+        eje.plot(
+            soporte,
+            teorica,
+            color="black",
+            linestyle="--",
+            linewidth=1.5,
+            label="Geométrica teórica",
+        )
+        eje.set(
+            title=ETIQUETAS_COMPARACION[nombre],
+            xlim=(0.5, maximo + 0.5),
+            ylim=(0.0, None),
+        )
+        eje.grid(alpha=0.25)
+    ejes[0].legend(fontsize=8)
+    figura.supxlabel(r"Tiempo de espera $W=G+1$")
+    figura.supylabel("Función de masa de probabilidad")
+    _guardar_figura(figura, ruta)
+
+
 def _escribir_csv(ruta: Path, resumen: Mapping[str, object]) -> None:
     campos = (
         "muestra",
@@ -206,6 +271,44 @@ def _escribir_csv(ruta: Path, resumen: Mapping[str, object]) -> None:
             )
 
 
+def _escribir_csv_brechas(ruta: Path, resumen: Mapping[str, object]) -> None:
+    campos = (
+        "muestra",
+        "intervalo_id",
+        "alpha",
+        "beta",
+        "p",
+        "brechas",
+        "racha_final_incompleta",
+        "media_w",
+        "max_w",
+        "dmax",
+        "mae",
+    )
+    with ruta.open("w", encoding="utf-8", newline="") as archivo:
+        escritor = csv.DictWriter(archivo, fieldnames=campos, lineterminator="\n")
+        escritor.writeheader()
+        for nombre, datos in resumen["muestras"].items():
+            for intervalo_id, brechas in datos["brechas"].items():
+                escritor.writerow(
+                    {
+                        "muestra": nombre,
+                        "intervalo_id": intervalo_id,
+                        "alpha": brechas["alpha"],
+                        "beta": brechas["beta"],
+                        "p": brechas["p"],
+                        "brechas": brechas["brechas_completas"],
+                        "racha_final_incompleta": brechas[
+                            "racha_final_incompleta"
+                        ],
+                        "media_w": brechas["media_tiempo_espera"],
+                        "max_w": brechas["maximo_tiempo_espera"],
+                        "dmax": brechas["maxima_discrepancia_cdf"],
+                        "mae": brechas["mae_cdf"],
+                    }
+                )
+
+
 def regenerar_comparacion_generadores(directorio: Path) -> Dict[str, object]:
     """Regenera figuras, CSV y resumen numérico del bloque 13."""
 
@@ -218,7 +321,18 @@ def regenerar_comparacion_generadores(directorio: Path) -> Dict[str, object]:
         directorio / "errores_momentos_comparacion.png", muestras
     )
     guardar_acf_comparacion(directorio / "acf_comparacion.png", muestras)
+    for intervalo_id, (alpha, beta) in INTERVALOS_BRECHAS_COMUNES.items():
+        guardar_brechas_comparacion(
+            directorio / f"brechas_comparacion_{intervalo_id}.png",
+            muestras,
+            intervalo_id,
+            alpha,
+            beta,
+        )
     _escribir_csv(directorio / "resumen_comparacion.csv", resumen)
+    _escribir_csv_brechas(
+        directorio / "resumen_brechas_comparacion.csv", resumen
+    )
     resumen["figuras"] = {
         nombre: _sha256_archivo(directorio / nombre)
         for nombre in ARCHIVOS_REFERENCIA_COMPARACION

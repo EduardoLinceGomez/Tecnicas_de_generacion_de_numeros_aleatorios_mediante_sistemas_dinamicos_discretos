@@ -16,6 +16,7 @@ from tesis_generacion.estadistica import (
     momentos_ordinarios,
     momentos_teoricos_uniforme,
     resumen_autocorrelaciones,
+    resumen_brechas,
 )
 from tesis_generacion.generadores import (
     INCREMENTO_MINSTD,
@@ -26,7 +27,12 @@ from tesis_generacion.generadores import (
 )
 
 from .muestras import construir_muestras
-from .parametros import NUM_VALORES
+from .parametros import (
+    INTERVALOS_BRECHAS_COMUNES,
+    LONGITUD_INTERVALO_BRECHAS,
+    NUM_VALORES,
+    PROBABILIDAD_BRECHAS,
+)
 
 
 SEED_MINSTD = 2024
@@ -40,6 +46,18 @@ REFERENCIA_MINSTD = {
     "anio": 1988,
     "doi": "10.1145/63039.63042",
 }
+
+
+def _resumen_brechas_comun(
+    valores: np.ndarray, alpha: float, beta: float
+) -> Dict[str, float]:
+    """Calcula brechas y normaliza el parámetro p del protocolo validado."""
+
+    resumen = resumen_brechas(valores, alpha, beta)
+    if not np.isclose(resumen["p"], PROBABILIDAD_BRECHAS):
+        raise AssertionError("la probabilidad de brechas debe ser 0.2")
+    resumen["p"] = PROBABILIDAD_BRECHAS
+    return resumen
 
 
 def construir_muestras_comparacion() -> Dict[str, np.ndarray]:
@@ -86,6 +104,10 @@ def _resumen_muestra(valores: np.ndarray) -> Dict[str, object]:
             fc_observada, fc_teorica
         ),
         "acf": resumen_autocorrelaciones(valores, LAGS_COMPARACION),
+        "brechas": {
+            intervalo_id: _resumen_brechas_comun(valores, alpha, beta)
+            for intervalo_id, (alpha, beta) in INTERVALOS_BRECHAS_COMUNES.items()
+        },
     }
 
 
@@ -132,6 +154,14 @@ def construir_comparacion_generadores() -> Dict[str, object]:
             },
             "lags_acf": list(LAGS_COMPARACION),
             "usa_muestras_reordenadas": False,
+            "intervalos_brechas_comunes": {
+                intervalo_id: list(intervalo)
+                for intervalo_id, intervalo in INTERVALOS_BRECHAS_COMUNES.items()
+            },
+            "longitud_intervalo_brechas": LONGITUD_INTERVALO_BRECHAS,
+            "p_brechas": PROBABILIDAD_BRECHAS,
+            "intervalos_abiertos": True,
+            "convencion_brechas": "W=G+1",
         },
         "muestras": {
             nombre: _resumen_muestra(valores)

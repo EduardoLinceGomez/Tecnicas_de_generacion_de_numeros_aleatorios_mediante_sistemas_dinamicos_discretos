@@ -89,11 +89,16 @@ temporales durante validaciones automatizadas.
 - distribución triangular con moda `0.3` frente a `0.5`;
 - reordenamiento logístico sin semilla;
 - codificación de filas y columnas de R30 ambigua;
-- inconsistencias entre los bloques de la prueba de brechas; la corrección aprobada está especificada en `docs/metodologia_brechas_comparables.md` y permanece pendiente de implementación;
 - outputs obsoletos embebidos en el notebook;
 - afirmaciones sobre reordenamiento en el coleccionista sin pipeline actual.
 
 Estas cuestiones requieren commits científicos independientes.
+
+La inconsistencia histórica entre los intervalos de la prueba de brechas ya no
+pertenece a esta lista: fue corregida en el commit científico
+`3099b0630fb3eca42a18f7c5eaabe3874c4857b6`. La actualización de la prosa y
+las copias de figuras del repositorio de la tesis permanece como una fase
+posterior.
 
 
 ## Corrección metodológica aprobada: prueba de brechas comparable
@@ -111,4 +116,33 @@ incluidos cambios de código, CSV, figuras, baselines, pruebas y sincronización
 con la tesis, se encuentra en
 `docs/metodologia_brechas_comparables.md`.
 
-**Estado:** documentado y aprobado; implementación científica pendiente.
+**Estado:** **IMPLEMENTADO** en `feat/brechas-comparables`, desde
+`reestructuracion/repositorio@363bef1a8fc694e40ccab8e0625c166775f14c9c`,
+con commit científico
+`3099b0630fb3eca42a18f7c5eaabe3874c4857b6`.
+
+Las referencias reproducibles son:
+
+- `graficas_auxiliares/reordenamiento/resumen_brechas_reordenamiento.csv`
+  con 12 filas;
+- `graficas_auxiliares/comparacion_generadores/resumen_brechas_comparacion.csv`
+  con 15 filas;
+- cuatro figuras PG compuestas y tres figuras comparativas por intervalo;
+- `tests/data/reordenamiento_baseline.json` y
+  `tests/data/comparacion_generadores_baseline.json`.
+
+El entorno gráfico usado para los nuevos hashes fue macOS 26.6.2 arm64,
+Python 3.14.5, NumPy 2.4.6, SciPy 1.18.0, Matplotlib 3.10.9, Pillow 12.2.0 y
+backend `Agg`. Las verificaciones estrictas se ejecutan con:
+
+```bash
+VERIFICAR_PNG_REORDENAMIENTO=1 \
+VERIFICAR_PNG_COMPARACION=1 \
+MPLBACKEND=Agg \
+python3 -m unittest -v \
+  tests.test_visualizacion_reordenamiento \
+  tests.test_visualizacion_comparacion_generadores
+```
+
+El handoff autosuficiente, incluidas las 27 filas de resultados y los SHA-256,
+se encuentra en `docs/resultados_brechas_comparables.md`.

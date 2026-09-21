@@ -6,6 +6,13 @@ from pathlib import Path
 
 import numpy as np
 
+import tesis_generacion.experimentos.reordenamiento as modulo_reordenamiento
+from tesis_generacion.experimentos.parametros import (
+    INTERVALOS_BRECHAS_COMUNES,
+    LONGITUD_INTERVALO_BRECHAS,
+    PROBABILIDAD_BRECHAS,
+    validar_intervalos_brechas_comunes,
+)
 from tesis_generacion.experimentos.reordenamiento import (
     LAGS_REORDENAMIENTO,
     SEED_REORDENAMIENTO,
@@ -31,6 +38,16 @@ class ExperimentosReordenamientoTest(unittest.TestCase):
     def test_parametros_y_permutaciones_reproducibles(self) -> None:
         self.assertEqual(SEED_REORDENAMIENTO, 2024)
         self.assertEqual(LAGS_REORDENAMIENTO, tuple(range(1, 21)))
+        self.assertEqual(
+            INTERVALOS_BRECHAS_COMUNES,
+            {"i1": (0.1, 0.3), "i2": (0.4, 0.6), "i3": (0.7, 0.9)},
+        )
+        self.assertEqual(LONGITUD_INTERVALO_BRECHAS, 0.2)
+        self.assertEqual(PROBABILIDAD_BRECHAS, 0.2)
+        self.assertEqual(
+            self.experimentos["parametros"], self.baseline["parametros"]
+        )
+        self.assertFalse(hasattr(modulo_reordenamiento, "INTERVALOS_BRECHAS"))
         for clave, esperado in self.baseline["permutaciones"].items():
             observado = self.experimentos["permutaciones"][clave]
             resumen = self.experimentos["resumen_permutaciones"][clave]
@@ -54,6 +71,20 @@ class ExperimentosReordenamientoTest(unittest.TestCase):
             self.assertEqual(
                 observado["indices"][-10:].tolist(),
                 esperado["ultimos_10_indices"],
+            )
+
+    def test_validacion_del_protocolo_comun(self) -> None:
+        self.assertEqual(
+            validar_intervalos_brechas_comunes(INTERVALOS_BRECHAS_COMUNES),
+            0.2,
+        )
+        with self.assertRaises(ValueError):
+            validar_intervalos_brechas_comunes(
+                {"i1": (0.1, 0.3), "i2": (0.4, 0.6)}
+            )
+        with self.assertRaises(ValueError):
+            validar_intervalos_brechas_comunes(
+                {"i1": (0.1, 0.3), "i2": (0.4, 0.7), "i3": (0.7, 0.9)}
             )
 
     def test_fingerprints_y_conservacion_marginal(self) -> None:
@@ -84,7 +115,7 @@ class ExperimentosReordenamientoTest(unittest.TestCase):
         campos_acf = ("abs_rho_1", "max_abs_acf", "mae_abs_acf")
         campos_brechas = (
             "brechas_completas",
-            "cola_censurada",
+            "racha_final_incompleta",
             "media_tiempo_espera",
             "maximo_tiempo_espera",
             "maxima_discrepancia_cdf",
@@ -98,13 +129,37 @@ class ExperimentosReordenamientoTest(unittest.TestCase):
                         [observado[f"acf_{sufijo}"][campo] for campo in campos_acf],
                         esperado[f"acf_{sufijo}"],
                     )
-                    self.assertEqual(
-                        [
-                            observado[f"brechas_{sufijo}"][campo]
-                            for campo in campos_brechas
-                        ],
-                        esperado[f"brechas_{sufijo}"],
-                    )
+            self.assertEqual(tuple(observado["brechas"]), ("i1", "i2", "i3"))
+            for intervalo_id, resultados in observado["brechas"].items():
+                self.assertEqual(
+                    resultados["intervalo"],
+                    list(INTERVALOS_BRECHAS_COMUNES[intervalo_id]),
+                )
+                self.assertEqual(resultados["original"]["p"], 0.2)
+                self.assertEqual(resultados["reordenada"]["p"], 0.2)
+                self.assertEqual(
+                    resultados["original"]["brechas_completas"],
+                    resultados["reordenada"]["brechas_completas"],
+                )
+                for estado in ("original", "reordenada"):
+                    with self.subTest(
+                        nombre=nombre,
+                        intervalo=intervalo_id,
+                        estado=estado,
+                    ):
+                        self.assertEqual(
+                            [resultados[estado][campo] for campo in campos_brechas],
+                            esperado["brechas"][intervalo_id][estado],
+                        )
+
+    def test_existen_24_resumenes_de_brechas(self) -> None:
+        self.assertEqual(
+            sum(
+                2 * len(datos["brechas"])
+                for datos in self.experimentos["muestras"].values()
+            ),
+            24,
+        )
 
 
 if __name__ == "__main__":

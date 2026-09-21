@@ -1,5 +1,6 @@
 """Pruebas de figuras y referencias del reordenamiento."""
 
+import csv
 import hashlib
 import json
 import os
@@ -43,7 +44,28 @@ class RegeneracionReordenamientoTest(unittest.TestCase):
             self.assertEqual(set(resumen["archivos"]), esperados)
             self.assertEqual(resumen["parametros"]["n"], 1000)
             self.assertEqual(resumen["parametros"]["seed_reordenamiento"], 2024)
+            self.assertEqual(
+                resumen["parametros"]["intervalos_brechas_comunes"],
+                {"i1": [0.1, 0.3], "i2": [0.4, 0.6], "i3": [0.7, 0.9]},
+            )
+            self.assertEqual(resumen["parametros"]["p_brechas"], 0.2)
             self.assertEqual(len(resumen["figuras"]), 13)
+            with (directorio / "resumen_reordenamiento.csv").open(
+                encoding="utf-8", newline=""
+            ) as archivo:
+                filas_generales = list(csv.DictReader(archivo))
+            with (directorio / "resumen_brechas_reordenamiento.csv").open(
+                encoding="utf-8", newline=""
+            ) as archivo:
+                filas_brechas = list(csv.DictReader(archivo))
+            self.assertEqual(len(filas_generales), 4)
+            self.assertEqual(len(filas_brechas), 12)
+            self.assertNotIn("alpha", filas_generales[0])
+            self.assertEqual(
+                {fila["intervalo_id"] for fila in filas_brechas},
+                {"i1", "i2", "i3"},
+            )
+            self.assertTrue(all(float(fila["p"]) == 0.2 for fila in filas_brechas))
 
     def test_copia_solo_referencias_explicitas(self) -> None:
         with tempfile.TemporaryDirectory(prefix="refs-reordenamiento-") as temporal:

@@ -3,17 +3,107 @@
 ## Estado
 
 - **Fecha de decisión:** 2026-09-21.
-- **Estado:** metodología aprobada y especificación de implementación documentada.
-- **Implementación:** **pendiente**.
-- **Repositorio / rama inspeccionados:** \`EduardoLinceGomez/Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos\`, \`reestructuracion/repositorio\`.
-- **HEAD inspeccionado:** \`04b9eb9ad65dc2a93b13f2ea7d75fcdf28140867\`.
+- **Estado:** **IMPLEMENTADO** en el repositorio científico.
+- **Rama base actualizada:** \`reestructuracion/repositorio\` en
+  \`363bef1a8fc694e40ccab8e0625c166775f14c9c\`.
+- **Rama de trabajo:** \`feat/brechas-comparables\`.
+- **Commit científico principal:**
+  \`3099b0630fb3eca42a18f7c5eaabe3874c4857b6\`.
 - **Documento relacionado en la tesis:** AUT-065 en \`EduardoLinceGomez/tesis-generacion-numeros\`.
-- **Alcance:** reemplazar el uso de intervalos distintos por generador en la prueba de brechas por un protocolo común y reproducible. Este documento es una especificación para una implementación posterior, no una modificación del código científico.
+- **Alcance completado:** se reemplazó el uso activo de intervalos distintos por
+  generador por un protocolo común y reproducible. El repositorio de la tesis no
+  se modificó; su prosa y sus copias de figuras siguen pendientes de un handoff
+  posterior.
+
+## Registro de implementación
+
+El protocolo final usa los intervalos abiertos
+\(I_1=(0.1,0.3)\), \(I_2=(0.4,0.6)\) e \(I_3=(0.7,0.9)\), todos
+con longitud y probabilidad teórica \(p=0.2\), y conserva la convención
+\(W=G+1\). La constante pública se normaliza a \`0.2\` después de verificar
+numéricamente \(\beta-\alpha\), para evitar serializar
+\`0.19999999999999998\`; el cálculo matemático de brechas no se alteró.
+
+Los archivos principales modificados fueron:
+
+- \`src/tesis_generacion/experimentos/parametros.py\`;
+- los experimentos y visualizaciones de \`reordenamiento\` y
+  \`comparacion_generadores\`;
+- las seis pruebas de experimento, visualización y CLI, además de la prueba
+  estadística de terminología;
+- los dos baselines JSON;
+- los CSV y PNG reproducibles;
+- las cuatro figuras canónicas FIG-054 a FIG-057 y su manifest.
+
+### Estructura final materializada
+
+El resumen de reordenamiento serializa los intervalos una sola vez en
+\`parametros["intervalos_brechas_comunes"]\`. Cada muestra conserva la
+dimensión explícita
+\`muestras[nombre]["brechas"][intervalo_id]["original"/"reordenada"]\`.
+El resumen comparativo usa los mismos parámetros globales y la dimensión
+\`muestras[nombre]["brechas"][intervalo_id]\` sólo para la muestra original.
+
+Las salidas versionadas son:
+
+- \`graficas_auxiliares/reordenamiento/resumen_reordenamiento.csv\`, con las
+  cuatro filas de métricas independientes del intervalo;
+- \`graficas_auxiliares/reordenamiento/resumen_brechas_reordenamiento.csv\`,
+  con 12 filas muestra por intervalo;
+- \`graficas_auxiliares/comparacion_generadores/resumen_comparacion.csv\`, cuyo
+  contenido científico previo se conserva;
+- \`graficas_auxiliares/comparacion_generadores/resumen_brechas_comparacion.csv\`,
+  con 15 filas generador por intervalo;
+- cuatro PNG auxiliares y sus cuatro copias canónicas FIG-054 a FIG-057, cada
+  uno con tres paneles, más \`brechas_comparacion_i1.png\`,
+  \`brechas_comparacion_i2.png\` y \`brechas_comparacion_i3.png\`;
+- \`tests/data/reordenamiento_baseline.json\` y
+  \`tests/data/comparacion_generadores_baseline.json\`, regenerados desde el
+  cálculo.
+
+Se generaron 24 resúmenes de reordenamiento y 15 resúmenes de muestras
+originales. Los CSV largos contienen respectivamente 12 y 15 filas. Las
+figuras PG usan tres paneles verticales para mantener la legibilidad; las tres
+figuras comparativas usan cinco paneles cada una. No se introdujo promedio,
+puntuación ni clasificación global.
+
+Los comandos de regeneración y validación ejecutados fueron:
+
+\`\`\`bash
+python3 scripts/regenerar_reordenamiento.py \
+  --output-dir outputs/reordenamiento \
+  --reference-dir graficas_auxiliares/reordenamiento
+python3 scripts/regenerar_comparacion_generadores.py \
+  --output-dir outputs/comparacion_generadores \
+  --reference-dir graficas_auxiliares/comparacion_generadores
+python3 -m unittest -v
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+VERIFICAR_PNG_REORDENAMIENTO=1 VERIFICAR_PNG_COMPARACION=1 \
+  MPLBACKEND=Agg python3 -m unittest -v \
+  tests.test_visualizacion_reordenamiento \
+  tests.test_visualizacion_comparacion_generadores
+python3 scripts/verificar_figuras_tesis.py
+git diff --check
+\`\`\`
+
+Resultados: 8/8 pruebas en la suite raíz; 129 pruebas descubiertas bajo
+\`tests\`, de las cuales 123 pasaron y 6 verificaciones gráficas opcionales se
+omitieron por defecto; 6/6 verificaciones PNG estrictas al activarlas; y 65
+entradas válidas en el manifest. Una comparación exacta contra el baseline de
+\`363bef1a8fc694e40ccab8e0625c166775f14c9c\` confirmó que fingerprints,
+permutaciones, condiciones iniciales, semillas, ACF y las demás métricas de
+comparación no cambiaron. Los PNG de ACF y \`permutacion_indices.png\`
+permanecen sin cambios versionados.
+
+La única desviación de disposición respecto de la preferencia inicial fue usar
+tres paneles verticales en las figuras PG: la primera composición mostró
+solapamientos de leyenda y fue corregida antes de aprobar visualmente y
+actualizar los hashes. No hubo desviaciones científicas.
 
 ## 1. Problema metodológico
 
-El bloque reproducible de reordenamiento usa actualmente un único intervalo de
-brechas distinto para cada muestra:
+Antes de esta corrección, el bloque reproducible de reordenamiento usaba un
+único intervalo de brechas distinto para cada muestra:
 
 - logístico transformado: \((0.2,0.5)\), con \(p=0.3\);
 - tienda: \((0.7,0.9)\), con \(p=0.2\);
@@ -30,10 +120,10 @@ entre generadores, porque cambian simultáneamente:
 3. la probabilidad teórica de éxito \(p=\beta-\alpha\);
 4. la distribución geométrica de referencia.
 
-La implementación vigente reconoce esta limitación en el capítulo de
-Resultados y evita usar la prueba de brechas para una clasificación global.
-La decisión nueva es corregir el diseño experimental en vez de conservar esa
-restricción.
+La implementación histórica reconocía esta limitación en el capítulo de
+Resultados y evitaba usar la prueba de brechas para una clasificación global.
+La decisión aprobada fue corregir el diseño experimental en vez de conservar
+esa restricción.
 
 ## 2. Metodología aprobada
 
@@ -304,10 +394,10 @@ censura estadística.
 
 ## 7. CSV del bloque de reordenamiento
 
-El archivo actual
+Antes de la corrección, el archivo
 \`graficas_auxiliares/reordenamiento/resumen_reordenamiento.csv\`
-tiene una sola fila por muestra y mezcla métricas de ACF con el único intervalo
-histórico de brechas.
+tenía una sola fila por muestra y mezclaba métricas de ACF con el único
+intervalo histórico de brechas.
 
 La nueva metodología necesita una dimensión adicional.
 
@@ -369,8 +459,8 @@ Archivo:
 
 \`src/tesis_generacion/visualizacion/reordenamiento.py\`.
 
-Actualmente se genera una figura de brechas por muestra y se copia a los
-nombres históricos usados por la tesis.
+La implementación histórica generaba una figura de brechas por muestra y la
+copiaba a los nombres usados por la tesis.
 
 ### Requisito
 
@@ -544,8 +634,8 @@ No actualizar hashes antes de aprobar visualmente la nueva disposición.
 
 ## 12. Cambios posteriores necesarios en la tesis
 
-La implementación científica debe completarse **antes** de sustituir cifras en
-la prosa.
+La implementación científica ya se completó. La sustitución de cifras en la
+prosa de la tesis sigue siendo una fase posterior y separada.
 
 Una vez generados y validados los nuevos resultados, el repositorio de la tesis
 deberá actualizar al menos:
@@ -602,12 +692,13 @@ corresponden al diseño histórico de intervalos distintos.
 No deben mezclarse con los nuevos resultados.
 
 El commit anterior permanece como trazabilidad histórica. La nueva
-implementación debe producir un commit científico claramente identificable y
-regenerar baselines y referencias desde cero bajo la metodología aprobada.
+implementación quedó identificada por el commit científico
+\`3099b0630fb3eca42a18f7c5eaabe3874c4857b6\` y los baselines y referencias se
+regeneraron desde el cálculo bajo la metodología aprobada.
 
 No modificar manualmente cifras del CSV o del JSON para hacer pasar pruebas.
 
-## 14. Orden recomendado de implementación
+## 14. Orden ejecutado de implementación
 
 1. Centralizar \`INTERVALOS_BRECHAS_COMUNES\`.
 2. Adaptar \`construir_experimentos_reordenamiento\`.
@@ -623,13 +714,13 @@ No modificar manualmente cifras del CSV o del JSON para hacer pasar pruebas.
 11. Inspeccionar visualmente los cuatro PNG canónicos de reordenamiento y las
     tres figuras comparativas.
 12. Actualizar \`figuras_tesis/manifest_figuras.csv\` y verificar hashes.
-13. Copiar las figuras aprobadas al repositorio de la tesis.
-14. Sólo entonces actualizar números, tablas, pies y prosa de la tesis.
-15. Compilar la tesis y comprobar referencias, tablas y legibilidad.
+13. Dejar pendiente, fuera de este repositorio, la copia de figuras a la tesis.
+14. Dejar pendiente la actualización de números, tablas, pies y prosa.
+15. Dejar pendiente la compilación y revisión visual de la tesis.
 
-## 15. Comandos de validación esperados
+## 15. Comandos de validación ejecutados
 
-La implementación posterior debe terminar, como mínimo, con:
+La implementación terminó con:
 
 \`\`\`bash
 python3 -m unittest -v
@@ -648,25 +739,25 @@ estrictas de PNG que ya tenga configuradas cada bloque.
 
 ## 16. Criterios de aceptación científicos
 
-La implementación estará completa sólo si:
+La implementación científica quedó completa porque:
 
-- [ ] los cuatro generadores dinámicos usan exactamente los mismos tres
+- [x] los cuatro generadores dinámicos usan exactamente los mismos tres
       intervalos en el bloque de reordenamiento;
-- [ ] las versiones original y reordenada usan el mismo intervalo en cada
+- [x] las versiones original y reordenada usan el mismo intervalo en cada
       comparación;
-- [ ] los tres intervalos tienen \(p=0.2\);
-- [ ] existen 24 resúmenes reproducibles de brechas para reordenamiento;
-- [ ] ACF, muestras, fingerprints y permutaciones permanecen inalterados;
-- [ ] el CSV de brechas de reordenamiento contiene 12 filas;
-- [ ] las cuatro figuras PG de la tesis muestran los tres intervalos;
-- [ ] la comparación homogénea original incluye los mismos tres intervalos para
+- [x] los tres intervalos tienen \(p=0.2\);
+- [x] existen 24 resúmenes reproducibles de brechas para reordenamiento;
+- [x] ACF, muestras, fingerprints y permutaciones permanecen inalterados;
+- [x] el CSV de brechas de reordenamiento contiene 12 filas;
+- [x] las cuatro figuras PG canónicas muestran los tres intervalos;
+- [x] la comparación homogénea original incluye los mismos tres intervalos para
       las cinco muestras, incluido MINSTD;
-- [ ] existen 15 resúmenes de brechas para la comparación original;
-- [ ] no se produce una puntuación agregada ni una clasificación automática;
-- [ ] los baselines se regeneran a partir del cálculo, no mediante edición
+- [x] existen 15 resúmenes de brechas para la comparación original;
+- [x] no se produce una puntuación agregada ni una clasificación automática;
+- [x] los baselines se regeneraron a partir del cálculo, no mediante edición
       manual de cifras;
-- [ ] la suite completa pasa;
-- [ ] las nuevas figuras se revisan visualmente antes de actualizar hashes;
+- [x] la suite completa pasa;
+- [x] las nuevas figuras se revisaron visualmente antes de actualizar hashes;
 - [ ] la tesis deja de presentar cifras derivadas de intervalos históricos
       distintos.
 

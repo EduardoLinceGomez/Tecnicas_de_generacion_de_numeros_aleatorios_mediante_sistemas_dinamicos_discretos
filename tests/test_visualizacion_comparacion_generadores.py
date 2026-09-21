@@ -34,7 +34,7 @@ def _baseline() -> dict:
 
 
 class RegeneracionComparacionTest(unittest.TestCase):
-    def test_genera_tres_figuras_csv_y_resumen(self) -> None:
+    def test_genera_seis_figuras_dos_csv_y_resumen(self) -> None:
         with tempfile.TemporaryDirectory(prefix="visual-comparacion-") as temporal:
             directorio = Path(temporal)
             resumen = regenerar_comparacion_generadores(directorio)
@@ -52,6 +52,19 @@ class RegeneracionComparacionTest(unittest.TestCase):
             self.assertEqual(len(filas), 5)
             self.assertNotIn("ranking", filas[0])
             self.assertNotIn("score", filas[0])
+            with (directorio / "resumen_brechas_comparacion.csv").open(
+                encoding="utf-8", newline=""
+            ) as archivo:
+                filas_brechas = list(csv.DictReader(archivo))
+            self.assertEqual(len(filas_brechas), 15)
+            self.assertEqual(
+                {fila["intervalo_id"] for fila in filas_brechas},
+                {"i1", "i2", "i3"},
+            )
+            self.assertTrue(all(float(fila["p"]) == 0.2 for fila in filas_brechas))
+            self.assertNotIn("ranking", filas_brechas[0])
+            self.assertNotIn("score", filas_brechas[0])
+            self.assertEqual(len(resumen["figuras"]), 6)
 
     def test_copia_solo_referencias_explicitas(self) -> None:
         with tempfile.TemporaryDirectory(prefix="refs-comparacion-") as temporal:

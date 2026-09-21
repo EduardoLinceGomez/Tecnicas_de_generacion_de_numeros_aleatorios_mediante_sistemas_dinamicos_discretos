@@ -84,7 +84,7 @@ def _validar_intervalo(alpha: float, beta: float) -> Tuple[float, float]:
 def tiempos_espera_brechas(
     valores: Sequence[float], alpha: float, beta: float
 ) -> Tuple[np.ndarray, int]:
-    """Registra W=G+1 para éxitos en (alpha,beta) y la cola censurada."""
+    """Registra W=G+1 y la racha final incompleta para (alpha,beta)."""
 
     muestra = _validar_muestra(valores)
     alpha, beta = _validar_intervalo(alpha, beta)
@@ -121,7 +121,7 @@ def resumen_brechas(
     """Compara la CDF empírica de W con Geom(beta-alpha)."""
 
     alpha, beta = _validar_intervalo(alpha, beta)
-    tiempos, cola = tiempos_espera_brechas(valores, alpha, beta)
+    tiempos, racha_final = tiempos_espera_brechas(valores, alpha, beta)
     if tiempos.size == 0:
         raise ValueError("la muestra no contiene brechas completas")
     maximo = int(np.max(tiempos))
@@ -135,7 +135,7 @@ def resumen_brechas(
         "beta": beta,
         "p": p,
         "brechas_completas": int(tiempos.size),
-        "cola_censurada": cola,
+        "racha_final_incompleta": racha_final,
         "media_tiempo_espera": float(np.mean(tiempos)),
         "maximo_tiempo_espera": maximo,
         "maxima_discrepancia_cdf": float(np.max(diferencias)),
