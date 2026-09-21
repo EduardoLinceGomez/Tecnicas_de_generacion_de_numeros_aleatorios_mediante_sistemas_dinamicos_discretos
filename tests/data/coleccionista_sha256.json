@@ -2,10 +2,10 @@
   "commit_origen": "d837e4fc1e3c773b129a7036a36c91a975d185d7",
   "entorno_referencia": {
     "python": "3.14.5",
-    "numpy": "2.5.2",
+    "numpy": "2.4.6",
     "scipy": "1.18.0",
-    "matplotlib": "3.11.1",
-    "pillow": "12.3.0",
+    "matplotlib": "3.10.9",
+    "pillow": "12.2.0",
     "backend": "Agg"
   },
   "criterio": {
@@ -14,13 +14,13 @@
     "nota": "Versiones distintas pueden producir PNG byte-distintos aun con pixeles y metricas identicos."
   },
   "figuras": {
-    "Log_dens_CCT.png": "12c37ce206390c53fd21ffb53f0bc1e89a899da1dff65cd000e42af31c3389aa",
-    "R30_col_densCCT.png": "7be1b0d8a7039e1fba955aa39391b5ddc99018274281f74e0365b7b4c7e48f00",
-    "R30_col_distCCT.png": "7987f386a19bcc4afe0271b85a7b7e6f247591be39283cb6de84c300107a3f2c",
-    "R30_fila_densCCT.png": "836b8c423d4b8dda6bd5e82fc3e2c5d773d06b707e7a69ad93951c4d7323e67b",
-    "R30_fila_distCCT.png": "f18dab8899ed920b9a746c91f4b0a4f7d97d338ac1f6cab381065f00396f1bc5",
-    "Tent_dens_CCT.png": "85ade470cfa5005d3815cc11bea0b90d31bcc71f26da40218deda905434c19b8",
-    "Tent_dsit_CCT.png": "3552470683111de9659f3a5c9b507b82220ecebd19b7810b7b6398779a29b7d3",
-    "log_dist_CCT.png": "5ef0f82ff55715dda65ec660f699e8f3c6c8cf59d11e74051ae15fc7b96bb6d4"
+    "Log_dens_CCT.png": "96ab641734d2d7abc96d08598d896139c03c891f2646245b006ec6d29706f938",
+    "R30_col_densCCT.png": "4fc82adfc113e28455f6ff846c5d7b05f58fc21855896e8c5c0722736bd38656",
+    "R30_col_distCCT.png": "9cf534e8e55ea263188927dd480468e0ada87e9a22d9e183acd6f9252b35df1e",
+    "R30_fila_densCCT.png": "1e2052d4c28151a37fa7fda8e134290087fce3cf91e4c582f50f54c85fff215e",
+    "R30_fila_distCCT.png": "cb28eb1e8d5450c1be4c7ae93a996eb17716971c08e7f3803d71303a5302d304",
+    "Tent_dens_CCT.png": "363a92c6736130ed22bfa28fdc0bb0b9aa4463fef94044cccc7d1de09bd75d12",
+    "Tent_dsit_CCT.png": "4a166b40f8d45fbad32cfe32dd4cf0fec5b9143ecb4a21f8648630b6263b88ec",
+    "log_dist_CCT.png": "1cca929918d75e067eebaf35475d95a73a3f769fdababc4fb28763cafdb6f1f4"
   }
 }

@@ -21,6 +21,11 @@ from tesis_generacion.estadistica.transformadas import (
 )
 from tesis_generacion.experimentos import NUM_ITERACIONES, construir_muestras
 from tesis_generacion.generadores import orbita_logistica
+from tesis_generacion.visualizacion.estilo import (
+    estilizar_eje,
+    guardar_figura,
+    leyenda_externa,
+)
 
 
 T_FGM = np.linspace(0.0, 15.0, 40)
@@ -49,11 +54,7 @@ ARCHIVOS_TESIS_TRANSFORMADAS = (
 
 
 def _guardar_figura(figura: plt.Figure, ruta: Path) -> None:
-    figura.savefig(
-        ruta,
-        dpi=200,
-        metadata={"Software": "regenerar_transformadas.py"},
-    )
+    guardar_figura(figura, ruta, software="regenerar_transformadas.py")
     plt.close(figura)
 
 
@@ -123,7 +124,8 @@ def guardar_fgm(
         yscale="log",
     )
     eje.grid(alpha=0.25, which="both")
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 
@@ -154,7 +156,8 @@ def guardar_error_fgm(
         yscale="symlog",
     )
     eje.grid(alpha=0.25, which="both")
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 
@@ -195,7 +198,8 @@ def guardar_funcion_caracteristica(
         aspect="equal",
     )
     eje.grid(alpha=0.25)
-    eje.legend(fontsize=8)
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 
@@ -228,7 +232,8 @@ def guardar_error_funcion_caracteristica(
     )
     eje.set_ylim(bottom=0.0)
     eje.grid(alpha=0.25)
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 

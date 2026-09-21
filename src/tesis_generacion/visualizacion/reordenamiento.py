@@ -21,6 +21,12 @@ from tesis_generacion.experimentos.reordenamiento import (
     LAGS_REORDENAMIENTO,
     construir_experimentos_reordenamiento,
 )
+from tesis_generacion.visualizacion.estilo import (
+    PERFIL_MEDIO,
+    estilizar_eje,
+    guardar_figura,
+    leyenda_externa,
+)
 
 
 ETIQUETAS_MUESTRAS = {
@@ -52,11 +58,7 @@ ARCHIVOS_REFERENCIA_REORDENAMIENTO = (
 
 
 def _guardar_figura(figura: plt.Figure, ruta: Path) -> None:
-    figura.savefig(
-        ruta,
-        dpi=200,
-        metadata={"Software": "regenerar_reordenamiento.py"},
-    )
+    guardar_figura(figura, ruta, software="regenerar_reordenamiento.py")
     plt.close(figura)
 
 
@@ -97,7 +99,8 @@ def guardar_acf_antes_despues(
         ylim=(-limite, limite),
     )
     eje.grid(alpha=0.25)
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 
@@ -153,7 +156,8 @@ def guardar_brechas_antes_despues(
     )
     eje.set_ylim(bottom=0.0)
     eje.grid(alpha=0.25)
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     eje.text(
         0.99,
         0.97,
@@ -161,7 +165,7 @@ def guardar_brechas_antes_despues(
         transform=eje.transAxes,
         ha="right",
         va="top",
-        fontsize=9,
+        fontsize=PERFIL_MEDIO.anotacion,
     )
     _guardar_figura(figura, ruta)
 
@@ -180,6 +184,7 @@ def guardar_permutaciones(ruta: Path, permutaciones: Mapping[str, object]) -> No
         eje.set_xlim(0, indices.size - 1)
         eje.set_ylim(0, indices.size - 1)
         eje.grid(alpha=0.2)
+        estilizar_eje(eje)
     _guardar_figura(figura, ruta)
 
 

@@ -24,6 +24,12 @@ from tesis_generacion.experimentos import (
     construir_muestras,
 )
 from tesis_generacion.generadores import orbita_logistica
+from tesis_generacion.visualizacion.estilo import (
+    PERFIL_HISTOGRAMA_DOBLE,
+    estilizar_eje,
+    guardar_figura,
+    leyenda_externa,
+)
 
 
 SEED_HISTOGRAMAS = 2024
@@ -104,11 +110,7 @@ def calcular_histograma(
 
 
 def _guardar_figura(figura: plt.Figure, ruta: Path) -> None:
-    figura.savefig(
-        ruta,
-        dpi=200,
-        metadata={"Software": "regenerar_momentos.py"},
-    )
+    guardar_figura(figura, ruta, software="regenerar_momentos.py")
     plt.close(figura)
 
 
@@ -138,8 +140,7 @@ def guardar_histograma_distribucion(
     else:
         raise ValueError(f"distribución desconocida: {nombre}")
 
-    figura, eje = plt.subplots(figsize=(7.2, 7.4))
-    figura.subplots_adjust(bottom=0.42)
+    figura, eje = plt.subplots(figsize=(7.2, 5.6), layout="constrained")
     eje.bar(
         bordes[:-1],
         alturas,
@@ -156,16 +157,12 @@ def guardar_histograma_distribucion(
         xlim=VENTANA_HISTOGRAMAS,
         ylim=(0.0, 0.42),
     )
-    eje.set_title(titulo, fontsize=28)
-    eje.set_xlabel("Valor", fontsize=26)
-    eje.set_ylabel("Densidad empírica", fontsize=26)
-    eje.tick_params(axis="both", labelsize=22)
+    eje.set_title(titulo)
+    eje.set_xlabel("Valor")
+    eje.set_ylabel("Densidad empírica")
     eje.grid(alpha=0.25)
-    eje.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.48),
-        fontsize=20,
-    )
+    estilizar_eje(eje, PERFIL_HISTOGRAMA_DOBLE)
+    leyenda_externa(eje, PERFIL_HISTOGRAMA_DOBLE, ncol=1)
     _guardar_figura(figura, ruta)
     return resumen
 
@@ -210,7 +207,8 @@ def guardar_diagnostico_histograma_logistico(
     )
     eje.set_ylim(bottom=0.0)
     eje.grid(alpha=0.25)
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 
@@ -244,7 +242,8 @@ def guardar_comparacion_momentos(
         )
     eje.set(title=titulo, xlabel="Orden k", ylabel="Momento ordinario m_k")
     eje.grid(alpha=0.25)
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 
@@ -276,7 +275,8 @@ def guardar_error_momentos(
     )
     eje.set_ylim(bottom=0.0)
     eje.grid(alpha=0.25)
-    eje.legend()
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar_figura(figura, ruta)
 
 

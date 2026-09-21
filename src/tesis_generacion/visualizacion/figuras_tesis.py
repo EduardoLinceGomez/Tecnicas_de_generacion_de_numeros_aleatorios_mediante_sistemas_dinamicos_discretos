@@ -24,6 +24,10 @@ from tesis_generacion.generadores.regla30 import (
     evolucion_regla30,
     paso_regla30,
 )
+from tesis_generacion.visualizacion.estilo import (
+    estilizar_eje,
+    leyenda_externa,
+)
 
 
 DPI = 220
@@ -499,7 +503,8 @@ def _figura_histograma(ruta: Path, valores: np.ndarray, titulo: str) -> None:
     )
     eje.axhline(1.0, color=COLOR_ACENTO, ls="--", lw=1.4, label="Uniforme(0,1)")
     eje.set(xlim=(0.0, 1.0), xlabel="Valor", ylabel="Densidad empírica", title=titulo)
-    eje.legend(fontsize=9)
+    estilizar_eje(eje)
+    leyenda_externa(eje, ncol=2)
     _guardar(figura, ruta)
 
 

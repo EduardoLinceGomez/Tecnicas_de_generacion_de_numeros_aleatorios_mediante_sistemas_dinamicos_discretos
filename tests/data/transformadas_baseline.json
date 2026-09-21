@@ -2,9 +2,9 @@
   "commit_base": "7e1ed4d91178f0721fe9ef7ede7654de9c46a559",
   "entorno_referencia": {
     "python": "3.14.5",
-    "numpy": "2.5.2",
-    "matplotlib": "3.11.1",
-    "pillow": "12.3.0",
+    "numpy": "2.4.6",
+    "matplotlib": "3.10.9",
+    "pillow": "12.2.0",
     "backend": "Agg"
   },
   "dominios_numericos": {
@@ -105,8 +105,8 @@
     }
   },
   "referencias_sha256": {
-    "logistico_crudo_vs_uniformizado_fgm.png": "2d778db41729af903cea0e97875e6b54d876fd409009cfd976b0eb2a06a6a0c9",
-    "logistico_crudo_vs_uniformizado_fc.png": "9c7b9b93c54f6d56a92ab9762cc23d93d6f57c525bd482ac386d870901873262",
+    "logistico_crudo_vs_uniformizado_fgm.png": "70047382c8cc5c73c488823fd7a1efa200e57cbb391675b0c57c6a8f0457f0a0",
+    "logistico_crudo_vs_uniformizado_fc.png": "994367809be021fd46a3ded4c228fb7d3d598712cde9a8e8289cf47efe7a82b4",
     "resumen_transformadas.csv": "8fa895634075a1753f0dba8e171f28a77a8ef327e5a7fb87df018a3dc3ac5b43"
   },
   "muestras": {

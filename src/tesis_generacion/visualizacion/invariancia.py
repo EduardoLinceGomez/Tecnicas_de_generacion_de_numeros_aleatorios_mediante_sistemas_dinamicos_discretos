@@ -24,6 +24,12 @@ from tesis_generacion.experimentos.invariancia import (
     SEED_INVARIANCIA,
     construir_experimentos_invariancia,
 )
+from tesis_generacion.visualizacion.estilo import (
+    PERFIL_ANCHO,
+    estilizar_eje,
+    guardar_figura,
+    leyenda_externa,
+)
 
 
 ARCHIVOS_TESIS_INVARIANCIA = (
@@ -41,11 +47,7 @@ ARCHIVOS_REFERENCIA_INVARIANCIA = (
 
 
 def _guardar_figura(figura: plt.Figure, ruta: Path) -> None:
-    figura.savefig(
-        ruta,
-        dpi=200,
-        metadata={"Software": "regenerar_invariancia.py"},
-    )
+    guardar_figura(figura, ruta, software="regenerar_invariancia.py")
     plt.close(figura)
 
 
@@ -89,7 +91,8 @@ def guardar_evolucion_cdf(
         ylim=(0.0, 1.0),
     )
     eje.grid(alpha=0.25)
-    eje.legend(ncol=2, fontsize=8.5)
+    estilizar_eje(eje, PERFIL_ANCHO)
+    leyenda_externa(eje, PERFIL_ANCHO, ncol=3)
     _guardar_figura(figura, ruta)
 
 
@@ -128,7 +131,9 @@ def guardar_discrepancias(
         eje.set(title=titulo, xlabel="Iteración n", xticks=ITERACIONES_INVARIANCIA)
         eje.grid(alpha=0.25)
     ejes[0].set_ylabel("Discrepancia")
-    ejes[1].legend(fontsize=8.5)
+    for eje in ejes:
+        estilizar_eje(eje, PERFIL_ANCHO)
+    leyenda_externa(ejes[1], PERFIL_ANCHO, ncol=1)
     _guardar_figura(figura, ruta)
 
 
@@ -159,7 +164,8 @@ def guardar_diagnostico_tienda(
         ylim=(0.0, 1.0),
     )
     eje.grid(alpha=0.25)
-    eje.legend(fontsize=8.5)
+    estilizar_eje(eje, PERFIL_ANCHO)
+    leyenda_externa(eje, PERFIL_ANCHO, ncol=3)
     _guardar_figura(figura, ruta)
 
 

@@ -2,17 +2,17 @@
   "commit_base": "385ff07ad47d19206a64cbaaee33532cf5040621",
   "entorno_referencia": {
     "python": "3.14.5",
-    "numpy": "2.5.2",
+    "numpy": "2.4.6",
     "scipy": "1.18.0",
-    "matplotlib": "3.11.1",
-    "pillow": "12.3.0",
+    "matplotlib": "3.10.9",
+    "pillow": "12.2.0",
     "backend": "Agg"
   },
   "referencias_sha256": {
-    "hist_normal_escala_comun.png": "3b2fd40ee7bc076a790906707077a4fad138fb68b47d93c01cdaf44c7075ead3",
-    "hist_cauchy_escala_comun.png": "f54002e277f816cfe7a9ed453daa83c2a7853bea72a56503c1559b90aaadb8a3",
-    "logistico_crudo_vs_uniformizado_hist.png": "2dd21a70cbd6c1174908ad465a1373e3fef332434eda598b31ec29c6884d1495",
-    "logistico_crudo_vs_uniformizado_momentos.png": "322e6aa7e43c981600bd42357bbb014315b421e9ba4b0fd77541fd77416b386a",
+    "hist_normal_escala_comun.png": "4b5fb103498f2ff3f569d4ff4b5c95e671b1631253b3ada20e80cf90fdfc5960",
+    "hist_cauchy_escala_comun.png": "7e07e27e3d7050b6bd1fc2f44fc076b84527d987eda92dea877156df8e92ff32",
+    "logistico_crudo_vs_uniformizado_hist.png": "06d0ece294e4c4ccae8b544579870c5f735f49675b342936fd918f01ab9b50cc",
+    "logistico_crudo_vs_uniformizado_momentos.png": "1b5a6a2b80fc0fa57a524f07cbdf6d62a51140c27eaf795d13aeac29fb17fc1b",
     "resumen_momentos.csv": "e2b1c417edd47ad8d9edd7ac531de6ee097b6d2c6dbca0aff6eb16635373e49f"
   },
   "convenciones": {

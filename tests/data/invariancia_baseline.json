@@ -25,10 +25,10 @@
     "malla_mae_cdf": [0.0, 1.0, 1001]
   },
   "referencias_sha256": {
-    "logistico_evolucion_cdf.png": "6dff31ebf2148d497816efba762b28762659561e6540a23aa21edd4c3d21a77b",
-    "tienda_ideal_evolucion_cdf.png": "30199f39bf8a265d319f380a6daee5aa4354addd6fe266e1b6f1e23e480d115f",
-    "discrepancia_cdf_iteraciones.png": "9448978eb579ed4f244eb4b4acd23edb12e558b07a97537535f3be678ec3b00f",
-    "tienda_1999_vs_2_cdf.png": "9d3e5c2b3827abcd073594f87b45fd4b2c1313f142516f8f5aade6166f2d7cc9",
+    "logistico_evolucion_cdf.png": "dd72fdd22825211cbf93e109c4a4da076a2d5f3cb850508a51e0f7aadb66224f",
+    "tienda_ideal_evolucion_cdf.png": "2034d01c7dd22ad16c9e01a391ff96d42726503d900ad630da8bcdee445f544c",
+    "discrepancia_cdf_iteraciones.png": "c7fc2a7a9af0faf0f78fc8bb1d5435e80130f6a8e63c2a1dbfb9c17c4f4dcc36",
+    "tienda_1999_vs_2_cdf.png": "12073c1b8d8274ed7c4399bbc32ae83eb70c332cbd72c4ab9b5c5039dee14cc0",
     "resumen_invariancia.csv": "a48905f3d8af3fdb810a8105a698b24066a2eb4e8dbe607a8ed63ba3df0aa783"
   },
   "experimentos": {

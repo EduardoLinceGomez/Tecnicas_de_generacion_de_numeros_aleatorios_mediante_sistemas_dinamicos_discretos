@@ -78,14 +78,14 @@
     }
   },
   "referencias_sha256": {
-    "acf_antes_despues_logistico.png": "33d0f37aafe3395d574bf47803732cefe9bcc0dda0e6922798d4d1df7358618b",
-    "acf_antes_despues_tienda.png": "f9a96cba54ce37d97731d328b26f1d53e101ecd9bdd20f98a71306ea579213c7",
-    "acf_antes_despues_r30_columnas.png": "522b0bba175fa8bdfbb7c425ba51986ec693d714e0ac719de0bd47c969d6c131",
-    "acf_antes_despues_r30_filas.png": "cc95af31c39d9149e088062938fd5a514bc583ac07b6f38b59a7432fe966b69e",
-    "brechas_antes_despues_logistico.png": "f38e66f93a85ba642fa4c592b545a848a336fa91f47a6cdf5d03092a78b0b195",
-    "brechas_antes_despues_tienda.png": "07038b383c597e02889facae492778c77353dd63c278efa0f5bb737fc3a98cf8",
-    "brechas_antes_despues_r30_columnas.png": "21913d7c157c235f5193905144d6eea41e50f54f1423ae5f91a45e048548c144",
-    "brechas_antes_despues_r30_filas.png": "cd89af4b16b8436fd6c0cff092f8e6a814b4c089ebf2815107bf11e3f9536932",
-    "permutacion_indices.png": "f7a171435d1ae12bb6361b2b32b8b6405884d82400d66bbac5cc286760f6c57f"
+    "acf_antes_despues_logistico.png": "7a2f02af36daf7f6556c68bc8ea46794717236ab7dfff4081b9635ad96f73347",
+    "acf_antes_despues_tienda.png": "24a7dda0abc3b8aeaae62788b6254b631b44c652bb3cc123367d9245cd73d27d",
+    "acf_antes_despues_r30_columnas.png": "9ab89b94bbab3abc303c0f8b70ba652c1353fc23a4085eb45495f45e94147ef3",
+    "acf_antes_despues_r30_filas.png": "877db4bbdcb314bfab7ecc695556a37d76c62711695dce0735e57ad998e44209",
+    "brechas_antes_despues_logistico.png": "6b8041387851c3d546f0e18d9d55b7fd76cc763b805144e0d8d88fc73e15531d",
+    "brechas_antes_despues_tienda.png": "1dd5bcc2788c29277c40815e282f92dc840f809645a56aee10d5d8249b8f32b7",
+    "brechas_antes_despues_r30_columnas.png": "c1824a8385fb7ed80f7c821c76dd78bcfa9a00df84870e0cad6f2d9d03be00cc",
+    "brechas_antes_despues_r30_filas.png": "103c0d130e102c3c391fbe682cfc6cc4d4ab46f3fdf1d2e56f03f8655571672d",
+    "permutacion_indices.png": "01e6093b08bb007625ede9a0a05b4bfd626e9b5bace6a165365cb5e29191879b"
   }
 }
