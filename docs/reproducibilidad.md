@@ -89,8 +89,26 @@ temporales durante validaciones automatizadas.
 - distribución triangular con moda `0.3` frente a `0.5`;
 - reordenamiento logístico sin semilla;
 - codificación de filas y columnas de R30 ambigua;
-- inconsistencias entre los bloques de la prueba de brechas;
+- inconsistencias entre los bloques de la prueba de brechas; la corrección aprobada está especificada en `docs/metodologia_brechas_comparables.md` y permanece pendiente de implementación;
 - outputs obsoletos embebidos en el notebook;
 - afirmaciones sobre reordenamiento en el coleccionista sin pipeline actual.
 
 Estas cuestiones requieren commits científicos independientes.
+
+
+## Corrección metodológica aprobada: prueba de brechas comparable
+
+El 2026-09-21 se aprobó sustituir los intervalos históricos distintos por
+generador por tres intervalos comunes:
+
+\[
+(0.1,0.3),\qquad(0.4,0.6),\qquad(0.7,0.9).
+\]
+
+Los tres tienen longitud \(0.2\), de modo que la referencia teórica es la
+misma (\(p=0.2\)) para todos los generadores. La especificación completa,
+incluidos cambios de código, CSV, figuras, baselines, pruebas y sincronización
+con la tesis, se encuentra en
+`docs/metodologia_brechas_comparables.md`.
+
+**Estado:** documentado y aprobado; implementación científica pendiente.
