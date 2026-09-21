@@ -72,6 +72,14 @@ class CliComparacionGeneradoresTest(unittest.TestCase):
                 set(ARCHIVOS_REFERENCIA_COMPARACION),
             )
             self.assertEqual(resumen["benchmark"]["semilla"], 2024)
+            self.assertEqual(resumen["parametros"]["p_brechas"], 0.2)
+            self.assertEqual(
+                sum(
+                    len(datos["brechas"])
+                    for datos in resumen["muestras"].values()
+                ),
+                15,
+            )
 
 
 if __name__ == "__main__":

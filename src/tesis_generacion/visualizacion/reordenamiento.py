@@ -21,8 +21,11 @@ from tesis_generacion.experimentos.reordenamiento import (
     LAGS_REORDENAMIENTO,
     construir_experimentos_reordenamiento,
 )
+from tesis_generacion.experimentos.parametros import (
+    INTERVALOS_BRECHAS_COMUNES,
+    PROBABILIDAD_BRECHAS,
+)
 from tesis_generacion.visualizacion.estilo import (
-    PERFIL_MEDIO,
     estilizar_eje,
     guardar_figura,
     leyenda_externa,
@@ -54,6 +57,7 @@ ARCHIVOS_REFERENCIA_REORDENAMIENTO = (
     "brechas_antes_despues_r30_filas.png",
     "permutacion_indices.png",
     "resumen_reordenamiento.csv",
+    "resumen_brechas_reordenamiento.csv",
 )
 
 
@@ -113,60 +117,67 @@ def guardar_brechas_antes_despues(
     ruta: Path,
     original: np.ndarray,
     reordenada: np.ndarray,
-    alpha: float,
-    beta: float,
+    intervalos: Mapping[str, tuple],
     titulo: str,
 ) -> None:
-    """Compara las PMF empíricas de W=G+1 con la geométrica teórica."""
+    """Compara las PMF para los tres intervalos comunes en paneles."""
 
-    tiempos_original, _ = tiempos_espera_brechas(original, alpha, beta)
-    tiempos_reordenados, _ = tiempos_espera_brechas(reordenada, alpha, beta)
-    maximo = int(max(np.max(tiempos_original), np.max(tiempos_reordenados)))
-    soporte = np.arange(1, maximo + 1, dtype=np.int64)
-    figura, eje = plt.subplots(figsize=(7.4, 4.5), constrained_layout=True)
-    eje.plot(
-        soporte,
-        _pmf_empirica(tiempos_original, maximo),
-        marker="o",
-        markersize=4,
-        linewidth=1.2,
-        label="Original",
+    figura, ejes = plt.subplots(len(intervalos), 1, figsize=(7.4, 10.4))
+    figura.subplots_adjust(left=0.13, right=0.98, bottom=0.07, top=0.88, hspace=0.38)
+    figura.suptitle(f"Prueba de brechas: {titulo}", y=0.975, fontsize=16)
+    for eje, (intervalo_id, (alpha, beta)) in zip(ejes, intervalos.items()):
+        tiempos_original, _ = tiempos_espera_brechas(original, alpha, beta)
+        tiempos_reordenados, _ = tiempos_espera_brechas(
+            reordenada, alpha, beta
+        )
+        maximo = int(max(np.max(tiempos_original), np.max(tiempos_reordenados)))
+        soporte = np.arange(1, maximo + 1, dtype=np.int64)
+        eje.plot(
+            soporte,
+            _pmf_empirica(tiempos_original, maximo),
+            marker="o",
+            markersize=3.5,
+            linewidth=1.2,
+            label="Original",
+        )
+        eje.plot(
+            soporte,
+            _pmf_empirica(tiempos_reordenados, maximo),
+            marker="s",
+            markersize=3.5,
+            linewidth=1.2,
+            label="Reordenada",
+        )
+        eje.plot(
+            soporte,
+            pmf_geometrica(soporte, PROBABILIDAD_BRECHAS),
+            color="black",
+            linestyle="--",
+            linewidth=1.8,
+            label=rf"Geométrica teórica, $p={PROBABILIDAD_BRECHAS:.1f}$",
+        )
+        eje.set(
+            title=(
+                rf"{intervalo_id.upper()}: intervalo abierto "
+                rf"$({alpha:g},{beta:g})$"
+            ),
+            xlim=(0.5, maximo + 0.5),
+        )
+        eje.set_title(eje.get_title(), fontsize=13)
+        eje.set_ylim(bottom=0.0)
+        eje.grid(alpha=0.25)
+        eje.tick_params(axis="both", labelsize=9)
+    manejadores, etiquetas = ejes[0].get_legend_handles_labels()
+    figura.legend(
+        manejadores,
+        etiquetas,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.945),
+        ncol=3,
+        fontsize=10,
     )
-    eje.plot(
-        soporte,
-        _pmf_empirica(tiempos_reordenados, maximo),
-        marker="s",
-        markersize=4,
-        linewidth=1.2,
-        label="Reordenada",
-    )
-    eje.plot(
-        soporte,
-        pmf_geometrica(soporte, beta - alpha),
-        color="black",
-        linestyle="--",
-        linewidth=1.8,
-        label=rf"Geométrica teórica, $p={beta-alpha:.1f}$",
-    )
-    eje.set(
-        title=f"Prueba de brechas: {titulo}",
-        xlabel=r"Tiempo de espera $W=G+1$",
-        ylabel="Función de masa de probabilidad",
-        xlim=(0.5, maximo + 0.5),
-    )
-    eje.set_ylim(bottom=0.0)
-    eje.grid(alpha=0.25)
-    estilizar_eje(eje)
-    leyenda_externa(eje, ncol=2)
-    eje.text(
-        0.99,
-        0.97,
-        rf"Intervalo $({alpha:g},{beta:g})$",
-        transform=eje.transAxes,
-        ha="right",
-        va="top",
-        fontsize=PERFIL_MEDIO.anotacion,
-    )
+    figura.supxlabel(r"Tiempo de espera $W=G+1$", y=0.02, fontsize=12)
+    figura.supylabel("Función de masa de probabilidad", x=0.02, fontsize=12)
     _guardar_figura(figura, ruta)
 
 
@@ -188,7 +199,9 @@ def guardar_permutaciones(ruta: Path, permutaciones: Mapping[str, object]) -> No
     _guardar_figura(figura, ruta)
 
 
-def _escribir_csv(ruta: Path, muestras: Mapping[str, Mapping[str, object]]) -> None:
+def _escribir_csv_reordenamiento(
+    ruta: Path, muestras: Mapping[str, Mapping[str, object]]
+) -> None:
     campos = (
         "muestra",
         "n",
@@ -196,22 +209,12 @@ def _escribir_csv(ruta: Path, muestras: Mapping[str, Mapping[str, object]]) -> N
         "fingerprint_original",
         "fingerprint_permutacion",
         "fingerprint_reordenada",
-        "alpha",
-        "beta",
         "rho1_original",
         "rho1_reordenada",
         "max_abs_acf_original",
         "max_abs_acf_reordenada",
         "mae_abs_acf_original",
         "mae_abs_acf_reordenada",
-        "brechas_original",
-        "brechas_reordenada",
-        "cola_original",
-        "cola_reordenada",
-        "dmax_brechas_original",
-        "dmax_brechas_reordenada",
-        "mae_brechas_original",
-        "mae_brechas_reordenada",
     )
     with ruta.open("w", encoding="utf-8", newline="") as archivo:
         escritor = csv.DictWriter(archivo, fieldnames=campos, lineterminator="\n")
@@ -219,34 +222,82 @@ def _escribir_csv(ruta: Path, muestras: Mapping[str, Mapping[str, object]]) -> N
         for nombre, datos in muestras.items():
             acf_o = datos["acf_original"]
             acf_r = datos["acf_reordenada"]
-            brechas_o = datos["brechas_original"]
-            brechas_r = datos["brechas_reordenada"]
             escritor.writerow(
                 {
                     "muestra": nombre,
                     "n": len(datos["original"]),
                     "metodo_reordenamiento": datos["metodo"],
                     "fingerprint_original": datos["fingerprint_original"]["sha256"],
-                    "fingerprint_permutacion": datos["fingerprint_permutacion"]["sha256"],
+                    "fingerprint_permutacion": datos["fingerprint_permutacion"][
+                        "sha256"
+                    ],
                     "fingerprint_reordenada": datos["fingerprint_reordenada"]["sha256"],
-                    "alpha": brechas_o["alpha"],
-                    "beta": brechas_o["beta"],
                     "rho1_original": acf_o["abs_rho_1"],
                     "rho1_reordenada": acf_r["abs_rho_1"],
                     "max_abs_acf_original": acf_o["max_abs_acf"],
                     "max_abs_acf_reordenada": acf_r["max_abs_acf"],
                     "mae_abs_acf_original": acf_o["mae_abs_acf"],
                     "mae_abs_acf_reordenada": acf_r["mae_abs_acf"],
-                    "brechas_original": brechas_o["brechas_completas"],
-                    "brechas_reordenada": brechas_r["brechas_completas"],
-                    "cola_original": brechas_o["cola_censurada"],
-                    "cola_reordenada": brechas_r["cola_censurada"],
-                    "dmax_brechas_original": brechas_o["maxima_discrepancia_cdf"],
-                    "dmax_brechas_reordenada": brechas_r["maxima_discrepancia_cdf"],
-                    "mae_brechas_original": brechas_o["mae_cdf"],
-                    "mae_brechas_reordenada": brechas_r["mae_cdf"],
                 }
             )
+
+
+def _escribir_csv_brechas(
+    ruta: Path, muestras: Mapping[str, Mapping[str, object]]
+) -> None:
+    campos = (
+        "muestra",
+        "intervalo_id",
+        "alpha",
+        "beta",
+        "p",
+        "brechas_original",
+        "brechas_reordenada",
+        "racha_final_incompleta_original",
+        "racha_final_incompleta_reordenada",
+        "media_w_original",
+        "media_w_reordenada",
+        "max_w_original",
+        "max_w_reordenada",
+        "dmax_original",
+        "dmax_reordenada",
+        "mae_original",
+        "mae_reordenada",
+    )
+    with ruta.open("w", encoding="utf-8", newline="") as archivo:
+        escritor = csv.DictWriter(archivo, fieldnames=campos, lineterminator="\n")
+        escritor.writeheader()
+        for nombre, datos in muestras.items():
+            for intervalo_id, resultados in datos["brechas"].items():
+                original = resultados["original"]
+                reordenada = resultados["reordenada"]
+                escritor.writerow(
+                    {
+                        "muestra": nombre,
+                        "intervalo_id": intervalo_id,
+                        "alpha": original["alpha"],
+                        "beta": original["beta"],
+                        "p": original["p"],
+                        "brechas_original": original["brechas_completas"],
+                        "brechas_reordenada": reordenada["brechas_completas"],
+                        "racha_final_incompleta_original": original[
+                            "racha_final_incompleta"
+                        ],
+                        "racha_final_incompleta_reordenada": reordenada[
+                            "racha_final_incompleta"
+                        ],
+                        "media_w_original": original["media_tiempo_espera"],
+                        "media_w_reordenada": reordenada["media_tiempo_espera"],
+                        "max_w_original": original["maximo_tiempo_espera"],
+                        "max_w_reordenada": reordenada["maximo_tiempo_espera"],
+                        "dmax_original": original["maxima_discrepancia_cdf"],
+                        "dmax_reordenada": reordenada[
+                            "maxima_discrepancia_cdf"
+                        ],
+                        "mae_original": original["mae_cdf"],
+                        "mae_reordenada": reordenada["mae_cdf"],
+                    }
+                )
 
 
 def _resumen_jsonable(experimentos: Mapping[str, object]) -> Dict[str, object]:
@@ -279,14 +330,12 @@ def regenerar_reordenamiento(directorio: Path) -> Dict[str, object]:
             datos["reordenada"],
             etiqueta,
         )
-        alpha, beta = datos["intervalo_brechas"]
         referencia = directorio / f"brechas_antes_despues_{nombre}.png"
         guardar_brechas_antes_despues(
             referencia,
             datos["original"],
             datos["reordenada"],
-            alpha,
-            beta,
+            INTERVALOS_BRECHAS_COMUNES,
             etiqueta,
         )
         shutil.copyfile(
@@ -295,7 +344,12 @@ def regenerar_reordenamiento(directorio: Path) -> Dict[str, object]:
     guardar_permutaciones(
         directorio / "permutacion_indices.png", experimentos["permutaciones"]
     )
-    _escribir_csv(directorio / "resumen_reordenamiento.csv", muestras)
+    _escribir_csv_reordenamiento(
+        directorio / "resumen_reordenamiento.csv", muestras
+    )
+    _escribir_csv_brechas(
+        directorio / "resumen_brechas_reordenamiento.csv", muestras
+    )
 
     resumen = _resumen_jsonable(experimentos)
     nombres_png = tuple(ARCHIVOS_TESIS_REORDENAMIENTO.values()) + tuple(
@@ -306,7 +360,10 @@ def regenerar_reordenamiento(directorio: Path) -> Dict[str, object]:
     resumen["figuras"] = {
         nombre: _sha256_archivo(directorio / nombre) for nombre in nombres_png
     }
-    resumen["archivos"] = list(nombres_png) + ["resumen_reordenamiento.csv"]
+    resumen["archivos"] = list(nombres_png) + [
+        "resumen_reordenamiento.csv",
+        "resumen_brechas_reordenamiento.csv",
+    ]
     return resumen
 
 

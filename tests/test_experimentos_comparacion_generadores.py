@@ -47,6 +47,25 @@ class ComparacionGeneradoresTest(unittest.TestCase):
         )
         self.assertEqual(parametros["lags_acf"], list(range(1, 21)))
         self.assertFalse(parametros["usa_muestras_reordenadas"])
+        self.assertEqual(
+            parametros["intervalos_brechas_comunes"],
+            {"i1": [0.1, 0.3], "i2": [0.4, 0.6], "i3": [0.7, 0.9]},
+        )
+        self.assertEqual(parametros["longitud_intervalo_brechas"], 0.2)
+        self.assertEqual(parametros["p_brechas"], 0.2)
+
+    def test_quince_resumenes_de_brechas_sin_agregacion(self) -> None:
+        resumen = construir_comparacion_generadores()
+        self.assertEqual(
+            sum(len(datos["brechas"]) for datos in resumen["muestras"].values()),
+            15,
+        )
+        for datos in resumen["muestras"].values():
+            self.assertEqual(tuple(datos["brechas"]), ("i1", "i2", "i3"))
+            self.assertNotIn("ranking", datos)
+            self.assertNotIn("score", datos)
+            for brechas in datos["brechas"].values():
+                self.assertEqual(brechas["p"], 0.2)
 
     def test_baseline_cientifico_exacto(self) -> None:
         observado = construir_comparacion_generadores()

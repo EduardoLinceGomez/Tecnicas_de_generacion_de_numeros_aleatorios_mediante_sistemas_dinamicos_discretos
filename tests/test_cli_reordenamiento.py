@@ -74,6 +74,14 @@ class CliReordenamientoTest(unittest.TestCase):
                 set(ARCHIVOS_REFERENCIA_REORDENAMIENTO),
             )
             self.assertEqual(resumen["parametros"]["lags"], list(range(1, 21)))
+            self.assertEqual(resumen["parametros"]["p_brechas"], 0.2)
+            self.assertEqual(
+                sum(
+                    2 * len(datos["brechas"])
+                    for datos in resumen["muestras"].values()
+                ),
+                24,
+            )
 
 
 if __name__ == "__main__":

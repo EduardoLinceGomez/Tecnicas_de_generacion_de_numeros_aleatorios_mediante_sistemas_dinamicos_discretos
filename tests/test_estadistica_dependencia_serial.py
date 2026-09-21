@@ -39,17 +39,19 @@ class AutocorrelacionTest(unittest.TestCase):
 
 
 class BrechasTest(unittest.TestCase):
-    def test_tiempos_y_cola_censurada(self) -> None:
-        tiempos, cola = tiempos_espera_brechas(
+    def test_tiempos_y_racha_final_incompleta(self) -> None:
+        tiempos, racha_final = tiempos_espera_brechas(
             [0.1, 0.3, 0.4, 0.8, 0.2], 0.2, 0.5
         )
         np.testing.assert_array_equal(tiempos, [2, 1])
-        self.assertEqual(cola, 2)
+        self.assertEqual(racha_final, 2)
 
     def test_extremos_del_intervalo_son_abiertos(self) -> None:
-        tiempos, cola = tiempos_espera_brechas([0.2, 0.5, 0.3], 0.2, 0.5)
+        tiempos, racha_final = tiempos_espera_brechas(
+            [0.2, 0.5, 0.3], 0.2, 0.5
+        )
         np.testing.assert_array_equal(tiempos, [3])
-        self.assertEqual(cola, 0)
+        self.assertEqual(racha_final, 0)
 
     def test_pmf_geometrica(self) -> None:
         np.testing.assert_allclose(
@@ -59,7 +61,7 @@ class BrechasTest(unittest.TestCase):
     def test_resumen_controlado(self) -> None:
         resumen = resumen_brechas([0.1, 0.3, 0.4, 0.8, 0.2], 0.2, 0.5)
         self.assertEqual(resumen["brechas_completas"], 2)
-        self.assertEqual(resumen["cola_censurada"], 2)
+        self.assertEqual(resumen["racha_final_incompleta"], 2)
         self.assertEqual(resumen["media_tiempo_espera"], 1.5)
         self.assertEqual(resumen["maximo_tiempo_espera"], 2)
         self.assertAlmostEqual(resumen["maxima_discrepancia_cdf"], 0.49)
