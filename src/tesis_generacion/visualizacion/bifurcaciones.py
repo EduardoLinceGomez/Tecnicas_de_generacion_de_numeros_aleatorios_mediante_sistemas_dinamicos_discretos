@@ -83,7 +83,7 @@ TIENDA = EspecificacionMapa(
     parametro_minimo=1.0,
     parametro_maximo=2.0,
     etiqueta_x=r"$\mu$",
-    etiqueta_y=r"$x^*$",
+    etiqueta_y=None,
     titulo_metadatos="Diagrama de bifurcación del mapeo tienda",
 )
 
@@ -205,6 +205,8 @@ def construir_figura(
         eje.set_xlabel(especificacion.etiqueta_x, fontsize=22, labelpad=5)
         if especificacion.etiqueta_y is not None:
             eje.set_ylabel(especificacion.etiqueta_y, fontsize=22, labelpad=4)
+        else:
+            eje.tick_params(axis="y", labelleft=False)
         eje.tick_params(
             axis="both",
             which="major",

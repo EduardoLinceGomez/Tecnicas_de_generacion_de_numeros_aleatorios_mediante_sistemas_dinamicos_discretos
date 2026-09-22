@@ -3,14 +3,14 @@
 import math
 import unittest
 
-from coleccionista import (
+from legacy.compat.coleccionista import (
     TIPOS_DECIMALES,
     cdf_coleccionista,
     extraer_digitos,
     longitudes_coleccionista,
     pmf_coleccionista,
 )
-from regenerar_coleccionista import construir_muestras, validar_muestra
+from legacy.compat.regenerar_coleccionista import construir_muestras, validar_muestra
 
 
 class ExtraccionDecimalTest(unittest.TestCase):

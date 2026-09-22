@@ -136,6 +136,6 @@ Resultados:
 - `src/tesis_generacion/visualizacion/coleccionista.py`;
 - `tests/test_soportes_coleccionista.py`;
 - `tests/test_visualizacion_coleccionista.py`;
-- `docs/resultados_eam_coleccionista_malla_comun.md`.
+- `docs/historico/resultados_eam_coleccionista_malla_comun.md`.
 
 No se modificó el repositorio de la tesis.

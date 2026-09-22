@@ -4,16 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tesis-generacion"
-version = "0.1.0.dev0"
-description = "Implementación de técnicas de generación de números aleatorios para la tesis"
+version = "1.0.0"
+description = "Implementación reproducible de técnicas de generación de números aleatorios mediante sistemas dinámicos discretos"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
+authors = [
+    { name = "Eduardo Lince Gómez" },
+]
+keywords = [
+    "sistemas dinámicos",
+    "números pseudoaleatorios",
+    "regla 30",
+    "reproducibilidad",
+]
 dependencies = [
     "numpy>=1.23,<3",
     "scipy>=1.9,<2",
     "matplotlib>=3.6,<4",
 ]
+
+[project.urls]
+Repository = "https://github.com/EduardoLinceGomez/Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos"
+Documentation = "https://github.com/EduardoLinceGomez/Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos#readme"
 
 [tool.setuptools.packages.find]
 where = ["src"]

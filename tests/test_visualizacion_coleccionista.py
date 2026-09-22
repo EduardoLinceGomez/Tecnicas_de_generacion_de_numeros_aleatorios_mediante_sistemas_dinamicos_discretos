@@ -8,11 +8,13 @@ from pathlib import Path
 
 import numpy as np
 
-from regenerar_coleccionista import regenerar as regenerar_historica
-from regenerar_coleccionista import (
+from legacy.compat.regenerar_coleccionista import regenerar as regenerar_historica
+from legacy.compat.regenerar_coleccionista import (
     regenerar_muestra as regenerar_muestra_historica,
 )
-from regenerar_coleccionista import validar_muestra as validar_muestra_historica
+from legacy.compat.regenerar_coleccionista import (
+    validar_muestra as validar_muestra_historica,
+)
 from tesis_generacion.estadistica import cdf_coleccionista
 from tesis_generacion.experimentos import muestra_logistica
 from tesis_generacion.visualizacion import (
