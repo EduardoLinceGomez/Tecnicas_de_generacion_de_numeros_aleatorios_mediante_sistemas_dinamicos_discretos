@@ -45,8 +45,8 @@ entornos históricos anotados en cada baseline gráfico.
 ## Instalación desde cero
 
 ```bash
-git clone https://github.com/EduardoLinceGomez/Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos.git
-cd Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos
+git clone https://github.com/EduardoLinceGomez/generadores-sistemas-dinamicos.git
+cd generadores-sistemas-dinamicos
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
