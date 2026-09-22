@@ -45,7 +45,11 @@ def _baseline() -> dict:
 
 
 def _comprobar_metricas(
-    caso: unittest.TestCase, observadas: dict, esperadas: dict
+    caso: unittest.TestCase,
+    observadas: dict,
+    esperadas: dict,
+    *,
+    comparar_eam_historico: bool = True,
 ) -> None:
     campos_enteros = {
         "numero_u": "n_valores",
@@ -59,8 +63,9 @@ def _comprobar_metricas(
     campos_float = {
         "media": "media",
         "distancia_maxima_cdf": "distancia_maxima_cdf",
-        "mae_cdf": "mae_cdf",
     }
+    if comparar_eam_historico:
+        campos_float["mae_cdf"] = "mae_cdf"
     for actual, esperado in campos_enteros.items():
         caso.assertEqual(observadas[actual], esperadas[esperado])
     for actual, esperado in campos_float.items():
@@ -168,7 +173,19 @@ class RegeneracionVisualTest(unittest.TestCase):
             )
             for nombre, metricas in resumen.items():
                 with self.subTest(nombre=nombre):
-                    _comprobar_metricas(self, metricas, self.baseline[nombre])
+                    _comprobar_metricas(
+                        self,
+                        metricas,
+                        self.baseline[nombre],
+                        comparar_eam_historico=False,
+                    )
+                    self.assertEqual(
+                        metricas["maximo_soporte_evaluacion"],
+                        max(
+                            muestra["maximo"]
+                            for muestra in self.baseline.values()
+                        ),
+                    )
 
 
 class CompatibilidadHistoricaTest(unittest.TestCase):

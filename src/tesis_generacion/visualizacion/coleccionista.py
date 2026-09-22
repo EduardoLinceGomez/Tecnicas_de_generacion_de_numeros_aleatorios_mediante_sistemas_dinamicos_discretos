@@ -2,7 +2,7 @@
 
 from collections import Counter
 from pathlib import Path
-from typing import Dict, Sequence
+from typing import Dict, Optional, Sequence
 
 import matplotlib
 
@@ -15,7 +15,11 @@ from tesis_generacion.estadistica.coleccionista import (
     metricas_coleccionista,
     pmf_coleccionista,
 )
-from tesis_generacion.experimentos import NUM_VALORES, construir_muestras
+from tesis_generacion.experimentos import (
+    NUM_VALORES,
+    calcular_maximo_soporte_coleccionista_comun,
+    construir_muestras,
+)
 from tesis_generacion.visualizacion.estilo import (
     estilizar_eje,
     guardar_figura,
@@ -135,7 +139,10 @@ def guardar_pmf(
 
 
 def regenerar_muestra(
-    nombre: str, valores: np.ndarray, output_dir: Path
+    nombre: str,
+    valores: np.ndarray,
+    output_dir: Path,
+    maximo_soporte: Optional[int] = None,
 ) -> Dict[str, float]:
     """Valida una muestra y regenera su par de figuras CDF/PMF."""
 
@@ -144,7 +151,9 @@ def regenerar_muestra(
     output_dir.mkdir(parents=True, exist_ok=True)
     valores = np.asarray(valores, dtype=float)
     validar_muestra(nombre, valores)
-    longitudes, metricas = metricas_coleccionista(valores)
+    longitudes, metricas = metricas_coleccionista(
+        valores, maximo_soporte=maximo_soporte
+    )
     valores_m = rango_grafica(longitudes)
     archivo_cdf, archivo_pmf = NOMBRES_FIGURAS[nombre]
     guardar_cdf(
@@ -159,9 +168,15 @@ def regenerar_muestra(
 def regenerar(output_dir: Path) -> Dict[str, Dict[str, float]]:
     output_dir.mkdir(parents=True, exist_ok=True)
     muestras = construir_muestras()
+    maximo_soporte = calcular_maximo_soporte_coleccionista_comun(muestras)
     resumen = {}
 
     for nombre, valores in muestras.items():
-        resumen[nombre] = regenerar_muestra(nombre, valores, output_dir)
+        resumen[nombre] = regenerar_muestra(
+            nombre,
+            valores,
+            output_dir,
+            maximo_soporte=maximo_soporte,
+        )
 
     return resumen

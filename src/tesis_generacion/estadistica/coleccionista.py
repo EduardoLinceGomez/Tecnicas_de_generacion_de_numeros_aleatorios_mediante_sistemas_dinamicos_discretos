@@ -5,7 +5,7 @@ from fractions import Fraction
 import math
 import numbers
 import statistics
-from typing import Dict, Iterable, List, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 from tesis_generacion.transformaciones.codificacion_decimal import (
     PRECISION_DECIMAL,
@@ -82,8 +82,15 @@ def media_teorica_coleccionista(k: int = 10) -> float:
 
 def metricas_coleccionista(
     valores: Sequence[float],
+    maximo_soporte: Optional[int] = None,
 ) -> Tuple[List[int], Dict[str, float]]:
-    """Calcula las métricas históricas para una muestra uniforme."""
+    """Calcula las métricas del coleccionista para una muestra uniforme.
+
+    Si ``maximo_soporte`` se omite, conserva exactamente la convención
+    histórica de evaluar hasta la longitud máxima observada. Un soporte
+    externo permite comparar el EAM entre muestras sobre la misma malla sin
+    alterar los bloques observados.
+    """
 
     longitudes, cola = longitudes_coleccionista(valores, PRECISION_DECIMAL)
     if not longitudes:
@@ -91,9 +98,21 @@ def metricas_coleccionista(
 
     frecuencias = Counter(longitudes)
     maximo = max(longitudes)
+    if maximo_soporte is None:
+        maximo_evaluacion = maximo
+    else:
+        if isinstance(maximo_soporte, bool) or not isinstance(
+            maximo_soporte, numbers.Integral
+        ):
+            raise TypeError("maximo_soporte debe ser un entero")
+        maximo_evaluacion = int(maximo_soporte)
+        if maximo_evaluacion < maximo:
+            raise ValueError(
+                "maximo_soporte debe ser mayor o igual que el máximo observado"
+            )
     acumulada = 0
     errores = []
-    for m in range(10, maximo + 1):
+    for m in range(10, maximo_evaluacion + 1):
         acumulada += frecuencias.get(m, 0)
         cdf_empirica = acumulada / len(longitudes)
         errores.append(abs(cdf_empirica - cdf_coleccionista(m)))
@@ -114,4 +133,6 @@ def metricas_coleccionista(
         "distancia_maxima_cdf": max(errores),
         "mae_cdf": statistics.fmean(errores),
     }
+    if maximo_soporte is not None:
+        metricas["maximo_soporte_evaluacion"] = maximo_evaluacion
     return longitudes, metricas
