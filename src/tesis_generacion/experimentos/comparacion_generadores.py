@@ -32,10 +32,11 @@ from .parametros import (
     LONGITUD_INTERVALO_BRECHAS,
     NUM_VALORES,
     PROBABILIDAD_BRECHAS,
+    SEED_MINSTD,
 )
+from .soportes_brechas import calcular_maximos_soporte_brechas_comunes
 
 
-SEED_MINSTD = 2024
 ORDEN_MAXIMO_MOMENTOS_COMPARACION = 20
 LAGS_COMPARACION = tuple(range(1, 21))
 MALLA_CDF = np.linspace(0.0, 1.0, 1001)
@@ -49,11 +50,13 @@ REFERENCIA_MINSTD = {
 
 
 def _resumen_brechas_comun(
-    valores: np.ndarray, alpha: float, beta: float
+    valores: np.ndarray, alpha: float, beta: float, maximo_soporte: int
 ) -> Dict[str, float]:
     """Calcula brechas y normaliza el parámetro p del protocolo validado."""
 
-    resumen = resumen_brechas(valores, alpha, beta)
+    resumen = resumen_brechas(
+        valores, alpha, beta, maximo_soporte=maximo_soporte
+    )
     if not np.isclose(resumen["p"], PROBABILIDAD_BRECHAS):
         raise AssertionError("la probabilidad de brechas debe ser 0.2")
     resumen["p"] = PROBABILIDAD_BRECHAS
@@ -72,7 +75,9 @@ def construir_muestras_comparacion() -> Dict[str, np.ndarray]:
     return muestras
 
 
-def _resumen_muestra(valores: np.ndarray) -> Dict[str, object]:
+def _resumen_muestra(
+    valores: np.ndarray, maximos_soporte: Dict[str, int]
+) -> Dict[str, object]:
     momentos = np.asarray(
         momentos_ordinarios(valores, ORDEN_MAXIMO_MOMENTOS_COMPARACION)
     )
@@ -105,7 +110,9 @@ def _resumen_muestra(valores: np.ndarray) -> Dict[str, object]:
         ),
         "acf": resumen_autocorrelaciones(valores, LAGS_COMPARACION),
         "brechas": {
-            intervalo_id: _resumen_brechas_comun(valores, alpha, beta)
+            intervalo_id: _resumen_brechas_comun(
+                valores, alpha, beta, maximos_soporte[intervalo_id]
+            )
             for intervalo_id, (alpha, beta) in INTERVALOS_BRECHAS_COMUNES.items()
         },
     }
@@ -115,6 +122,7 @@ def construir_comparacion_generadores() -> Dict[str, object]:
     """Calcula las métricas comunes sin producir una puntuación agregada."""
 
     muestras = construir_muestras_comparacion()
+    maximos_soporte = calcular_maximos_soporte_brechas_comunes()
     estados_control = estados_minstd(10, semilla=SEED_MINSTD)
     return {
         "benchmark": {
@@ -162,9 +170,10 @@ def construir_comparacion_generadores() -> Dict[str, object]:
             "p_brechas": PROBABILIDAD_BRECHAS,
             "intervalos_abiertos": True,
             "convencion_brechas": "W=G+1",
+            "maximos_soporte_evaluacion_brechas": maximos_soporte,
         },
         "muestras": {
-            nombre: _resumen_muestra(valores)
+            nombre: _resumen_muestra(valores, maximos_soporte)
             for nombre, valores in muestras.items()
         },
     }

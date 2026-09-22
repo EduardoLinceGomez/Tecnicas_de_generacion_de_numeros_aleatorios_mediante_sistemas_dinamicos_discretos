@@ -11,10 +11,8 @@ from tesis_generacion.estadistica.dependencia_serial import (
 )
 from tesis_generacion.estadistica.invariancia import fingerprint_ensemble
 from tesis_generacion.estadistica.momentos import momentos_ordinarios
-from tesis_generacion.generadores.logistico import orbita_logistica
 from tesis_generacion.transformaciones.reordenamiento import (
     aplicar_permutacion,
-    generar_permutacion_por_ranking,
 )
 
 from .muestras import construir_muestras
@@ -23,10 +21,14 @@ from .parametros import (
     LONGITUD_INTERVALO_BRECHAS,
     NUM_VALORES,
     PROBABILIDAD_BRECHAS,
+    SEED_REORDENAMIENTO,
+)
+from .soportes_brechas import (
+    calcular_maximos_soporte_brechas_comunes,
+    construir_permutaciones_reordenamiento,
 )
 
 
-SEED_REORDENAMIENTO = 2024
 LAGS_REORDENAMIENTO = tuple(range(1, 21))
 
 
@@ -40,44 +42,6 @@ def fingerprint_permutacion(indices: np.ndarray) -> Dict[str, object]:
         "dtype": arreglo.dtype.str,
         "endianness": "little",
         "sha256": hashlib.sha256(arreglo.tobytes(order="C")).hexdigest(),
-    }
-
-
-def construir_permutaciones_reordenamiento() -> Dict[str, Dict[str, object]]:
-    """Construye las dos permutaciones por ranking presentes en el notebook."""
-
-    auxiliar_fija = np.asarray(
-        orbita_logistica(4.0, 0.02024, NUM_VALORES)[:NUM_VALORES],
-        dtype=float,
-    )
-    rng = np.random.RandomState(SEED_REORDENAMIENTO)
-    inicial_sembrado = float(rng.uniform(0.0, 1.0))
-    auxiliar_sembrada = np.asarray(
-        orbita_logistica(4.0, inicial_sembrado, NUM_VALORES)[:NUM_VALORES],
-        dtype=float,
-    )
-    if np.unique(auxiliar_fija).size != NUM_VALORES:
-        raise ValueError("la órbita auxiliar fija contiene empates")
-    if np.unique(auxiliar_sembrada).size != NUM_VALORES:
-        raise ValueError("la órbita auxiliar sembrada contiene empates")
-
-    return {
-        "fija": {
-            "metodo": "ranking de órbita logística auxiliar fija",
-            "r": 4.0,
-            "x0": 0.02024,
-            "seed": None,
-            "auxiliar": auxiliar_fija,
-            "indices": generar_permutacion_por_ranking(auxiliar_fija),
-        },
-        "sembrada": {
-            "metodo": "ranking de órbita logística auxiliar con estado sembrado",
-            "r": 4.0,
-            "x0": inicial_sembrado,
-            "seed": SEED_REORDENAMIENTO,
-            "auxiliar": auxiliar_sembrada,
-            "indices": generar_permutacion_por_ranking(auxiliar_sembrada),
-        },
     }
 
 
@@ -114,6 +78,7 @@ def construir_experimentos_reordenamiento() -> Dict[str, object]:
 
     muestras = construir_muestras()
     permutaciones = construir_permutaciones_reordenamiento()
+    maximos_soporte = calcular_maximos_soporte_brechas_comunes()
     resultados = {}
     for nombre, original in muestras.items():
         clave = "sembrada" if nombre == "logistico" else "fija"
@@ -122,8 +87,13 @@ def construir_experimentos_reordenamiento() -> Dict[str, object]:
         reordenada = aplicar_permutacion(original, indices)
         brechas = {}
         for intervalo_id, (alpha, beta) in INTERVALOS_BRECHAS_COMUNES.items():
-            resumen_original = resumen_brechas(original, alpha, beta)
-            resumen_reordenada = resumen_brechas(reordenada, alpha, beta)
+            maximo_soporte = maximos_soporte[intervalo_id]
+            resumen_original = resumen_brechas(
+                original, alpha, beta, maximo_soporte=maximo_soporte
+            )
+            resumen_reordenada = resumen_brechas(
+                reordenada, alpha, beta, maximo_soporte=maximo_soporte
+            )
             if not (
                 np.isclose(resumen_original["p"], PROBABILIDAD_BRECHAS)
                 and np.isclose(resumen_reordenada["p"], PROBABILIDAD_BRECHAS)
@@ -194,6 +164,7 @@ def construir_experimentos_reordenamiento() -> Dict[str, object]:
             "p_brechas": PROBABILIDAD_BRECHAS,
             "intervalos_abiertos": True,
             "convencion_brechas": "W=G+1",
+            "maximos_soporte_evaluacion_brechas": maximos_soporte,
         },
         "permutaciones": permutaciones,
         "resumen_permutaciones": resumen_permutaciones,
