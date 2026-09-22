@@ -78,7 +78,7 @@ def construir_participantes_malla_brechas() -> Dict[str, np.ndarray]:
 
 
 def calcular_maximos_soporte_brechas_comunes() -> Dict[str, int]:
-    """Deriva W_j^* sobre los nueve participantes del protocolo AUT-093."""
+    """Deriva W_j^* sobre los nueve participantes del protocolo común."""
 
     participantes = construir_participantes_malla_brechas()
     return {

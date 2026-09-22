@@ -1,4 +1,4 @@
-"""Pruebas de la fuente compartida de mallas de brechas AUT-093."""
+"""Pruebas de la fuente compartida de mallas de brechas."""
 
 import unittest
 

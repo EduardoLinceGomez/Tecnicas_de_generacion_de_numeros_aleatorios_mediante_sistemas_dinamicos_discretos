@@ -1,4 +1,4 @@
-"""Pruebas de la malla común del coleccionista aprobada en AUT-105."""
+"""Pruebas de la malla común del coleccionista."""
 
 from bisect import bisect_right
 import hashlib
