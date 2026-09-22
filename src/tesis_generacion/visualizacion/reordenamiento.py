@@ -26,6 +26,8 @@ from tesis_generacion.experimentos.parametros import (
     PROBABILIDAD_BRECHAS,
 )
 from tesis_generacion.visualizacion.estilo import (
+    PERFIL_MEDIO,
+    PerfilTipografico,
     estilizar_eje,
     guardar_figura,
     leyenda_externa,
@@ -59,6 +61,11 @@ ARCHIVOS_REFERENCIA_REORDENAMIENTO = (
     "resumen_reordenamiento.csv",
     "resumen_brechas_reordenamiento.csv",
 )
+
+# La figura termina a media página (y, para R30, en una pareja al 49 % del
+# ancho). Esta geometría compacta conserva tres paneles legibles sin el exceso
+# vertical de la versión histórica de 7.4 x 10.4 pulgadas.
+FIGSIZE_BRECHAS = (8.6, 9.8)
 
 
 def _guardar_figura(figura: plt.Figure, ruta: Path) -> None:
@@ -119,12 +126,27 @@ def guardar_brechas_antes_despues(
     reordenada: np.ndarray,
     intervalos: Mapping[str, tuple],
     titulo: str,
+    perfil: PerfilTipografico = PERFIL_MEDIO,
 ) -> None:
     """Compara las PMF para los tres intervalos comunes en paneles."""
 
-    figura, ejes = plt.subplots(len(intervalos), 1, figsize=(7.4, 10.4))
-    figura.subplots_adjust(left=0.13, right=0.98, bottom=0.07, top=0.88, hspace=0.38)
-    figura.suptitle(f"Prueba de brechas: {titulo}", y=0.975, fontsize=16)
+    figura, ejes = plt.subplots(
+        len(intervalos),
+        1,
+        figsize=FIGSIZE_BRECHAS,
+    )
+    figura.subplots_adjust(
+        left=0.125,
+        right=0.985,
+        bottom=0.09,
+        top=0.84,
+        hspace=0.52,
+    )
+    figura.suptitle(
+        f"Prueba de brechas: {titulo}",
+        y=0.985,
+        fontsize=perfil.titulo,
+    )
     for eje, (intervalo_id, (alpha, beta)) in zip(ejes, intervalos.items()):
         tiempos_original, _ = tiempos_espera_brechas(original, alpha, beta)
         tiempos_reordenados, _ = tiempos_espera_brechas(
@@ -163,21 +185,35 @@ def guardar_brechas_antes_despues(
             ),
             xlim=(0.5, maximo + 0.5),
         )
-        eje.set_title(eje.get_title(), fontsize=13)
         eje.set_ylim(bottom=0.0)
         eje.grid(alpha=0.25)
-        eje.tick_params(axis="both", labelsize=9)
+        estilizar_eje(eje, perfil)
+        eje.set_title(
+            eje.get_title(),
+            fontsize=perfil.anotacion,
+            pad=7.0,
+        )
     manejadores, etiquetas = ejes[0].get_legend_handles_labels()
     figura.legend(
         manejadores,
         etiquetas,
         loc="upper center",
-        bbox_to_anchor=(0.5, 0.945),
+        bbox_to_anchor=(0.5, 0.925),
         ncol=3,
-        fontsize=10,
+        fontsize=perfil.leyenda,
+        columnspacing=1.1,
+        handletextpad=0.55,
     )
-    figura.supxlabel(r"Tiempo de espera $W=G+1$", y=0.02, fontsize=12)
-    figura.supylabel("Función de masa de probabilidad", x=0.02, fontsize=12)
+    figura.supxlabel(
+        r"Tiempo de espera $W=G+1$",
+        y=0.025,
+        fontsize=perfil.ejes,
+    )
+    figura.supylabel(
+        "Función de masa de probabilidad",
+        x=0.015,
+        fontsize=perfil.ejes,
+    )
     _guardar_figura(figura, ruta)
 
 
