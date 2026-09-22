@@ -52,6 +52,26 @@ ARCHIVOS_TESIS_TRANSFORMADAS = (
     "r30_error_fc.png",
 )
 
+# Las dos gráficas de función característica que se muestran en pareja en la
+# tesis comparten lienzo nominal. La trayectoria conserva ``aspect="equal"``;
+# sólo se armoniza el espacio disponible para título, ejes y leyenda.
+FIGSIZE_FC_PAREADA = (8.2, 7.0)
+
+TITULOS_FC = {
+    "logistico": (
+        "Función característica:\nmapeo logístico uniformizado",
+        "Error de la función característica:\nmapeo logístico uniformizado",
+    ),
+    "tienda": (
+        "Función característica: mapeo tienda",
+        "Error de la función característica: mapeo tienda",
+    ),
+    "r30": (
+        "Función característica: regla 30",
+        "Error de la función característica: regla 30",
+    ),
+}
+
 
 def _guardar_figura(figura: plt.Figure, ruta: Path) -> None:
     guardar_figura(figura, ruta, software="regenerar_transformadas.py")
@@ -165,11 +185,13 @@ def guardar_funcion_caracteristica(
     ruta: Path,
     series: Mapping[str, np.ndarray],
     titulo: str,
+    *,
+    figsize: tuple[float, float] = (6.4, 5.2),
 ) -> None:
     """Grafica la trayectoria compleja de phi(t), 0 <= t <= 20."""
 
     teorica = np.asarray(funcion_caracteristica_uniforme(T_FC), dtype=complex)
-    figura, eje = plt.subplots(figsize=(6.4, 5.2), constrained_layout=True)
+    figura, eje = plt.subplots(figsize=figsize, constrained_layout=True)
     eje.plot(
         teorica.real,
         teorica.imag,
@@ -207,11 +229,13 @@ def guardar_error_funcion_caracteristica(
     ruta: Path,
     series: Mapping[str, np.ndarray],
     titulo: str,
+    *,
+    figsize: tuple[float, float] = (7.2, 4.5),
 ) -> None:
     """Grafica |phi_n(t)-phi_U(t)| en la malla común."""
 
     teorica = np.asarray(funcion_caracteristica_uniforme(T_FC), dtype=complex)
-    figura, eje = plt.subplots(figsize=(7.2, 4.5), constrained_layout=True)
+    figura, eje = plt.subplots(figsize=figsize, constrained_layout=True)
     for etiqueta, valores in series.items():
         observada = np.asarray(
             funcion_caracteristica_empirica(valores, T_FC), dtype=complex
@@ -314,6 +338,17 @@ def regenerar_transformadas(output_dir: Path) -> Dict[str, object]:
         ),
     )
     for nombre, titulo, series in configuraciones:
+        titulo_fc, titulo_error_fc = TITULOS_FC[nombre]
+        figsize_fc = (
+            FIGSIZE_FC_PAREADA
+            if nombre in {"logistico", "tienda"}
+            else (6.4, 5.2)
+        )
+        figsize_error_fc = (
+            FIGSIZE_FC_PAREADA
+            if nombre in {"logistico", "tienda"}
+            else (7.2, 4.5)
+        )
         guardar_fgm(
             output_dir / f"{nombre}_fgm.png",
             series,
@@ -327,12 +362,14 @@ def regenerar_transformadas(output_dir: Path) -> Dict[str, object]:
         guardar_funcion_caracteristica(
             output_dir / f"{nombre}_fc.png",
             series,
-            f"Función característica: {titulo}",
+            titulo_fc,
+            figsize=figsize_fc,
         )
         guardar_error_funcion_caracteristica(
             output_dir / f"{nombre}_error_fc.png",
             series,
-            f"Error de la función característica: {titulo}",
+            titulo_error_fc,
+            figsize=figsize_error_fc,
         )
 
     diagnostico = {
