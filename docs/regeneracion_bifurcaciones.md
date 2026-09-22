@@ -5,10 +5,10 @@ No copia archivos al repositorio de la tesis ni modifica sus fuentes LaTeX.
 
 ## Procedencia revisada
 
-- `MainGenerador.ipynb` contiene las funciones iterativas `logistic_map` y
+- `legacy/notebooks/MainGenerador.ipynb` contiene las funciones iterativas `logistic_map` y
   `tent_map`, la condición inicial logística `0.02024` y los experimentos de
   muestras, pero no contiene celdas que generen los diagramas de bifurcación.
-- `atraccion-densidades-mapeos.nb` estudia la evolución de densidades mediante
+- `legacy/notebooks/atraccion-densidades-mapeos.nb` estudia la evolución de densidades mediante
   los operadores de transferencia logístico y tienda; no genera los diagramas
   de bifurcación usados por la tesis.
 - `src/tesis_generacion/visualizacion/figuras_tesis.py` aporta una
