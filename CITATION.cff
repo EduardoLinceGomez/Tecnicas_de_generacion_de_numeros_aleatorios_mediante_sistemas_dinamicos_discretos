@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "Si utiliza este software, cite la tesis y este repositorio."
+title: "Técnicas de generación de números aleatorios mediante sistemas dinámicos discretos"
+type: software
+version: 1.0.0
+date-released: 2026-09-22
+authors:
+  - family-names: "Lince Gómez"
+    given-names: "Eduardo"
+repository-code: "https://github.com/EduardoLinceGomez/Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos"
+license: MIT
+abstract: >-
+  Implementación reproducible de generadores basados en el mapeo logístico,
+  el mapeo tienda y la regla 30, con Park–Miller MINSTD como referencia,
+  baselines científicos y un manifiesto de figuras de tesis.

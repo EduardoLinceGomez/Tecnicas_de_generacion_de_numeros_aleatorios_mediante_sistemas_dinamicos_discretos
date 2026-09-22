@@ -13,13 +13,13 @@ import matplotlib
 import numpy as np
 import scipy
 
-from coleccionista import (
+from legacy.compat.coleccionista import (
     PRECISION_DECIMAL,
     cdf_coleccionista,
     media_teorica_coleccionista,
     pmf_coleccionista,
 )
-from regenerar_coleccionista import (
+from legacy.compat.regenerar_coleccionista import (
     SEED,
     construir_muestras,
     metricas_muestra,

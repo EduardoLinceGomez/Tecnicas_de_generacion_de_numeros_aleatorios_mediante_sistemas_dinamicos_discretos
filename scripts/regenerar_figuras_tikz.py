@@ -23,7 +23,9 @@ def sha256(ruta: Path) -> str:
 
 
 def regenerar(output_dir: Path) -> dict[str, object]:
-    output_dir = Path(output_dir)
+    # pdftoppm se ejecuta dentro de un temporal; la salida debe ser absoluta
+    # para que un argumento relativo siga resolviéndose desde la raíz pública.
+    output_dir = Path(output_dir).resolve()
     hashes = {}
     with tempfile.TemporaryDirectory(prefix="figuras-tikz-") as temporal:
         temporal = Path(temporal)

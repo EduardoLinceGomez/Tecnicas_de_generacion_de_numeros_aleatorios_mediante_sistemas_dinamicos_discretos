@@ -245,5 +245,5 @@ Salidas numéricas:
 Documentación:
 
 - `docs/metodologia_brechas_comparables.md`;
-- `docs/resultados_brechas_comparables.md`;
-- `docs/resultados_eam_brechas_malla_comun.md`.
+- `docs/historico/resultados_brechas_comparables.md`;
+- `docs/historico/resultados_eam_brechas_malla_comun.md`.

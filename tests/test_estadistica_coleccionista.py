@@ -4,13 +4,13 @@ import json
 import unittest
 from pathlib import Path
 
-from coleccionista import (
+from legacy.compat.coleccionista import (
     cdf_coleccionista as cdf_historica,
     longitudes_coleccionista as longitudes_historicas,
     media_teorica_coleccionista as media_historica,
     pmf_coleccionista as pmf_historica,
 )
-from regenerar_coleccionista import construir_muestras
+from legacy.compat.regenerar_coleccionista import construir_muestras
 from tesis_generacion.estadistica import (
     cdf_coleccionista,
     longitudes_coleccionista,

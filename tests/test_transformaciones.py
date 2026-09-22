@@ -6,8 +6,8 @@ import unittest
 import numpy as np
 from scipy.stats import beta
 
-from coleccionista import PRECISION_DECIMAL as PRECISION_ANTIGUA
-from coleccionista import extraer_digitos as extraer_digitos_antiguo
+from legacy.compat.coleccionista import PRECISION_DECIMAL as PRECISION_ANTIGUA
+from legacy.compat.coleccionista import extraer_digitos as extraer_digitos_antiguo
 from tesis_generacion.transformaciones import (
     PRECISION_DECIMAL,
     codificar_palabra_binaria,

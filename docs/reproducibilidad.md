@@ -1,35 +1,52 @@
-# Reproducibilidad y baseline científico
+# Reproducibilidad científica
 
-## Punto de control
+Este documento describe el contrato vigente del repositorio. Los informes de
+desarrollo se conservan en `docs/historico/`, pero no sustituyen estas reglas.
 
-El commit científico de origen es
-`d837e4fc1e3c773b129a7036a36c91a975d185d7`. El baseline registra el
-comportamiento que los commits posteriores de movimiento y refactorización
-deben conservar. No introduce ni valida correcciones científicas nuevas.
+## Entorno
 
-Los parámetros protegidos son:
+La instalación normal se define en `pyproject.toml` y admite Python 3.9 o
+posterior con NumPy 1.23–2.x, SciPy 1.9–1.x y Matplotlib 3.6–3.x. El release se
+validó desde un entorno limpio con las versiones fijadas en
+`requirements-repro.txt`.
 
-- `PRECISION_DECIMAL = 12`;
-- `SEED = 2024` en los experimentos que ya fijan semilla;
-- cuatro muestras de 1000 valores y 12000 dígitos cada una.
+Los baselines PNG se crearon en más de un entorno histórico. Cada JSON de
+`tests/data/` registra el suyo; no existe una única combinación de versiones
+que deba fingirse como origen binario de todos los PNG. El backend de referencia
+es `Agg`.
 
-## Métricas de referencia
+Las figuras TikZ y TeX requieren `latexmk` y `pdftoppm`. Las bifurcaciones
+editoriales requieren además `latex` y `dvipng` para componer las etiquetas.
 
-| Muestra | Bloques | Cola | Mín. | Máx. | Media | Mediana | CDF máx. | MAE CDF |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Logístico | 435 | 13 | 10 | 67 | 27.55632183908046 | 26 | 0.06239741904102747 | 0.0285822127624915 |
-| Tienda | 415 | 0 | 12 | 86 | 28.91566265060241 | 27 | 0.030273814306883917 | 0.007884894696680737 |
-| R30 columnas | 423 | 16 | 12 | 91 | 28.33096926713948 | 27 | 0.05969646946652962 | 0.012624459072199258 |
-| R30 filas | 413 | 35 | 11 | 91 | 28.97094430992736 | 26 | 0.04695242695186852 | 0.005696878167701897 |
+## Semillas, tamaños y parámetros
 
-La media teórica es `29.289682539682538`. Los valores completos están en
-`tests/data/coleccionista_baseline.json`; los tests usan tolerancias explícitas
-y no redondean resultados para forzar coincidencias.
+Los parámetros transversales viven en
+`src/tesis_generacion/experimentos/parametros.py`:
 
-## Fingerprints de las muestras
+| Parámetro | Valor |
+|---|---:|
+| `SEED` | 2024 |
+| `SEED_REORDENAMIENTO` | 2024 |
+| `SEED_MINSTD` | 2024 |
+| `NUM_VALORES` | 1000 |
+| `NUM_ITERACIONES` | 1000 |
+| `NUM_CELDAS` | 1000 |
+| `FACTOR_TIENDA` | 1.999 |
 
-Cada muestra se convierte a un array contiguo con `dtype="<f8"` (float64,
-little-endian) y se calcula SHA-256 sobre sus 8000 bytes en orden C.
+La codificación decimal del coleccionista usa
+`PRECISION_DECIMAL = 12`. Cada muestra canónica produce 12 000 dígitos. La
+regla 30 se interpreta de forma periódica y se extraen muestras por columnas y
+por filas mediante las funciones versionadas en `transformaciones/`.
+
+La prueba de brechas usa los intervalos abiertos comunes
+`(0.1, 0.3)`, `(0.4, 0.6)` y `(0.7, 0.9)`. La longitud y probabilidad común es
+`0.2`; la convención de espera es `W = G + 1`. Se valida con `math.isclose`
+porque `0.3 - 0.1` no tiene representación binaria decimal exacta.
+
+## Fingerprints de muestras
+
+Cada muestra se normaliza como un array contiguo `float64` little-endian y el
+SHA-256 se calcula sobre sus 8000 bytes en orden C.
 
 | Muestra | Elementos | SHA-256 |
 |---|---:|---|
@@ -38,111 +55,115 @@ little-endian) y se calcula SHA-256 sobre sus 8000 bytes en orden C.
 | R30 columnas | 1000 | `b81d0a7733d126c104bc778d8a6cc8efcfaab5098291dbc4e517f796744250bb` |
 | R30 filas | 1000 | `989b081363d4eb6d6b4a2b3fc9630a03b5c380b3b36075dcb24e19824b16b4c4` |
 
-Los fingerprints detectan cualquier cambio en los valores, su orden o su
-representación binaria sin copiar la implementación científica al test.
+MINSTD y las muestras reordenadas tienen fingerprints adicionales en
+`comparacion_generadores_baseline.json` y `reordenamiento_baseline.json`.
 
-## Reproducibilidad científica y PNG binario
+## Baselines
 
-Las muestras, las métricas, la CDF/PMF y las propiedades de MCF-036 son el
-baseline científico obligatorio. Los SHA-256 de los PNG son un control
-secundario y estricto.
+Los archivos de `tests/data/` tienen funciones distintas:
 
-El entorno usado para fijar los hashes gráficos fue:
+- `coleccionista_baseline.json`: métricas, media teórica y fingerprints;
+- `coleccionista_sha256.json`: hashes PNG del entorno histórico;
+- `momentos_baseline.json`: momentos, histogramas y convenciones;
+- `transformadas_baseline.json`: mallas, puntos de control, FGM y función
+  característica;
+- `invariancia_baseline.json`: ensembles, iteraciones y fingerprints;
+- `reordenamiento_baseline.json`: permutaciones, ACF y 24 resúmenes de brechas;
+- `comparacion_generadores_baseline.json`: cinco muestras, MINSTD y 15 resúmenes
+  de brechas.
 
-- Python 3.14.5;
-- NumPy 2.5.2;
-- SciPy 1.18.0;
-- Matplotlib 3.11.1;
-- Pillow 12.3.0;
-- backend `Agg`.
+Los CSV versionados de `graficas_auxiliares/` son resultados científicos, no
+archivos temporales. No se actualizan a mano: deben regenerarse con el pipeline
+y compararse antes de cualquier promoción.
 
-Versiones distintas pueden producir PNG byte-distintos por cambios de
-compresión. La auditoría comprobó que esos archivos pueden conservar píxeles,
-dimensiones y metadatos idénticos aunque cambie su SHA-256. Por ello, las
-métricas y los fingerprints tienen prioridad científica.
+## Tolerancias
 
-## Ejecución de pruebas
+Los invariantes discretos —tamaños, semillas, permutaciones, conteos,
+fingerprints y listas de parámetros— se comparan exactamente. Los tests de
+ensembles de invariancia también exigen igualdad numérica con `rtol=0` y
+`atol=0`.
 
-Desde la raíz del repositorio:
+Para resultados de punto flotante derivados:
 
-```bash
-python3 -m unittest -v
-python3 -m unittest discover -s tests -p 'test_*.py' -v
-```
+- métricas del coleccionista y adaptadores visuales: tolerancia absoluta
+  `1e-12`;
+- FGM, función característica y CDF controladas: `rtol=0`, `atol=1e-15`;
+- identidades analíticas simples: `assertAlmostEqual` entre 14 y 15 decimales;
+- igualdad de la longitud de intervalos: tolerancia absoluta `1e-12`.
 
-La verificación PNG exacta se activa solamente en el entorno de referencia:
+Las tolerancias no se aplican para ocultar cambios de muestra. Antes se valida
+el fingerprint exacto y después la métrica derivada.
+
+## Figuras
+
+`figuras_tesis/manifest_figuras.csv` es el inventario contractual de 65
+recursos. Cada entrada contiene ruta del manuscrito, copia canónica,
+procedencia, generador, comando, parámetros y SHA-256.
+
+Las categorías de procedencia son:
+
+1. `repo_reproducible`: existe un comando versionado que regenera la salida;
+2. `propia_documentada`: figura propia histórica cuya reconstrucción exacta no
+   está integrada o no es binariamente equivalente;
+3. `externa_citada`: recurso institucional o externo con atribución.
+
+Las bifurcaciones históricas siguen en la segunda categoría. El script
+`regenerar_bifurcaciones.py` recupera la dinámica, rango, condición inicial,
+burn-in e iteraciones y produce candidatos editoriales de mayor resolución.
+No reemplaza silenciosamente los PNG canónicos.
+
+## Reproducibilidad científica frente a identidad PNG
+
+Una salida es científicamente reproducible cuando mantiene datos, orden,
+parámetros, métricas, soporte y convenciones. Un PNG es binariamente idéntico
+sólo si coinciden también el stack gráfico, las fuentes, la compresión y los
+metadatos.
+
+Matplotlib, Pillow, FreeType y el backend pueden cambiar bytes —e incluso
+pequeños detalles de antialiasing— sin cambiar el experimento. Por eso los
+hashes PNG son un control secundario. Las pruebas estrictas se habilitan sólo
+en su entorno anotado:
 
 ```bash
 VERIFICAR_PNG_EXACTO=1 \
-MPLBACKEND=Agg \
-python3 -m unittest discover -s tests -p 'test_*.py' -v
-```
-
-Conviene establecer `PYTHONPYCACHEPREFIX` y `MPLCONFIGDIR` en directorios
-temporales durante validaciones automatizadas.
-
-## Inconsistencias conocidas que NO se corrigen en la reestructuración
-
-- muestra logística sin uniformizar en momentos, MGF y función característica;
-- diferencia de 1001 frente a 1000 valores logísticos;
-- parámetro del mapeo tienda `1.999` frente a la teoría con `2`;
-- distribución triangular con moda `0.3` frente a `0.5`;
-- reordenamiento logístico sin semilla;
-- codificación de filas y columnas de R30 ambigua;
-- outputs obsoletos embebidos en el notebook;
-- afirmaciones sobre reordenamiento en el coleccionista sin pipeline actual.
-
-Estas cuestiones requieren commits científicos independientes.
-
-La inconsistencia histórica entre los intervalos de la prueba de brechas ya no
-pertenece a esta lista: fue corregida en el commit científico
-`3099b0630fb3eca42a18f7c5eaabe3874c4857b6`. La actualización de la prosa y
-las copias de figuras del repositorio de la tesis permanece como una fase
-posterior.
-
-
-## Corrección metodológica aprobada: prueba de brechas comparable
-
-El 2026-09-21 se aprobó sustituir los intervalos históricos distintos por
-generador por tres intervalos comunes:
-
-\[
-(0.1,0.3),\qquad(0.4,0.6),\qquad(0.7,0.9).
-\]
-
-Los tres tienen longitud \(0.2\), de modo que la referencia teórica es la
-misma (\(p=0.2\)) para todos los generadores. La especificación completa,
-incluidos cambios de código, CSV, figuras, baselines, pruebas y sincronización
-con la tesis, se encuentra en
-`docs/metodologia_brechas_comparables.md`.
-
-**Estado:** **IMPLEMENTADO** en `feat/brechas-comparables`, desde
-`reestructuracion/repositorio@363bef1a8fc694e40ccab8e0625c166775f14c9c`,
-con commit científico
-`3099b0630fb3eca42a18f7c5eaabe3874c4857b6`.
-
-Las referencias reproducibles son:
-
-- `graficas_auxiliares/reordenamiento/resumen_brechas_reordenamiento.csv`
-  con 12 filas;
-- `graficas_auxiliares/comparacion_generadores/resumen_brechas_comparacion.csv`
-  con 15 filas;
-- cuatro figuras PG compuestas y tres figuras comparativas por intervalo;
-- `tests/data/reordenamiento_baseline.json` y
-  `tests/data/comparacion_generadores_baseline.json`.
-
-El entorno gráfico usado para los nuevos hashes fue macOS 26.6.2 arm64,
-Python 3.14.5, NumPy 2.4.6, SciPy 1.18.0, Matplotlib 3.10.9, Pillow 12.2.0 y
-backend `Agg`. Las verificaciones estrictas se ejecutan con:
-
-```bash
+VERIFICAR_PNG_INVARIANCIA=1 \
 VERIFICAR_PNG_REORDENAMIENTO=1 \
 VERIFICAR_PNG_COMPARACION=1 \
 MPLBACKEND=Agg \
-python3 -m unittest -v \
-  tests.test_visualizacion_reordenamiento \
-  tests.test_visualizacion_comparacion_generadores
+python -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-El handoff autosuficiente, incluidas las 27 filas de resultados y los SHA-256,
-se encuentra en `docs/resultados_brechas_comparables.md`.
+Si el entorno no coincide, se ejecutan todos los invariantes científicos y se
+omiten únicamente los hashes gráficos que declaran esa condición.
+
+## Flujo de reproducción
+
+```bash
+python scripts/reproducir_tesis.py --experiments
+python scripts/reproducir_tesis.py --figures
+python scripts/reproducir_tesis.py --verify
+python scripts/reproducir_tesis.py --all
+```
+
+Todos los candidatos se escriben en `outputs/`. La verificación canónica es:
+
+```bash
+python scripts/verificar_figuras_tesis.py
+```
+
+Promover una salida requiere comparar métricas y hashes, revisar visualmente y
+usar de forma consciente el `--reference-dir` del script correspondiente o
+actualizar el manifiesto. El orquestador nunca realiza esa promoción.
+
+## Invariantes que no deben cambiar
+
+- las cuatro muestras canónicas y sus fingerprints;
+- la muestra MINSTD y las permutaciones de reordenamiento;
+- semillas, tamaños y precisión decimal;
+- intervalos abiertos de brechas, `p=0.2` y `W=G+1`;
+- métricas y puntos de control de los baselines;
+- CSV científicos versionados salvo corrección aprobada;
+- las rutas y hashes canónicos del manifiesto salvo promoción explícita.
+
+Un cambio que viole uno de estos puntos es científico, no una limpieza de
+código, y requiere revisión independiente.

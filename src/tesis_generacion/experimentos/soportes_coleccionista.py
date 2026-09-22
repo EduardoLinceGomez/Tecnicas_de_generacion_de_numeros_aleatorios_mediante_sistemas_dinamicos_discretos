@@ -21,7 +21,7 @@ MUESTRAS_COLECCIONISTA = (
 
 
 def construir_participantes_malla_coleccionista() -> Mapping[str, Sequence[float]]:
-    """Construye las cuatro muestras originales incluidas en AUT-105."""
+    """Construye las cuatro muestras originales del soporte común."""
 
     muestras = construir_muestras()
     return {nombre: muestras[nombre] for nombre in MUESTRAS_COLECCIONISTA}

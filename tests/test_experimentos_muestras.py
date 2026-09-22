@@ -7,11 +7,17 @@ from pathlib import Path
 
 import numpy as np
 
-from regenerar_coleccionista import SEED as SEED_HISTORICA
-from regenerar_coleccionista import construir_muestras as construir_historica
-from regenerar_coleccionista import muestra_logistica as logistica_historica
-from regenerar_coleccionista import muestra_tienda as tienda_historica
-from regenerar_coleccionista import muestras_regla_30 as r30_historica
+from legacy.compat.regenerar_coleccionista import SEED as SEED_HISTORICA
+from legacy.compat.regenerar_coleccionista import (
+    construir_muestras as construir_historica,
+)
+from legacy.compat.regenerar_coleccionista import (
+    muestra_logistica as logistica_historica,
+)
+from legacy.compat.regenerar_coleccionista import muestra_tienda as tienda_historica
+from legacy.compat.regenerar_coleccionista import (
+    muestras_regla_30 as r30_historica,
+)
 from tesis_generacion.experimentos import (
     FACTOR_TIENDA,
     NUM_CELDAS,
