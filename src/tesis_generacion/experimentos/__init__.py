@@ -45,6 +45,11 @@ from .reordenamiento import (
     construir_permutaciones_reordenamiento,
     fingerprint_permutacion,
 )
+from .soportes_coleccionista import (
+    MUESTRAS_COLECCIONISTA,
+    calcular_maximo_soporte_coleccionista_comun,
+    construir_participantes_malla_coleccionista,
+)
 
 __all__ = (
     "LAGS_COMPARACION",
@@ -84,4 +89,7 @@ __all__ = (
     "construir_experimentos_reordenamiento",
     "construir_permutaciones_reordenamiento",
     "fingerprint_permutacion",
+    "MUESTRAS_COLECCIONISTA",
+    "calcular_maximo_soporte_coleccionista_comun",
+    "construir_participantes_malla_coleccionista",
 )
