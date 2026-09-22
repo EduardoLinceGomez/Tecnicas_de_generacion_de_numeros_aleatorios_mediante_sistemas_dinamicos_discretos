@@ -1,7 +1,7 @@
 """Diagnósticos descriptivos sensibles al orden serial."""
 
 import numbers
-from typing import Dict, Sequence, Tuple
+from typing import Dict, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -116,21 +116,41 @@ def pmf_geometrica(soporte: Sequence[int], p: float) -> np.ndarray:
 
 
 def resumen_brechas(
-    valores: Sequence[float], alpha: float, beta: float
+    valores: Sequence[float],
+    alpha: float,
+    beta: float,
+    maximo_soporte: Optional[int] = None,
 ) -> Dict[str, float]:
-    """Compara la CDF empírica de W con Geom(beta-alpha)."""
+    """Compara la CDF empírica de W con Geom(beta-alpha).
+
+    Si ``maximo_soporte`` se omite, conserva la convención histórica de
+    evaluar hasta el máximo observado. Un soporte externo permite comparar el
+    EAM entre muestras sobre la misma malla sin alterar los tiempos observados.
+    """
 
     alpha, beta = _validar_intervalo(alpha, beta)
     tiempos, racha_final = tiempos_espera_brechas(valores, alpha, beta)
     if tiempos.size == 0:
         raise ValueError("la muestra no contiene brechas completas")
     maximo = int(np.max(tiempos))
-    soporte = np.arange(1, maximo + 1, dtype=np.int64)
+    if maximo_soporte is None:
+        maximo_evaluacion = maximo
+    else:
+        if isinstance(maximo_soporte, bool) or not isinstance(
+            maximo_soporte, numbers.Integral
+        ):
+            raise TypeError("maximo_soporte debe ser un entero")
+        maximo_evaluacion = int(maximo_soporte)
+        if maximo_evaluacion < maximo:
+            raise ValueError(
+                "maximo_soporte debe ser mayor o igual que el máximo observado"
+            )
+    soporte = np.arange(1, maximo_evaluacion + 1, dtype=np.int64)
     cdf_empirica = np.searchsorted(np.sort(tiempos), soporte, side="right") / tiempos.size
     p = beta - alpha
     cdf_teorica = 1.0 - (1.0 - p) ** soporte
     diferencias = np.abs(cdf_empirica - cdf_teorica)
-    return {
+    resultado = {
         "alpha": alpha,
         "beta": beta,
         "p": p,
@@ -141,3 +161,6 @@ def resumen_brechas(
         "maxima_discrepancia_cdf": float(np.max(diferencias)),
         "mae_cdf": float(np.mean(diferencias)),
     }
+    if maximo_soporte is not None:
+        resultado["maximo_soporte_evaluacion"] = maximo_evaluacion
+    return resultado

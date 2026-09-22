@@ -259,6 +259,7 @@ def _escribir_csv_brechas(
         "media_w_reordenada",
         "max_w_original",
         "max_w_reordenada",
+        "maximo_soporte_evaluacion",
         "dmax_original",
         "dmax_reordenada",
         "mae_original",
@@ -290,6 +291,9 @@ def _escribir_csv_brechas(
                         "media_w_reordenada": reordenada["media_tiempo_espera"],
                         "max_w_original": original["maximo_tiempo_espera"],
                         "max_w_reordenada": reordenada["maximo_tiempo_espera"],
+                        "maximo_soporte_evaluacion": original[
+                            "maximo_soporte_evaluacion"
+                        ],
                         "dmax_original": original["maxima_discrepancia_cdf"],
                         "dmax_reordenada": reordenada[
                             "maxima_discrepancia_cdf"

@@ -282,6 +282,7 @@ def _escribir_csv_brechas(ruta: Path, resumen: Mapping[str, object]) -> None:
         "racha_final_incompleta",
         "media_w",
         "max_w",
+        "maximo_soporte_evaluacion",
         "dmax",
         "mae",
     )
@@ -303,6 +304,9 @@ def _escribir_csv_brechas(ruta: Path, resumen: Mapping[str, object]) -> None:
                         ],
                         "media_w": brechas["media_tiempo_espera"],
                         "max_w": brechas["maximo_tiempo_espera"],
+                        "maximo_soporte_evaluacion": brechas[
+                            "maximo_soporte_evaluacion"
+                        ],
                         "dmax": brechas["maxima_discrepancia_cdf"],
                         "mae": brechas["mae_cdf"],
                     }

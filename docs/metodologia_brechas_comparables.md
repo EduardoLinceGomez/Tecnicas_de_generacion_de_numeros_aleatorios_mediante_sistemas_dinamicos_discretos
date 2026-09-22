@@ -776,3 +776,52 @@ Esta corrección no autoriza:
 
 La finalidad es hacer **comparable** el diagnóstico, no convertirlo en una
 prueba exhaustiva de independencia.
+
+## 18. Extensión posterior AUT-093: malla común para el EAM
+
+AUT-065 hizo comparables los intervalos y la referencia geométrica, pero el
+EAM todavía se promediaba hasta el máximo observado de cada muestra. Por ello,
+dos EAM de un mismo intervalo podían usar dominios y denominadores distintos.
+AUT-093 conserva íntegramente el protocolo anterior y sustituye sólo esa malla
+de evaluación.
+
+Para cada intervalo \(I_j\) se define dinámicamente
+
+\[
+W_j^*=\max_S W_{\max}(S,I_j),
+\]
+
+donde \(S\) recorre nueve participantes: las cuatro muestras dinámicas
+originales, sus cuatro versiones reordenadas y Park--Miller MINSTD original.
+MINSTD no se reordena. La única fuente lógica de esos máximos es
+`experimentos/soportes_brechas.py`; tanto `reordenamiento.py` como
+`comparacion_generadores.py` consumen el mismo resultado.
+
+Para cada muestra \(S\), el nuevo EAM es
+
+\[
+\operatorname{EAM}_{F,j}(S)
+=\frac{1}{W_j^*}\sum_{w=1}^{W_j^*}
+\left|\widehat F_{S,j}(w)-\left(1-0.8^w\right)\right|.
+\]
+
+Si \(w>W_{\max}(S,I_j)\), la CDF empírica vale naturalmente uno. No se
+extrapolan ni alteran datos. `resumen_brechas` acepta para ello el argumento
+opcional `maximo_soporte`; al omitirlo conserva el comportamiento histórico.
+El soporte externo debe ser entero y no menor que el máximo observado.
+
+Con las muestras canónicas de \(n=1000\), los valores derivados son
+
+\[
+W_1^*=43,\qquad W_2^*=26,\qquad W_3^*=35.
+\]
+
+Los JSON y CSV conservan `maximo_tiempo_espera`/`max_w` como estadística
+observada y registran por separado `maximo_soporte_evaluacion`. No cambian
+`tiempos_espera_brechas`, la convención \(W=G+1\), las muestras, semillas,
+permutaciones, ACF ni \(D_{\max}\). Las figuras de brechas continúan derivándose
+de los tiempos y sus PMF; no consumen el EAM y AUT-093 no reemplaza PNG.
+
+Los resultados numéricos, el diff científico y el handoff a la tesis se
+documentan en
+[`resultados_eam_brechas_malla_comun.md`](resultados_eam_brechas_malla_comun.md).

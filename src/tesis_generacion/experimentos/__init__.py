@@ -6,7 +6,6 @@ from .comparacion_generadores import (
     MALLA_FC,
     MALLA_FGM,
     ORDEN_MAXIMO_MOMENTOS_COMPARACION,
-    SEED_MINSTD,
     construir_comparacion_generadores,
     construir_muestras_comparacion,
 )
@@ -36,11 +35,12 @@ from .parametros import (
     NUM_VALORES,
     PROBABILIDAD_BRECHAS,
     SEED,
+    SEED_MINSTD,
+    SEED_REORDENAMIENTO,
     validar_intervalos_brechas_comunes,
 )
 from .reordenamiento import (
     LAGS_REORDENAMIENTO,
-    SEED_REORDENAMIENTO,
     construir_experimentos_reordenamiento,
     construir_permutaciones_reordenamiento,
     fingerprint_permutacion,
@@ -63,6 +63,8 @@ __all__ = (
     "NUM_VALORES",
     "PROBABILIDAD_BRECHAS",
     "SEED",
+    "SEED_MINSTD",
+    "SEED_REORDENAMIENTO",
     "validar_intervalos_brechas_comunes",
     "ITERACIONES_INVARIANCIA",
     "NUM_PARTICULAS_INVARIANCIA",
