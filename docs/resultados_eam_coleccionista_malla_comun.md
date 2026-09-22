@@ -83,7 +83,8 @@ su EAM anterior.
 - Los cuatro fingerprints SHA-256 son idénticos al baseline.
 - Se conservan semilla 2024, precisión decimal 12, 1000 valores y 12000 dígitos
   por muestra.
-- Se conservan bloques completos, cola censurada, mínimo, máximo observado,
+- Se conservan los bloques completos y la longitud del bloque final incompleto
+  (campo histórico `cola_censurada`), así como el mínimo, máximo observado,
   media, mediana, media teórica y diferencia de medias.
 - `Dmax` se evalúa en la malla común y permanece idéntico en las cuatro muestras.
 - Los EAM de R30 columnas y R30 filas son exactamente iguales al baseline.
