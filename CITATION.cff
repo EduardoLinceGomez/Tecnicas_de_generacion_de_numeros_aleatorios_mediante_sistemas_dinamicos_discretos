@@ -7,7 +7,7 @@ date-released: 2026-09-22
 authors:
   - family-names: "Lince Gómez"
     given-names: "Eduardo"
-repository-code: "https://github.com/EduardoLinceGomez/Tecnicas_de_generacion_de_numeros_aleatorios_mediante_sistemas_dinamicos_discretos"
+repository-code: "https://github.com/EduardoLinceGomez/generadores-sistemas-dinamicos"
 license: MIT
 abstract: >-
   Implementación reproducible de generadores basados en el mapeo logístico,
