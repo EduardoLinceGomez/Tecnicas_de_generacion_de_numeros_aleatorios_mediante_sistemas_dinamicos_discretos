@@ -666,22 +666,22 @@ def regenerar_figuras_tesis(output_dir: Path) -> Dict[str, object]:
     _figura_histograma(
         output_dir / "cientificas/logistico_histograma.png",
         logistica,
-        "Mapeo logístico uniformizado (n=1000)",
+        "Mapeo logístico uniformizado",
     )
     _figura_histograma(
         output_dir / "cientificas/tienda_histograma.png",
         tienda,
-        "Mapeo tienda, factor 1.999 (n=1000)",
+        "Mapeo tienda, factor 1.999",
     )
     _figura_histograma(
         output_dir / "cientificas/r30_hist_columnas.png",
         columnas,
-        "Regla 30 por columnas (n=1000)",
+        "Regla 30 por columnas",
     )
     _figura_histograma(
         output_dir / "cientificas/r30_hist_filas.png",
         filas,
-        "Regla 30 por filas (n=1000)",
+        "Regla 30 por filas",
     )
     rng = np.random.RandomState(SEED)
     matriz_canonica = evolucion_regla30(
