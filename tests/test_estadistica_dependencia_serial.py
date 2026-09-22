@@ -66,6 +66,34 @@ class BrechasTest(unittest.TestCase):
         self.assertEqual(resumen["maximo_tiempo_espera"], 2)
         self.assertAlmostEqual(resumen["maxima_discrepancia_cdf"], 0.49)
         self.assertAlmostEqual(resumen["mae_cdf"], 0.345)
+        self.assertNotIn("maximo_soporte_evaluacion", resumen)
+
+    def test_soporte_comun_extiende_cdf_y_eam_exactamente(self) -> None:
+        valores = [0.1, 0.3, 0.4, 0.8, 0.2]
+        historico = resumen_brechas(valores, 0.2, 0.5)
+        extendido = resumen_brechas(
+            valores, 0.2, 0.5, maximo_soporte=4
+        )
+        # Para W=3,4, mayores que el máximo observado 2, F_emp(W)=1.
+        diferencias = [0.2, 0.49, 1.0 - 0.657, 1.0 - 0.7599]
+        self.assertEqual(extendido["maximo_tiempo_espera"], 2)
+        self.assertEqual(extendido["maximo_soporte_evaluacion"], 4)
+        self.assertAlmostEqual(extendido["mae_cdf"], np.mean(diferencias))
+        self.assertEqual(
+            extendido["maxima_discrepancia_cdf"],
+            historico["maxima_discrepancia_cdf"],
+        )
+
+    def test_rechaza_soporte_externo_invalido(self) -> None:
+        valores = [0.1, 0.3, 0.4, 0.8, 0.2]
+        with self.assertRaisesRegex(ValueError, "máximo observado"):
+            resumen_brechas(valores, 0.2, 0.5, maximo_soporte=1)
+        for invalido in (True, 2.5):
+            with self.subTest(maximo_soporte=invalido):
+                with self.assertRaisesRegex(TypeError, "entero"):
+                    resumen_brechas(
+                        valores, 0.2, 0.5, maximo_soporte=invalido
+                    )
 
     def test_rechaza_intervalo_y_caso_sin_exitos(self) -> None:
         with self.assertRaisesRegex(ValueError, "intervalo"):

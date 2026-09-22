@@ -138,6 +138,18 @@ class ExperimentosReordenamientoTest(unittest.TestCase):
                 self.assertEqual(resultados["original"]["p"], 0.2)
                 self.assertEqual(resultados["reordenada"]["p"], 0.2)
                 self.assertEqual(
+                    resultados["original"]["maximo_soporte_evaluacion"],
+                    esperado["brechas"][intervalo_id][
+                        "maximo_soporte_evaluacion"
+                    ],
+                )
+                self.assertEqual(
+                    resultados["reordenada"]["maximo_soporte_evaluacion"],
+                    esperado["brechas"][intervalo_id][
+                        "maximo_soporte_evaluacion"
+                    ],
+                )
+                self.assertEqual(
                     resultados["original"]["brechas_completas"],
                     resultados["reordenada"]["brechas_completas"],
                 )

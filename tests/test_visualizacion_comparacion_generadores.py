@@ -62,6 +62,10 @@ class RegeneracionComparacionTest(unittest.TestCase):
                 {"i1", "i2", "i3"},
             )
             self.assertTrue(all(float(fila["p"]) == 0.2 for fila in filas_brechas))
+            self.assertEqual(
+                {int(fila["maximo_soporte_evaluacion"]) for fila in filas_brechas},
+                {26, 35, 43},
+            )
             self.assertNotIn("ranking", filas_brechas[0])
             self.assertNotIn("score", filas_brechas[0])
             self.assertEqual(len(resumen["figuras"]), 6)
