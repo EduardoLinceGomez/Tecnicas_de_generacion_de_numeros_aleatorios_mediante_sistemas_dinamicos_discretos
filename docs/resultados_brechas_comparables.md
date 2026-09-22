@@ -19,6 +19,12 @@ Este documento es la fuente de handoff para actualizar posteriormente
 versionados; los decimales se muestran con 12 cifras significativas y los CSV
 conservan la representación completa.
 
+> **Nota de supersesión (AUT-093, 2026-09-22).** Los EAM de este documento se
+> calcularon sobre el soporte observado propio de cada muestra. Esa convención
+> fue sustituida posteriormente por una malla común dentro de cada intervalo.
+> Los resultados vigentes se encuentran en
+> [`resultados_eam_brechas_malla_comun.md`](resultados_eam_brechas_malla_comun.md).
+
 ## Motivación y metodología final
 
 El experimento histórico asignaba un intervalo de brechas distinto a cada
