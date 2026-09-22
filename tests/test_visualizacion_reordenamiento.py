@@ -10,14 +10,20 @@ import unittest
 from pathlib import Path
 
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy
-from PIL import __version__ as pillow_version
+from PIL import Image, ImageChops, __version__ as pillow_version
+from unittest.mock import patch
 
+from tesis_generacion.experimentos.parametros import INTERVALOS_BRECHAS_COMUNES
+from tesis_generacion.visualizacion.estilo import PERFIL_MEDIO
 from tesis_generacion.visualizacion.reordenamiento import (
     ARCHIVOS_REFERENCIA_REORDENAMIENTO,
     ARCHIVOS_TESIS_REORDENAMIENTO,
+    FIGSIZE_BRECHAS,
     copiar_referencias_reordenamiento,
+    guardar_brechas_antes_despues,
     regenerar_reordenamiento,
 )
 
@@ -33,6 +39,47 @@ def _baseline() -> dict:
 
 
 class RegeneracionReordenamientoTest(unittest.TestCase):
+    def test_brechas_usa_perfil_compartido_y_leyenda_externa(self) -> None:
+        patron = np.resize(np.array([0.2, 0.5, 0.8, 0.0]), 80)
+        capturadas = []
+        with patch(
+            "tesis_generacion.visualizacion.reordenamiento._guardar_figura",
+            side_effect=lambda figura, ruta: capturadas.append(figura),
+        ):
+            guardar_brechas_antes_despues(
+                Path("brechas.png"),
+                patron,
+                np.roll(patron, 1),
+                INTERVALOS_BRECHAS_COMUNES,
+                "muestra de prueba",
+            )
+
+        self.assertEqual(len(capturadas), 1)
+        figura = capturadas[0]
+        try:
+            self.assertEqual(tuple(figura.get_size_inches()), FIGSIZE_BRECHAS)
+            self.assertEqual(figura._suptitle.get_fontsize(), PERFIL_MEDIO.titulo)
+            self.assertEqual(figura._supxlabel.get_fontsize(), PERFIL_MEDIO.ejes)
+            self.assertEqual(figura._supylabel.get_fontsize(), PERFIL_MEDIO.ejes)
+            self.assertEqual(len(figura.legends), 1)
+            self.assertTrue(all(eje.get_legend() is None for eje in figura.axes))
+            self.assertTrue(
+                all(
+                    texto.get_fontsize() == PERFIL_MEDIO.leyenda
+                    for texto in figura.legends[0].get_texts()
+                )
+            )
+            for eje in figura.axes:
+                self.assertEqual(eje.title.get_fontsize(), PERFIL_MEDIO.anotacion)
+                self.assertTrue(
+                    all(
+                        etiqueta.get_fontsize() == PERFIL_MEDIO.ticks
+                        for etiqueta in eje.get_xticklabels() + eje.get_yticklabels()
+                    )
+                )
+        finally:
+            plt.close(figura)
+
     def test_genera_figuras_csv_y_resumen(self) -> None:
         with tempfile.TemporaryDirectory(prefix="visual-reordenamiento-") as temporal:
             directorio = Path(temporal)
@@ -70,6 +117,17 @@ class RegeneracionReordenamientoTest(unittest.TestCase):
                 {int(fila["maximo_soporte_evaluacion"]) for fila in filas_brechas},
                 {26, 35, 43},
             )
+            for nombre in ARCHIVOS_TESIS_REORDENAMIENTO.values():
+                with Image.open(directorio / nombre) as imagen:
+                    fondo = Image.new("RGB", imagen.size, "white")
+                    caja = ImageChops.difference(
+                        imagen.convert("RGB"), fondo
+                    ).getbbox()
+                    self.assertIsNotNone(caja)
+                    izquierda, arriba, derecha, abajo = caja
+                    self.assertGreater(min(izquierda, arriba), 0)
+                    self.assertLess(derecha, imagen.width)
+                    self.assertLess(abajo, imagen.height)
 
     def test_copia_solo_referencias_explicitas(self) -> None:
         with tempfile.TemporaryDirectory(prefix="refs-reordenamiento-") as temporal:

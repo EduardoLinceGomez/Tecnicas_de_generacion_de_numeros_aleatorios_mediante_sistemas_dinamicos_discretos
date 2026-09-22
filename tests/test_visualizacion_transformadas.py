@@ -9,13 +9,18 @@ import unittest
 from pathlib import Path
 
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
-from PIL import __version__ as pillow_version
+from PIL import Image, ImageChops, __version__ as pillow_version
+from unittest.mock import patch
 
 from tesis_generacion.visualizacion.transformadas import (
     ARCHIVOS_REFERENCIA_TRANSFORMADAS,
     ARCHIVOS_TESIS_TRANSFORMADAS,
+    FIGSIZE_FC_PAREADA,
+    TITULOS_FC,
     copiar_referencias_transformadas,
+    guardar_funcion_caracteristica,
     regenerar_transformadas,
 )
 
@@ -31,6 +36,50 @@ def _baseline() -> dict:
 
 
 class RegeneracionTransformadasTest(unittest.TestCase):
+    def test_titulos_fc_logisticos_exactos_y_tienda_sin_cambio_semantico(
+        self,
+    ) -> None:
+        self.assertEqual(
+            TITULOS_FC["logistico"],
+            (
+                "Función característica:\nmapeo logístico uniformizado",
+                "Error de la función característica:\nmapeo logístico uniformizado",
+            ),
+        )
+        self.assertTrue(
+            all(titulo.count("\n") == 1 for titulo in TITULOS_FC["logistico"])
+        )
+        self.assertEqual(
+            TITULOS_FC["tienda"],
+            (
+                "Función característica: mapeo tienda",
+                "Error de la función característica: mapeo tienda",
+            ),
+        )
+        self.assertTrue(all("\n" not in titulo for titulo in TITULOS_FC["tienda"]))
+
+    def test_trayectoria_fc_conserva_aspecto_igual(self) -> None:
+        capturadas = []
+        valores = np.linspace(0.0, 1.0, 40)
+        with patch(
+            "tesis_generacion.visualizacion.transformadas._guardar_figura",
+            side_effect=lambda figura, ruta: capturadas.append(figura),
+        ):
+            guardar_funcion_caracteristica(
+                Path("fc.png"),
+                {"Muestra": valores},
+                "Título de prueba",
+                figsize=FIGSIZE_FC_PAREADA,
+            )
+
+        self.assertEqual(len(capturadas), 1)
+        figura = capturadas[0]
+        try:
+            self.assertEqual(tuple(figura.get_size_inches()), FIGSIZE_FC_PAREADA)
+            self.assertEqual(figura.axes[0].get_aspect(), 1.0)
+        finally:
+            plt.close(figura)
+
     def test_genera_figuras_csv_metricas_y_fingerprints(self) -> None:
         with tempfile.TemporaryDirectory(prefix="visual-transformadas-") as temporal:
             directorio = Path(temporal)
@@ -65,6 +114,22 @@ class RegeneracionTransformadasTest(unittest.TestCase):
                 resumen["muestras"]["logistico"]["fingerprint"]["sha256"],
                 resumen["logistico_historico_crudo"]["fingerprint"]["sha256"],
             )
+            for nombre in (
+                "logistico_fc.png",
+                "logistico_error_fc.png",
+                "tienda_fc.png",
+                "tienda_error_fc.png",
+            ):
+                with Image.open(directorio / nombre) as imagen:
+                    fondo = Image.new("RGB", imagen.size, "white")
+                    caja = ImageChops.difference(
+                        imagen.convert("RGB"), fondo
+                    ).getbbox()
+                    self.assertIsNotNone(caja)
+                    izquierda, arriba, derecha, abajo = caja
+                    self.assertGreater(min(izquierda, arriba), 0)
+                    self.assertLess(derecha, imagen.width)
+                    self.assertLess(abajo, imagen.height)
 
     def test_copia_solo_referencias_explicitas(self) -> None:
         with tempfile.TemporaryDirectory(prefix="refs-transformadas-") as temporal:

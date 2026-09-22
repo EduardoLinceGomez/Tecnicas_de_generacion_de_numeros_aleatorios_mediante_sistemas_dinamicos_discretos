@@ -420,18 +420,18 @@
     }
   },
   "referencias_sha256": {
-    "Log_PG.png": "eae19f4f9db85e2988f79414cdb88048cd030eeb1f2b7df2503c411b0083c3da",
-    "Tent_PG.png": "a390cf9f1cb936a1caf9d53c03da37985b4f7a1e389783844e72ab99c050aef7",
-    "R30_col_PG.png": "907bfeb31c734da532ad660c77dd3de28a054d34f275f45da83bfbdfca0d0080",
-    "R30_fila_PG.png": "208d239d96803c655c9c3a9ff6caf5c028ece0c1d7a6ef06c9b4d92fbe592d78",
+    "Log_PG.png": "e50fd4e8a2d37845e9b50be2ccd625aea1757350a4336a3ff900d50a42306eef",
+    "Tent_PG.png": "72e038ae81959b2757f7d2025942dd5b26f73b7ec2ab69cdb4ecc224512fb6e6",
+    "R30_col_PG.png": "5cbc28c95f9aa301c5fde979d08f69b38e6171ffe601ade616e77e40a48b2e42",
+    "R30_fila_PG.png": "b141e3c14b99c2a0d08e89bab357bdffb33126e381abffb372781983bff3bffe",
     "acf_antes_despues_logistico.png": "7a2f02af36daf7f6556c68bc8ea46794717236ab7dfff4081b9635ad96f73347",
     "acf_antes_despues_tienda.png": "24a7dda0abc3b8aeaae62788b6254b631b44c652bb3cc123367d9245cd73d27d",
     "acf_antes_despues_r30_columnas.png": "9ab89b94bbab3abc303c0f8b70ba652c1353fc23a4085eb45495f45e94147ef3",
     "acf_antes_despues_r30_filas.png": "877db4bbdcb314bfab7ecc695556a37d76c62711695dce0735e57ad998e44209",
-    "brechas_antes_despues_logistico.png": "eae19f4f9db85e2988f79414cdb88048cd030eeb1f2b7df2503c411b0083c3da",
-    "brechas_antes_despues_tienda.png": "a390cf9f1cb936a1caf9d53c03da37985b4f7a1e389783844e72ab99c050aef7",
-    "brechas_antes_despues_r30_columnas.png": "907bfeb31c734da532ad660c77dd3de28a054d34f275f45da83bfbdfca0d0080",
-    "brechas_antes_despues_r30_filas.png": "208d239d96803c655c9c3a9ff6caf5c028ece0c1d7a6ef06c9b4d92fbe592d78",
+    "brechas_antes_despues_logistico.png": "e50fd4e8a2d37845e9b50be2ccd625aea1757350a4336a3ff900d50a42306eef",
+    "brechas_antes_despues_tienda.png": "72e038ae81959b2757f7d2025942dd5b26f73b7ec2ab69cdb4ecc224512fb6e6",
+    "brechas_antes_despues_r30_columnas.png": "5cbc28c95f9aa301c5fde979d08f69b38e6171ffe601ade616e77e40a48b2e42",
+    "brechas_antes_despues_r30_filas.png": "b141e3c14b99c2a0d08e89bab357bdffb33126e381abffb372781983bff3bffe",
     "permutacion_indices.png": "01e6093b08bb007625ede9a0a05b4bfd626e9b5bace6a165365cb5e29191879b"
   }
 }
